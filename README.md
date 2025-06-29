@@ -1,13 +1,13 @@
 # TEAM NAME 
 
-YZTA Bootcamp Group 110
+_YZTA Bootcamp Group 110_
 
 # TEAM ROLES
 
-Mert AYDIN - Product Owner
-Didem Erçetin - Scrum Master
-Mevlüt Serhat Özşahin - Team Member/Developer
-Rümeysa Emine - Team Member/Developer
+- *Mert* __AYDIN__ - __Product Owner__
+- *Didem* __ERÇETİN__ - __Scrum Master__
+- *Mevlüt Serhat* __ÖZŞAHİN__ - __Team Member/Developer__
+- *Rümeysa* __EMİNE__ - __Team Member/Developer__
 
 # PRODUCT NAME
 
