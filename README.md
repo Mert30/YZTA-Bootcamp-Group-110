@@ -64,5 +64,5 @@ __4. Medication History and Reporting (Optional Development)__
 
 - Healthcare professionals (doctors and nurses who want to make it easier for their patients to take their medication)
 
-# PRODCUT BACKLOG
+# PRODUCT BACKLOG
 
