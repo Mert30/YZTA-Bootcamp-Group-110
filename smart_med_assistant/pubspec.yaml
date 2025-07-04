@@ -34,6 +34,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_native_splash: ^2.4.4
+  flutter_launcher_icons: ^0.14.4
+  firebase_auth: ^5.6.2
+  firebase_core: ^3.15.1
+  cloud_firestore: ^5.6.11
 
 dev_dependencies:
   flutter_test:
@@ -56,7 +61,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  
+  assets:
+    - assets/first3.jpg
+    - assets/MediMate.png
+    - assets/medimatelogo.png
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

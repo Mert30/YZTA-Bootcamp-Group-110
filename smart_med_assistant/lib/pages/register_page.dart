@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_med_assistant/pages/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -27,25 +30,72 @@ class _RegisterPageState extends State<RegisterPage> {
     super.dispose();
   }
 
-  void _register() {
+  void _register() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
 
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() => _isLoading = false);
+      try {
+        // Firebase Authentication ile kullanıcı oluşturma yeri burası
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
+
+        // Firestore'a kullanıcı bilgilerini kaydetme yeri burası
+        await FirebaseFirestore.instance
+            .collection("Users")
+            .doc(userCredential.user!.uid)
+            .set({
+              "fullname": _nameController.text.trim(),
+              "email": _emailController.text.trim(),
+              "createdAt": Timestamp.now(),
+            });
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Kayıt başarılı!'),
+            content: Text("Kayıt başarılı! Giriş yapabilirsiniz."),
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
-      });
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      } on FirebaseAuthException catch (e) {
+        String errorMsg = "Bir hata oluştu.";
+        if (e.code == 'email-already-in-use') {
+          errorMsg = "Bu e-posta zaten kullanılıyor.";
+        } else if (e.code == 'invalid-email') {
+          errorMsg = "Geçersiz e-posta adresi.";
+        } else if (e.code == 'weak-password') {
+          errorMsg = "Şifre çok zayıf.";
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Beklenmeyen bir hata oluştu."),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } finally {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
-  InputDecoration _inputDecoration(String label, IconData icon,
-      {bool isPassword = false, bool isVisible = false, VoidCallback? toggleVisibility}) {
+  InputDecoration _inputDecoration(
+    String label,
+    IconData icon, {
+    bool isPassword = false,
+    bool isVisible = false,
+    VoidCallback? toggleVisibility,
+  }) {
     return InputDecoration(
       labelText: label,
       prefixIcon: Icon(icon, color: Colors.blueGrey.shade600),
@@ -91,7 +141,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     color: Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Icon(Icons.medication_outlined, size: 40, color: Colors.blue.shade700),
+                  child: Icon(
+                    Icons.medication_outlined,
+                    size: 40,
+                    color: Colors.blue.shade700,
+                  ),
                 ),
                 const SizedBox(height: 20),
 
@@ -116,8 +170,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 TextFormField(
                   controller: _nameController,
                   decoration: _inputDecoration("Ad Soyad", Icons.person),
-                  validator: (value) =>
-                      value == null || value.isEmpty ? "Ad Soyad gerekli" : null,
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Ad Soyad gerekli"
+                      : null,
                 ),
                 const SizedBox(height: 16),
 
@@ -126,8 +181,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   decoration: _inputDecoration("E-posta", Icons.email_outlined),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null || value.isEmpty) return "E-posta gerekli";
-                    if (!value.contains("@")) return "Geçerli bir e-posta girin";
+                    if (value == null || value.isEmpty) {
+                      return "E-posta gerekli";
+                    }
+                    if (!value.contains("@")) {
+                      return "Geçerli bir e-posta girin";
+                    }
                     return null;
                   },
                 ),
@@ -147,10 +206,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                     },
                   ),
-                  validator: (value) =>
-                      value != null && value.length >= 6
-                          ? null
-                          : "Şifre en az 6 karakter olmalı",
+                  validator: (value) => value != null && value.length >= 6
+                      ? null
+                      : "Şifre en az 6 karakter olmalı",
                 ),
                 const SizedBox(height: 16),
 
@@ -168,10 +226,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
                     },
                   ),
-                  validator: (value) =>
-                      value == _passwordController.text
-                          ? null
-                          : "Şifreler uyuşmuyor",
+                  validator: (value) => value == _passwordController.text
+                      ? null
+                      : "Şifreler uyuşmuyor",
                 ),
                 const SizedBox(height: 32),
 
@@ -194,28 +251,36 @@ class _RegisterPageState extends State<RegisterPage> {
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
                           )
                         : const Text(
                             "Kayıt Ol",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white, 
-                            ),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                   ),
                 ),
                 const SizedBox(height: 20),
 
-                //Login connection
+                // Login bağlantısı
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Zaten hesabınız var mı?",
-                        style: TextStyle(color: Colors.grey.shade600)),
+                    Text(
+                      "Zaten hesabınız var mı?",
+                      style: TextStyle(color: Colors.grey.shade600),
+                    ),
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "Giriş Yap",
                         style: TextStyle(
@@ -225,7 +290,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
