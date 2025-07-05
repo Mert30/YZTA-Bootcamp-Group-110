@@ -64,6 +64,9 @@ __4. Medication History and Reporting (Optional Development)__
 
 - Healthcare professionals (doctors and nurses who want to make it easier for their patients to take their medication)
 
+# PRODUCT BACKLOG
+[Open Product Backlog in Jira](https://yzta-grup110.atlassian.net/jira/software/projects/BSMT/boards/34/backlog?epics=visible&atlOrigin=eyJpIjoiN2QyZDg0NjhlMWQyNGJlMjgwZjk4MmY1ZjUwMWEzYjgiLCJwIjoiaiJ9)
+
 # SPRINT 1 
 
 - **Sprint Notes**
@@ -81,12 +84,12 @@ __4. Medication History and Reporting (Optional Development)__
 	- More complex tasks such as security and infrastructure were assigned `5` points.  
 	- Simpler technical tasks with lower uncertainty were assigned `1` point.
 
-- **Daily Scrum:** [Click here to view the Daily Scrum notes](<INSERT_LINK_HERE>)
+- **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint1-daily-scrum-report.md>)
 
 - **Sprint Board Updates**  
 	_(Insert screenshot or link to Jira board here)_
 
-- **Product Snapshot**  
+- **Product Screenshots**  
 	_(Insert screenshot of the product's state at the end of Sprint 1)_
 
 - **Sprint Review**  
