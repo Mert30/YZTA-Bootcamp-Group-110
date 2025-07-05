@@ -5,7 +5,7 @@ _YZTA Bootcamp Group 110_
 # TEAM ROLES
 
 - *Mert* __AYDIN__ - __Product Owner__    <a href="https://github.com/Mert30" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a> - <a href="https://www.linkedin.com/in/mert30/" target="_blank"><img src="https://i.sstatic.net/gVE0j.png" width="20" alt="LinkedIn"></a>
-- *Rümeysa* __EMİNE__ - __Scrum Master__    <a href="https://github.com/rumeysaemine" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a> - <a href="https://www.linkedin.com/in/rumeysa-emine-şahin/" target="_blank"><img src="https://i.sstatic.net/gVE0j.png" width="20" alt="LinkedIn"></a> 
+- *Rumeysa Emine* __ŞAHİN__ - __Scrum Master__    <a href="https://github.com/rumeysaemine" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a> - <a href="https://www.linkedin.com/in/rumeysa-emine-şahin/" target="_blank"><img src="https://i.sstatic.net/gVE0j.png" width="20" alt="LinkedIn"></a> 
 - *Didem* __ERÇETİN__ - __Team Member/Developer__    <a href="https://github.com/didemerctn" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a> - <a href="https://www.linkedin.com/in/didem-erçetin-536736304/" target="_blank"><img src="https://i.sstatic.net/gVE0j.png" width="20" alt="LinkedIn"></a> 
 - *Mevlüt Serhat* __ÖZŞAHİN__ - __Team Member/Developer__    <a href="https://github.com/MevlutOz" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a> - <a href="https://www.linkedin.com/in/mevlütserhatözşahin/" target="_blank"><img src="https://i.sstatic.net/gVE0j.png" width="20" alt="LinkedIn"></a>
 - *Ramazan* __YILDIZ__ - __Team Member/Developer__  <a href="https://github.com/yildizramazan" target="_blank"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="20" alt="GitHub"></a>
@@ -64,5 +64,34 @@ __4. Medication History and Reporting (Optional Development)__
 
 - Healthcare professionals (doctors and nurses who want to make it easier for their patients to take their medication)
 
-# PRODUCT BACKLOG
+# SPRINT 1 
+
+- **Sprint Notes**
+	- The product's goal, core features, and target user group were clearly defined.  
+	- The chosen technology stack is Flutter, and Jira was selected as the project management tool.  
+	- The GitHub repository was initialized and the core folder structure was set up.  
+	- UI for the sign-up and login pages was implemented; navigation between pages was configured.  
+	- Authentication and authorization mechanisms were established.  
+	- Most of the tasks were completed on time, and team communication was maintained consistently.
+
+- **Estimated Story Points to Complete:** `16`
+
+- **Estimation Logic:** Tasks were estimated based on complexity, development time, and dependencies, using the Fibonacci sequence.  
+	- UI tasks were assigned `2–3` points.  
+	- More complex tasks such as security and infrastructure were assigned `5` points.  
+	- Simpler technical tasks with lower uncertainty were assigned `1` point.
+
+- **Daily Scrum:** [Click here to view the Daily Scrum notes](<INSERT_LINK_HERE>)
+
+- **Sprint Board Updates**  
+	_(Insert screenshot or link to Jira board here)_
+
+- **Product Snapshot**  
+	_(Insert screenshot of the product's state at the end of Sprint 1)_
+
+- **Sprint Review**  
+	_(To be added after review meeting)_
+
+- **Sprint Retrospective**  
+	_(To be added after retrospective session)_
 
