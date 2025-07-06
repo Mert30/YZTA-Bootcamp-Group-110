@@ -90,7 +90,7 @@ __4. Medication History and Reporting (Optional Development)__
 	![Sprint 1 Board](./docs/sprint_board_updates/sprint1-board/sprint1_board.jpg)
 
 - **Product Screenshots**  
-	_(Insert screenshot of the product's state at the end of Sprint 1)_
+        [MediMate-Sprint1](https://drive.google.com/drive/folders/1uVxNyLKgyaW3chgnGlmQRTq-g-Bd0RqQ?usp=drive_link)
 
 - **Sprint Review**  
 	- The core structure of the product was successfully established by the end of Sprint 1.  
