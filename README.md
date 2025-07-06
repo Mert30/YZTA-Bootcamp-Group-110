@@ -87,14 +87,20 @@ __4. Medication History and Reporting (Optional Development)__
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint1-daily-scrum-report.md>)
 
 - **Sprint Board Updates**  
-	_(Insert screenshot or link to Jira board here)_
+	![Sprint 1 Board](./docs/sprint_board_updates/sprint1-board/sprint1_board.jpg)
 
 - **Product Screenshots**  
 	_(Insert screenshot of the product's state at the end of Sprint 1)_
 
 - **Sprint Review**  
-	_(To be added after review meeting)_
+	- The core structure of the product was successfully established by the end of Sprint 1.  
+	- User interfaces for the sign-up and login pages were completed, and navigation between pages was configured.  
+	- Authentication and authorization mechanisms were activated and tested.  
+	- The product is progressing in line with the defined goals, and the next sprints will focus on improving the user experience through detailed UI enhancements.
+
 
 - **Sprint Retrospective**  
-	_(To be added after retrospective session)_
+	- What Went Well: Team members took ownership of their tasks and worked diligently to complete them. Regular and effective communication was maintained via the WhatsApp group.
+
+	- What Could Be Improved: Scheduling recurring meetings at specific days and times could help improve coordination.
 
