@@ -103,3 +103,14 @@ __4. Medication History and Reporting (Optional Development)__
 
 	- What Could Be Improved: Scheduling recurring meetings at specific days and times could help improve coordination.
 
+
+# SPRINT 2
+
+- **Sprint Notes**
+- **Estimated Story Points to Complete:**
+- **Estimation Logic:**
+- **Daily Scrum:**
+- **Sprint Board Updates**
+- **Product Screenshots**
+- **Sprint Review**
+- **Sprint Retrospective**
