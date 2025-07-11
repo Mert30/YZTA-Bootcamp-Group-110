@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_med_assistant/pages/pharmacy_home_page.dart'; 
 import 'package:smart_med_assistant/pages/pharmacy_process_page.dart';
 import 'package:smart_med_assistant/pages/pharmacy_register_page.dart';
 
@@ -22,9 +23,9 @@ class _PharmacyLoginPageState extends State<PharmacyLoginPage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text('Hoş geldin, $email')));
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PharmacyProcessPage()),
+        MaterialPageRoute(builder: (context) => const PharmacyHomePage()),
       );
     }
   }
