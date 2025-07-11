@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_med_assistant/pages/pharmacy_process_page.dart';
+import 'package:smart_med_assistant/pages/pharmacy_main_page.dart';
 import 'package:smart_med_assistant/pages/pharmacy_register_page.dart';
 
 class PharmacyLoginPage extends StatefulWidget {
@@ -19,12 +19,33 @@ class _PharmacyLoginPageState extends State<PharmacyLoginPage> {
   void _login() {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Hoş geldin, $email')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  'Hoş geldin, $email',
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.green.shade400,
+          behavior: SnackBarBehavior.floating,
+          elevation: 8,
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          duration: const Duration(seconds: 3),
+        ),
+      );
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const PharmacyProcessPage()),
+        MaterialPageRoute(builder: (context) => const PharmacistMainPage()),
       );
     }
   }

@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_med_assistant/pages/barcode_scanner_page.dart';
 
-class PharmacyProcessPage extends StatefulWidget {
-  const PharmacyProcessPage({super.key});
+class AddMedicinePage extends StatefulWidget {
+  const AddMedicinePage({super.key});
 
   @override
-  State<PharmacyProcessPage> createState() => _PharmacyProcessPageState();
+  State<AddMedicinePage> createState() => _AddMedicinePageState();
 }
 
-class _PharmacyProcessPageState extends State<PharmacyProcessPage> {
+class _AddMedicinePageState extends State<AddMedicinePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _barcodeController = TextEditingController();
   final TextEditingController _patientNameController = TextEditingController();
