@@ -37,18 +37,18 @@ class _PharmacyRegisterPageState extends State<PharmacyRegisterPage> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim(),
-            );
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
 
-        await FirebaseFirestore.instance
-            .collection("Users")
-            .doc(userCredential.user!.uid)
-            .set({
-              "fullname": _nameController.text.trim(),
-              "email": _emailController.text.trim(),
-              "createdAt": Timestamp.now(),
-            });
+        final uid = userCredential.user!.uid;
+
+        await FirebaseFirestore.instance.collection("users").doc(uid).set({
+          "fullname": _nameController.text.trim(),
+          "email": _emailController.text.trim(),
+          "role": "eczaci",
+          "createdAt": Timestamp.now(),
+        });
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -86,6 +86,7 @@ class _PharmacyRegisterPageState extends State<PharmacyRegisterPage> {
       }
     }
   }
+
 
   InputDecoration _inputDecoration(
     String label,

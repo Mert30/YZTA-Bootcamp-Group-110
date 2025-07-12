@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_med_assistant/pages/patient_register_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smart_med_assistant/pages/patient_prescriptions_page.dart';
 
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});
@@ -15,15 +17,39 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
 
   bool _obscurePassword = true;
 
-  void _login() {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text.trim();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Hoş geldin, $email')));
-      // Giriş sonrası yönlendirme veya Firebase Auth ekleyebilirsin.
+      final password = _passwordController.text.trim();
+
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        // Başarılı giriş
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const PatientPrescriptionsPage(),
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        String errorMsg = 'Giriş başarısız.';
+        if (e.code == 'user-not-found') {
+          errorMsg = 'Bu e-posta ile kayıtlı kullanıcı bulunamadı.';
+        } else if (e.code == 'wrong-password') {
+          errorMsg = 'Hatalı şifre girdiniz.';
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMsg), backgroundColor: Colors.red),
+        );
+      }
     }
   }
+
 
   InputDecoration _inputDecoration(
     String label,

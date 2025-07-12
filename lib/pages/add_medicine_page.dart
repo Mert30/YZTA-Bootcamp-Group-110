@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_med_assistant/pages/barcode_scanner_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AddMedicinePage extends StatefulWidget {
   const AddMedicinePage({super.key});
@@ -59,33 +60,73 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     if (_formKey.currentState!.validate() &&
         _startDate != null &&
         _finishDate != null) {
-      await FirebaseFirestore.instance.collection('medicine').add({
-        'barcode': _barcodeController.text.trim(),
-        'patientName': _patientNameController.text.trim(),
-        'startDate': _startDate!.toIso8601String(),
-        'finishDate': _finishDate!.toIso8601String(),
-      });
+      final patientUsername = _patientNameController.text.trim();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('İlaç bilgisi başarıyla kaydedildi.'),
-          backgroundColor: Colors.teal,
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.all(16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
+      try {
+        // Hasta kullanıcıyı Firestore'da bul (username = email veya özel kullanıcı adı olabilir)
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('email', isEqualTo: patientUsername) // dilersen 'username' alanı da olabilir
+            .where('role', isEqualTo: 'hasta')
+            .limit(1)
+            .get();
+
+        if (querySnapshot.docs.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Hasta bulunamadı. E-posta doğru mu?'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
+
+        final patientId = querySnapshot.docs.first.id;
+
+        // Eczacının UID’sini veya ismini almak
+        final addedBy = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+
+        // Prescription verisini hastanın alt koleksiyonuna ekle
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(patientId)
+            .collection('prescriptions')
+            .add({
+          'barcode': _barcodeController.text.trim(),
+          'startDate': _startDate!.toIso8601String(),
+          'finishDate': _finishDate!.toIso8601String(),
+          'addedBy': FirebaseAuth.instance.currentUser!.uid,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        // Başarı mesajı
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('İlaç bilgisi başarıyla kaydedildi.'),
+            backgroundColor: Colors.teal,
           ),
-        ),
-      );
+        );
 
-      _barcodeController.clear();
-      _patientNameController.clear();
-      setState(() {
-        _startDate = null;
-        _finishDate = null;
-      });
+        // Form temizleme
+        _barcodeController.clear();
+        _patientNameController.clear();
+        setState(() {
+          _startDate = null;
+          _finishDate = null;
+        });
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Hata: ${e.toString()}"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
+
 
   InputDecoration _inputDecoration(
     String label,
