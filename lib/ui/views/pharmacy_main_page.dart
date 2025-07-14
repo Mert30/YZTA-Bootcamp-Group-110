@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:smart_med_assistant/pages/dashboard_page.dart';
-import 'package:smart_med_assistant/pages/add_medicine_page.dart';
-import 'package:smart_med_assistant/pages/patients_page.dart';
-import 'package:smart_med_assistant/pages/stock_page.dart';
+import 'package:smart_med_assistant/ui/views//dashboard_page.dart';
+import 'package:smart_med_assistant/ui/views//add_medicine_page.dart';
+import 'package:smart_med_assistant/ui/views//patients_page.dart';
+import 'package:smart_med_assistant/ui/views//stock_page.dart';
 
 class PharmacistMainPage extends StatefulWidget {
   const PharmacistMainPage({super.key});

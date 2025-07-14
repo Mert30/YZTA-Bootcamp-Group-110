@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_med_assistant/pages/add_medicine_page.dart';
-import 'package:smart_med_assistant/pages/patients_page.dart';
-import 'package:smart_med_assistant/pages/stock_page.dart';
+import 'package:smart_med_assistant/ui/views//add_medicine_page.dart';
+import 'package:smart_med_assistant/ui/views//patients_page.dart';
+import 'package:smart_med_assistant/ui/views//stock_page.dart';
 
 class PharmacistPanelPage extends StatelessWidget {
   const PharmacistPanelPage({super.key});

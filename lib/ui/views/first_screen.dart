@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:smart_med_assistant/pages/pharmacy_register_page.dart';
-import 'package:smart_med_assistant/pages/patient_register_page.dart';
+import 'package:smart_med_assistant/ui/views//pharmacy_register_page.dart';
+import 'package:smart_med_assistant/ui/views//patient_register_page.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -24,7 +24,7 @@ class _FirstScreenState extends State<FirstScreen>
   void pharmacyPageClick() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PharmacyRegisterPage()),
+      MaterialPageRoute(builder: (context) =>  PharmacyRegisterPage()),
     );
   }
 
