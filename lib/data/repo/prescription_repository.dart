@@ -5,12 +5,12 @@ import '../entity/prescription.dart';
 class PrescriptionRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // 🔸 Add a new prescription to a patient's account
+  // 🔸 Reçete ekleme (AI ile gelen verileri de içerir)
   Future<void> addPrescription({
     required Prescription prescription,
     required String patientEmail,
   }) async {
-    // Patient ID'yi bul
+    // 1️⃣ Hasta e-postasına göre kullanıcıyı bul
     final querySnapshot = await _firestore
         .collection('users')
         .where('email', isEqualTo: patientEmail)
@@ -24,6 +24,7 @@ class PrescriptionRepository {
 
     final patientId = querySnapshot.docs.first.id;
 
+    // 2️⃣ Firestore'a reçete ekle
     await _firestore
         .collection('users')
         .doc(patientId)
@@ -31,7 +32,7 @@ class PrescriptionRepository {
         .add(prescription.toMap());
   }
 
-  // 🔹 Get prescriptions for currently logged-in patient
+  // 🔹 Giriş yapan hastanın reçetelerini al
   Future<List<Prescription>> getPrescriptionsForCurrentUser() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) throw Exception("Oturum açılmamış.");
