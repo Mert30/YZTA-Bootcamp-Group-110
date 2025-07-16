@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:smart_med_assistant/data/entity/prescription.dart';
+import 'package:smart_med_assistant/data/service/gemini_service.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/add_medicine_cubit.dart';
-import 'package:smart_med_assistant/ui/views//barcode_scanner_page.dart';
+import 'package:smart_med_assistant/ui/views/barcode_scanner_page.dart';
 
 class AddMedicinePage extends StatefulWidget {
   const AddMedicinePage({super.key});
@@ -21,10 +21,14 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   DateTime? _startDate;
   DateTime? _finishDate;
 
+  String? aiDescription; // Yapay zekadan gelen açıklama
+
+  final geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE'); // kendi API keyini gir
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => AddMedicineCubit(PrescriptionRepository()),
+      create: (_) => AddMedicineCubit(PrescriptionRepository(), geminiService),
       child: Scaffold(
         backgroundColor: Colors.teal.shade100.withOpacity(0.2),
         body: SafeArea(
@@ -58,6 +62,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                       setState(() {
                         _startDate = null;
                         _finishDate = null;
+                        aiDescription = null;
                       });
                     } else if (state is AddMedicineFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -66,6 +71,10 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                           backgroundColor: Colors.red,
                         ),
                       );
+                    } else if (state is AddMedicineAIResponse) {
+                      setState(() {
+                        aiDescription = state.aiSummary;
+                      });
                     }
                   },
                   builder: (context, state) {
@@ -98,6 +107,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                       builder: (_) => BarcodeScannerPage(
                                         onScanned: (value) {
                                           _barcodeController.text = value;
+                                          context.read<AddMedicineCubit>().fetchMedicineInfoFromAI(value);
                                         },
                                       ),
                                     ),
@@ -105,10 +115,43 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 },
                               ),
                             ),
+                            onChanged: (val) {
+                              if (val.length >= 5) {
+                                context.read<AddMedicineCubit>().fetchMedicineInfoFromAI(val);
+                              }
+                            },
                             validator: (val) => val == null || val.isEmpty ? 'Barkod giriniz' : null,
                             style: TextStyle(color: Colors.teal.shade900),
                           ),
                           const SizedBox(height: 20),
+
+                          // AI'dan gelen açıklama
+                          if (aiDescription != null) ...[
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Yapay Zeka Açıklaması:",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.teal.shade700,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: Colors.teal.shade50.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                aiDescription!,
+                                style: TextStyle(color: Colors.teal.shade800),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
 
                           // Hasta Email
                           TextFormField(
@@ -145,8 +188,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 if (_formKey.currentState!.validate() &&
                                     _startDate != null &&
                                     _finishDate != null) {
-                                  final cubit = context.read<AddMedicineCubit>();
-                                  cubit.saveMedicine(
+                                  context.read<AddMedicineCubit>().saveMedicine(
                                     barcode: _barcodeController.text.trim(),
                                     patientEmail: _patientEmailController.text.trim(),
                                     startDate: _startDate!,
@@ -262,6 +304,3 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     );
   }
 }
-
-
-

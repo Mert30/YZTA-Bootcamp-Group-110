@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:smart_med_assistant/firebase_options.dart';
-import 'package:smart_med_assistant/ui/views//first_screen.dart';
+import 'package:smart_med_assistant/ui/views/first_screen.dart';
 
 // Repository
 import 'package:smart_med_assistant/data/repo/patient_repository.dart';
@@ -18,6 +18,8 @@ import 'package:smart_med_assistant/ui/cubit/pharmacy_register_cubit.dart';
 import 'package:smart_med_assistant/ui/cubit/pharmacy_login_cubit.dart';
 import 'package:smart_med_assistant/ui/cubit/add_medicine_cubit.dart';
 
+// Gemini
+import 'package:smart_med_assistant/data/service/gemini_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,12 +35,14 @@ class MyApp extends StatelessWidget {
     final patientRepository = PatientRepository();
     final pharmacyRepository = PharmacyRepository();
     final prescriptionRepository = PrescriptionRepository();
+    final geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE'); // BURAYA kendi API anahtarını yaz
 
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<PatientRepository>(create: (_) => patientRepository),
         RepositoryProvider<PharmacyRepository>(create: (_) => pharmacyRepository),
         RepositoryProvider<PrescriptionRepository>(create: (_) => prescriptionRepository),
+        RepositoryProvider<GeminiService>(create: (_) => geminiService),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -46,7 +50,9 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => PatientLoginCubit(patientRepository)),
           BlocProvider(create: (_) => PharmacyRegisterCubit(pharmacyRepository)),
           BlocProvider(create: (_) => PharmacyLoginCubit(pharmacyRepository)),
-          BlocProvider(create: (_) => AddMedicineCubit(prescriptionRepository)),
+          BlocProvider(
+            create: (_) => AddMedicineCubit(prescriptionRepository, geminiService),
+          ),
           BlocProvider(create: (_) => PatientPrescriptionsCubit(prescriptionRepository)),
         ],
         child: MaterialApp(

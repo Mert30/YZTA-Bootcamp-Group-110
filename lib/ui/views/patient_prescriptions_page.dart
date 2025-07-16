@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_med_assistant/data/entity/prescription.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/patient_prescriptions_cubit.dart';
+import 'package:smart_med_assistant/ui/views/prescription_detail_page.dart';
 
 class PatientPrescriptionsPage extends StatelessWidget {
   const PatientPrescriptionsPage({super.key});
@@ -16,8 +17,7 @@ class PatientPrescriptionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-      PatientPrescriptionsCubit(PrescriptionRepository())..fetchPrescriptions(),
+      create: (_) => PatientPrescriptionsCubit(PrescriptionRepository())..fetchPrescriptions(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("İlaç Listem"),
@@ -58,6 +58,14 @@ class PatientPrescriptionsPage extends StatelessWidget {
                     elevation: 4,
                     margin: const EdgeInsets.only(bottom: 16),
                     child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PrescriptionDetailPage(prescription: p),
+                          ),
+                        );
+                      },
                       leading: const Icon(Icons.medication, color: Colors.green),
                       title: Text("Barkod: ${p.barcode}"),
                       subtitle: Column(
@@ -73,7 +81,7 @@ class PatientPrescriptionsPage extends StatelessWidget {
               );
             }
 
-            return const SizedBox.shrink(); // Initial veya diğer durumlar
+            return const SizedBox.shrink(); // Initial state için
           },
         ),
       ),

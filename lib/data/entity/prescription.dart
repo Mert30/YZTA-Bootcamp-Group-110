@@ -5,23 +5,21 @@ class Prescription {
   final DateTime finishDate;
   final String addedBy;
 
+  // Gemini AI'dan gelen yanıtlar:
+  final String? descriptionAI;
+  final String? usageAI;
+  final String? sideEffectsAI;
+
   Prescription({
     required this.id,
     required this.barcode,
     required this.startDate,
     required this.finishDate,
     required this.addedBy,
+    this.descriptionAI,
+    this.usageAI,
+    this.sideEffectsAI,
   });
-
-  factory Prescription.fromFirestore(Map<String, dynamic> data, String docId) {
-    return Prescription(
-      id: docId,
-      barcode: data['barcode'] ?? '',
-      startDate: DateTime.tryParse(data['startDate'] ?? '') ?? DateTime.now(),
-      finishDate: DateTime.tryParse(data['finishDate'] ?? '') ?? DateTime.now(),
-      addedBy: data['addedBy'] ?? '',
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +28,22 @@ class Prescription {
       'finishDate': finishDate.toIso8601String(),
       'addedBy': addedBy,
       'timestamp': DateTime.now().toIso8601String(),
+      'descriptionAI': descriptionAI,
+      'usageAI': usageAI,
+      'sideEffectsAI': sideEffectsAI,
     };
+  }
+
+  factory Prescription.fromFirestore(Map<String, dynamic> map, String id) {
+    return Prescription(
+      id: id,
+      barcode: map['barcode'] ?? '',
+      startDate: DateTime.tryParse(map['startDate'] ?? '') ?? DateTime.now(),
+      finishDate: DateTime.tryParse(map['finishDate'] ?? '') ?? DateTime.now(),
+      addedBy: map['addedBy'] ?? '',
+      descriptionAI: map['descriptionAI'],
+      usageAI: map['usageAI'],
+      sideEffectsAI: map['sideEffectsAI'],
+    );
   }
 }
