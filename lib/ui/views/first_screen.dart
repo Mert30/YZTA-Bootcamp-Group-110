@@ -129,7 +129,7 @@ class _FirstScreenState extends State<FirstScreen>
                         ),
                         padding: const EdgeInsets.all(15),
                         child: Image.asset(
-                          'assets/MediMate.png',
+                          'assets/medimatenewlogo.png',
                           width: size.width * 0.4,
                         ),
                       ),
