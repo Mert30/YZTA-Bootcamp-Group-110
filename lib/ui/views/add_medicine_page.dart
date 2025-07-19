@@ -21,16 +21,23 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   DateTime? _startDate;
   DateTime? _finishDate;
 
-  String? aiDescription; // Yapay zekadan gelen açıklama
+  String? aiDescription;
 
-  final geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE'); // kendi API keyini gir
+  final Color darkBlue = const Color(0xFF024059);
+  final Color mediumBlue = const Color(0xFF026873);
+  final Color lightGreen = const Color(0xFF04BF8A);
+  final Color darkGreen = const Color(0xFF025940);
+
+  final geminiService = GeminiService(
+    'AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE',
+  );
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => AddMedicineCubit(PrescriptionRepository(), geminiService),
       child: Scaffold(
-        backgroundColor: Colors.teal.shade100.withOpacity(0.2),
+        backgroundColor: lightGreen.withOpacity(0.15),
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -38,13 +45,13 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
               child: Container(
                 padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.95),
+                  color: Colors.white.withOpacity(0.97),
                   borderRadius: BorderRadius.circular(28),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.teal.shade200.withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
+                      color: mediumBlue.withOpacity(0.15),
+                      blurRadius: 24,
+                      offset: const Offset(0, 10),
                     ),
                   ],
                 ),
@@ -52,9 +59,12 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                   listener: (context, state) {
                     if (state is AddMedicineSuccess) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("İlaç bilgisi başarıyla kaydedildi."),
-                          backgroundColor: Colors.teal,
+                        SnackBar(
+                          content: const Text(
+                            "İlaç bilgisi başarıyla kaydedildi.",
+                          ),
+                          backgroundColor: darkGreen,
+                          behavior: SnackBarBehavior.floating,
                         ),
                       );
                       _barcodeController.clear();
@@ -68,7 +78,8 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.message),
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.red.shade700,
+                          behavior: SnackBarBehavior.floating,
                         ),
                       );
                     } else if (state is AddMedicineAIResponse) {
@@ -85,47 +96,54 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                           Text(
                             "İlaç Bilgisi Ekle",
                             style: TextStyle(
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.teal.shade900,
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900,
+                              color: darkBlue,
+                              letterSpacing: 0.6,
                             ),
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 32),
 
                           // Barkod
-                          TextFormField(
+                          _buildTextField(
                             controller: _barcodeController,
-                            decoration: _inputDecoration(
-                              'Barkod',
-                              Icons.qr_code,
-                              suffix: IconButton(
-                                icon: const Icon(Icons.camera_alt_rounded, color: Colors.teal),
-                                onPressed: () async {
-                                  final result = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => BarcodeScannerPage(
-                                        onScanned: (value) {
-                                          _barcodeController.text = value;
-                                          context.read<AddMedicineCubit>().fetchMedicineInfoFromAI(value);
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
+                            label: 'Barkod',
+                            icon: Icons.qr_code,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.camera_alt_rounded,
+                                color: mediumBlue,
                               ),
+                              onPressed: () async {
+                                final result = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => BarcodeScannerPage(
+                                      onScanned: (value) {
+                                        _barcodeController.text = value;
+                                        context
+                                            .read<AddMedicineCubit>()
+                                            .fetchMedicineInfoFromAI(value);
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             onChanged: (val) {
                               if (val.length >= 5) {
-                                context.read<AddMedicineCubit>().fetchMedicineInfoFromAI(val);
+                                context
+                                    .read<AddMedicineCubit>()
+                                    .fetchMedicineInfoFromAI(val);
                               }
                             },
-                            validator: (val) => val == null || val.isEmpty ? 'Barkod giriniz' : null,
-                            style: TextStyle(color: Colors.teal.shade900),
+                            validator: (val) => val == null || val.isEmpty
+                                ? 'Barkod giriniz'
+                                : null,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
 
-                          // AI'dan gelen açıklama
+                          // AI Açıklaması
                           if (aiDescription != null) ...[
                             Align(
                               alignment: Alignment.centerLeft,
@@ -134,33 +152,42 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
-                                  color: Colors.teal.shade700,
+                                  color: darkGreen,
                                 ),
                               ),
                             ),
                             const SizedBox(height: 8),
                             Container(
-                              padding: const EdgeInsets.all(12),
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: Colors.teal.shade50.withOpacity(0.5),
-                                borderRadius: BorderRadius.circular(12),
+                                color: lightGreen.withOpacity(0.25),
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: darkGreen.withOpacity(0.6),
+                                ),
                               ),
                               child: Text(
                                 aiDescription!,
-                                style: TextStyle(color: Colors.teal.shade800),
+                                style: TextStyle(
+                                  color: darkBlue.withOpacity(0.9),
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            const SizedBox(height: 28),
                           ],
 
                           // Hasta Email
-                          TextFormField(
+                          _buildTextField(
                             controller: _patientEmailController,
-                            decoration: _inputDecoration('Hasta E-posta', Icons.person),
-                            validator: (val) => val == null || val.isEmpty ? 'E-posta giriniz' : null,
-                            style: TextStyle(color: Colors.teal.shade900),
+                            label: 'Hasta E-posta',
+                            icon: Icons.person,
+                            validator: (val) => val == null || val.isEmpty
+                                ? 'E-posta giriniz'
+                                : null,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
 
                           // Tarihler
                           _datePickerField(
@@ -168,6 +195,9 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                             date: _startDate,
                             onTap: () => _selectDate(true),
                             icon: Icons.date_range_rounded,
+                            darkBlue: darkBlue,
+                            mediumBlue: mediumBlue,
+                            lightGreen: lightGreen,
                           ),
                           const SizedBox(height: 20),
                           _datePickerField(
@@ -175,8 +205,11 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                             date: _finishDate,
                             onTap: () => _selectDate(false),
                             icon: Icons.date_range_outlined,
+                            darkBlue: darkBlue,
+                            mediumBlue: mediumBlue,
+                            lightGreen: lightGreen,
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 36),
 
                           // Kaydet Butonu
                           SizedBox(
@@ -185,32 +218,52 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                               onPressed: state is AddMedicineLoading
                                   ? null
                                   : () {
-                                if (_formKey.currentState!.validate() &&
-                                    _startDate != null &&
-                                    _finishDate != null) {
-                                  context.read<AddMedicineCubit>().saveMedicine(
-                                    barcode: _barcodeController.text.trim(),
-                                    patientEmail: _patientEmailController.text.trim(),
-                                    startDate: _startDate!,
-                                    finishDate: _finishDate!,
-                                  );
-                                }
-                              },
+                                      if (_formKey.currentState!.validate() &&
+                                          _startDate != null &&
+                                          _finishDate != null) {
+                                        context
+                                            .read<AddMedicineCubit>()
+                                            .saveMedicine(
+                                              barcode: _barcodeController.text
+                                                  .trim(),
+                                              patientEmail:
+                                                  _patientEmailController.text
+                                                      .trim(),
+                                              startDate: _startDate!,
+                                              finishDate: _finishDate!,
+                                            );
+                                      }
+                                    },
                               icon: state is AddMedicineLoading
                                   ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                              )
-                                  : const Icon(Icons.save_alt_rounded, color: Colors.white),
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(
+                                      Icons.save_alt_rounded,
+                                      color: Colors.white,
+                                    ),
                               label: const Text(
                                 "Kaydet",
-                                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.teal.shade700,
-                                padding: const EdgeInsets.symmetric(vertical: 18),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                backgroundColor: darkGreen,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 18,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 6,
                               ),
                             ),
                           ),
@@ -227,6 +280,89 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
     );
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    Widget? suffixIcon,
+    Function(String)? onChanged,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      onChanged: onChanged,
+      validator: validator,
+      style: TextStyle(color: darkBlue, fontWeight: FontWeight.w600),
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: mediumBlue),
+        suffixIcon: suffixIcon,
+        filled: true,
+        fillColor: lightGreen.withOpacity(0.2),
+        labelStyle: TextStyle(color: darkBlue, fontWeight: FontWeight.w700),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(22),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(22),
+          borderSide: BorderSide(color: mediumBlue, width: 2),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          vertical: 18,
+          horizontal: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget _datePickerField({
+    required String label,
+    required DateTime? date,
+    required VoidCallback onTap,
+    required IconData icon,
+    required Color darkBlue,
+    required Color mediumBlue,
+    required Color lightGreen,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AbsorbPointer(
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            prefixIcon: Icon(icon, color: mediumBlue),
+            suffixIcon: Icon(Icons.calendar_today_rounded, color: mediumBlue),
+            filled: true,
+            fillColor: lightGreen.withOpacity(0.25),
+            labelStyle: TextStyle(color: darkBlue, fontWeight: FontWeight.w700),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(22),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(22),
+              borderSide: BorderSide(color: mediumBlue, width: 2),
+            ),
+            hintText: date != null
+                ? DateFormat('dd.MM.yyyy').format(date)
+                : 'Tarih seçiniz',
+            hintStyle: TextStyle(
+              color: date != null ? darkBlue : mediumBlue.withOpacity(0.6),
+              fontWeight: date != null ? FontWeight.w600 : FontWeight.w400,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 18,
+              horizontal: 20,
+            ),
+          ),
+          validator: (_) => date == null ? '$label seçiniz' : null,
+          style: TextStyle(color: darkBlue, fontWeight: FontWeight.w700),
+        ),
+      ),
+    );
+  }
+
   Future<void> _selectDate(bool isStart) async {
     final picked = await showDatePicker(
       context: context,
@@ -236,9 +372,15 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
           colorScheme: ColorScheme.light(
-            primary: Colors.teal.shade700,
+            primary: mediumBlue,
             onPrimary: Colors.white,
-            onSurface: Colors.teal.shade900,
+            onSurface: darkBlue,
+          ),
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: mediumBlue,
+              textStyle: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         child: child!,
@@ -257,50 +399,5 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
         }
       });
     }
-  }
-
-  InputDecoration _inputDecoration(String label, IconData icon, {Widget? suffix}) {
-    return InputDecoration(
-      labelText: label,
-      prefixIcon: Icon(icon, color: Colors.teal.shade700),
-      suffixIcon: suffix,
-      filled: true,
-      fillColor: Colors.teal.shade50.withOpacity(0.4),
-      labelStyle: TextStyle(color: Colors.teal.shade900, fontWeight: FontWeight.w600),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(20), borderSide: BorderSide.none),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: Colors.teal.shade700, width: 2),
-      ),
-      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-    );
-  }
-
-  Widget _datePickerField({
-    required String label,
-    required DateTime? date,
-    required VoidCallback onTap,
-    required IconData icon,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AbsorbPointer(
-        child: TextFormField(
-          decoration: _inputDecoration(
-            label,
-            icon,
-            suffix: const Icon(Icons.calendar_today_rounded, color: Colors.teal),
-          ).copyWith(
-            hintText: date != null ? DateFormat('dd.MM.yyyy').format(date) : 'Tarih seçiniz',
-            hintStyle: TextStyle(
-              color: date != null ? Colors.teal.shade900 : Colors.teal.shade300,
-              fontWeight: date != null ? FontWeight.w600 : FontWeight.w400,
-            ),
-          ),
-          validator: (_) => date == null ? '$label seçiniz' : null,
-          style: TextStyle(color: Colors.teal.shade900, fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
   }
 }

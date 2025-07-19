@@ -5,10 +5,15 @@ import 'package:intl/intl.dart';
 class PatientsPage extends StatelessWidget {
   const PatientsPage({super.key});
 
+  final Color darkBlue = const Color(0xFF024059);
+  final Color mediumBlue = const Color(0xFF026873);
+  final Color lightGreen = const Color(0xFF04BF8A);
+  final Color darkGreen = const Color(0xFF025940);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal.shade50,
+      backgroundColor: lightGreen.withOpacity(0.1),
       body: SafeArea(
         child: Column(
           children: [
@@ -20,12 +25,13 @@ class PatientsPage extends StatelessWidget {
                   InkWell(
                     onTap: () => Navigator.pop(context),
                     borderRadius: BorderRadius.circular(30),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    splashColor: mediumBlue.withOpacity(0.2),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Icon(
                         Icons.arrow_back,
                         size: 28,
-                        color: Colors.teal,
+                        color: mediumBlue,
                       ),
                     ),
                   ),
@@ -33,9 +39,9 @@ class PatientsPage extends StatelessWidget {
                   Text(
                     "Hastalarım",
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Colors.teal.shade800,
+                      color: darkBlue,
                     ),
                   ),
                 ],
@@ -50,13 +56,19 @@ class PatientsPage extends StatelessWidget {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: CircularProgressIndicator(color: mediumBlue),
+                    );
                   }
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: Text(
                         'Henüz hasta kaydı yok.',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: darkBlue.withOpacity(0.6),
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     );
                   }
@@ -74,41 +86,80 @@ class PatientsPage extends StatelessWidget {
                       final finishDate = _formatDate(data['finishDate']);
 
                       return Card(
-                        margin: const EdgeInsets.only(bottom: 12),
+                        margin: const EdgeInsets.only(bottom: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        elevation: 4,
+                        elevation: 5,
+                        shadowColor: lightGreen.withOpacity(0.3),
                         child: ListTile(
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20,
-                            vertical: 12,
+                            vertical: 16,
+                          ),
+                          leading: Container(
+                            decoration: BoxDecoration(
+                              color: lightGreen.withOpacity(0.3),
+                              shape: BoxShape.circle,
+                            ),
+                            padding: const EdgeInsets.all(10),
+                            child: Icon(
+                              Icons.medication_outlined,
+                              color: darkGreen,
+                              size: 32,
+                            ),
                           ),
                           title: Text(
                             name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 20,
+                              color: darkBlue,
                             ),
                           ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 6),
-                              Text("Barkod: $barcode"),
-                              Text("Başlangıç: $startDate"),
-                              Text("Bitiş: $finishDate"),
-                            ],
-                          ),
-                          trailing: const Icon(
-                            Icons.medication_outlined,
-                            color: Colors.teal,
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildLabelValue("Barkod:", barcode),
+                                _buildLabelValue("Başlangıç:", startDate),
+                                _buildLabelValue("Bitiş:", finishDate),
+                              ],
+                            ),
                           ),
                         ),
                       );
                     },
                   );
                 },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLabelValue(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: "$label ",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF025940),
+              ),
+            ),
+            TextSpan(
+              text: value,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.italic,
+                color: Colors.black87,
               ),
             ),
           ],
