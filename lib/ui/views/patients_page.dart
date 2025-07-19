@@ -36,14 +36,20 @@ class PatientsPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Text(
-                    "Hastalarım",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: darkBlue,
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "Hastalarım",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: darkBlue,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 44),
                 ],
               ),
             ),
@@ -127,6 +133,39 @@ class PatientsPage extends StatelessWidget {
                                 _buildLabelValue("Bitiş:", finishDate),
                               ],
                             ),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Colors.redAccent),
+                            tooltip: "Sil",
+                            onPressed: () async {
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (_) => AlertDialog(
+                                  title: const Text("Hasta Kaydını Sil"),
+                                  content: const Text(
+                                    "Bu kaydı silmek istediğinize emin misiniz?",
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      child: const Text("İptal"),
+                                      onPressed: () =>
+                                          Navigator.pop(context, false),
+                                    ),
+                                    TextButton(
+                                      child: const Text("Sil"),
+                                      onPressed: () =>
+                                          Navigator.pop(context, true),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              if (confirm == true) {
+                                await FirebaseFirestore.instance
+                                    .collection('medicine')
+                                    .doc(data.id)
+                                    .delete();
+                              }
+                            },
                           ),
                         ),
                       );

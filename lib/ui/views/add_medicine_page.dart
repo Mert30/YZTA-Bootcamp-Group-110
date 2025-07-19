@@ -5,6 +5,7 @@ import 'package:smart_med_assistant/data/service/gemini_service.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/add_medicine_cubit.dart';
 import 'package:smart_med_assistant/ui/views/barcode_scanner_page.dart';
+import 'package:smart_med_assistant/ui/views/pharmacy_main_page.dart';
 
 class AddMedicinePage extends StatefulWidget {
   const AddMedicinePage({super.key});
@@ -93,17 +94,40 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          Text(
-                            "İlaç Bilgisi Ekle",
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w900,
-                              color: darkBlue,
-                              letterSpacing: 0.6,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () => Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const PharmacistMainPage(),
+                                  ),
+                                ),
+                                borderRadius: BorderRadius.circular(30),
+                                splashColor: darkGreen.withOpacity(0.3),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.arrow_back,
+                                    size: 28,
+                                    color: darkBlue,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                "İlaç Bilgisi Ekle",
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w900,
+                                  color: darkBlue,
+                                  letterSpacing: 0.6,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 32),
-
+                          const SizedBox(height: 30),
                           // Barkod
                           _buildTextField(
                             controller: _barcodeController,

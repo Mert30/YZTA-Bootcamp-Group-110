@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_med_assistant/ui/views/pharmacy_main_page.dart';
 
 class StockPage extends StatelessWidget {
   const StockPage({super.key});
@@ -21,7 +22,12 @@ class StockPage extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const PharmacistMainPage(),
+                      ),
+                    ),
                     borderRadius: BorderRadius.circular(30),
                     splashColor: darkGreen.withOpacity(0.3),
                     child: Padding(
