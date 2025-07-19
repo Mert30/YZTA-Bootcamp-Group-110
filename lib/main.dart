@@ -35,33 +35,41 @@ class MyApp extends StatelessWidget {
     final patientRepository = PatientRepository();
     final pharmacyRepository = PharmacyRepository();
     final prescriptionRepository = PrescriptionRepository();
-    final geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE'); // BURAYA kendi API anahtarını yaz
+    final geminiService = GeminiService(
+      'AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE',
+    ); // BURAYA kendi API anahtarını yaz
 
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<PatientRepository>(create: (_) => patientRepository),
-        RepositoryProvider<PharmacyRepository>(create: (_) => pharmacyRepository),
-        RepositoryProvider<PrescriptionRepository>(create: (_) => prescriptionRepository),
+        RepositoryProvider<PharmacyRepository>(
+          create: (_) => pharmacyRepository,
+        ),
+        RepositoryProvider<PrescriptionRepository>(
+          create: (_) => prescriptionRepository,
+        ),
         RepositoryProvider<GeminiService>(create: (_) => geminiService),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => PatientRegisterCubit(patientRepository)),
           BlocProvider(create: (_) => PatientLoginCubit(patientRepository)),
-          BlocProvider(create: (_) => PharmacyRegisterCubit(pharmacyRepository)),
+          BlocProvider(
+            create: (_) => PharmacyRegisterCubit(pharmacyRepository),
+          ),
           BlocProvider(create: (_) => PharmacyLoginCubit(pharmacyRepository)),
           BlocProvider(
-            create: (_) => AddMedicineCubit(prescriptionRepository, geminiService),
+            create: (_) =>
+                AddMedicineCubit(prescriptionRepository, geminiService),
           ),
-          BlocProvider(create: (_) => PatientPrescriptionsCubit(prescriptionRepository)),
+          BlocProvider(
+            create: (_) => PatientPrescriptionsCubit(prescriptionRepository),
+          ),
         ],
         child: MaterialApp(
           title: 'MediMate',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-            colorSchemeSeed: Colors.green,
-          ),
+          theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.green),
           home: const FirstScreen(),
         ),
       ),

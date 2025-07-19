@@ -13,29 +13,42 @@ class PharmacyLoginPage extends StatelessWidget {
   final _passwordController = TextEditingController();
   final ValueNotifier<bool> _obscurePassword = ValueNotifier(true);
 
+  final Color primaryColor = const Color(0xFF026873);
+  final Color accentColor = const Color(0xFF04BF8A);
+  final Color inputBorderColor = const Color(0xFF025940);
+  final Color textColor = const Color(0xFF024059);
+  final Color buttonGreen = const Color(0xFF03A64A);
+
   InputDecoration _inputDecoration(
-      String label,
-      IconData icon, {
-        bool isPassword = false,
-        bool isVisible = false,
-        VoidCallback? toggle,
-      }) {
+    String label,
+    IconData icon, {
+    bool isPassword = false,
+    bool isVisible = false,
+    VoidCallback? toggle,
+  }) {
     return InputDecoration(
       labelText: label,
-      prefixIcon: Icon(icon, color: Colors.teal.shade700),
+      prefixIcon: Icon(icon, color: inputBorderColor),
       suffixIcon: isPassword
           ? IconButton(
-        icon: Icon(
-          isVisible ? Icons.visibility : Icons.visibility_off,
-          color: Colors.teal.shade400,
-        ),
-        onPressed: toggle,
-      )
+              icon: Icon(
+                isVisible ? Icons.visibility : Icons.visibility_off,
+                color: accentColor,
+              ),
+              onPressed: toggle,
+            )
           : null,
       filled: true,
-      fillColor: Colors.teal.shade50,
-      labelStyle: TextStyle(color: Colors.teal.shade700),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      fillColor: Colors.white,
+      labelStyle: TextStyle(color: textColor),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: inputBorderColor),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: accentColor, width: 2),
+        borderRadius: BorderRadius.circular(12),
+      ),
       contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
     );
   }
@@ -45,188 +58,222 @@ class PharmacyLoginPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => PharmacyLoginCubit(PharmacyRepository()),
       child: Scaffold(
-        backgroundColor: Colors.teal.shade100.withOpacity(0.3),
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: BlocConsumer<PharmacyLoginCubit, PharmacyLoginState>(
-                listener: (context, state) {
-                  if (state is PharmacyLoginSuccess) {
-                    final email = _emailController.text.trim();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Row(
-                          children: [
-                            const Icon(Icons.check_circle, color: Colors.white),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text('Hoş geldin, $email'),
-                            ),
-                          ],
-                        ),
-                        backgroundColor: Colors.green.shade400,
-                      ),
-                    );
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const PharmacistMainPage(),
-                      ),
-                    );
-                  } else if (state is PharmacyLoginFailure) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.message),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  final cubit = context.read<PharmacyLoginCubit>();
-
-                  return Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Logo ve başlık
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.teal.shade700,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Icon(
-                              Icons.local_pharmacy_outlined,
-                              color: Colors.white,
-                              size: 32,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-                          Text("Eczacı Giriş",
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.teal.shade800)),
-                          const SizedBox(height: 24),
-
-                          // E-posta
-                          TextFormField(
-                            controller: _emailController,
-                            decoration: _inputDecoration("E-posta", Icons.email),
-                            validator: (val) =>
-                            val == null || !val.contains("@")
-                                ? "Geçerli e-posta giriniz"
-                                : null,
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Şifre
-                          ValueListenableBuilder<bool>(
-                            valueListenable: _obscurePassword,
-                            builder: (context, isObscure, _) {
-                              return TextFormField(
-                                controller: _passwordController,
-                                obscureText: isObscure,
-                                decoration: _inputDecoration(
-                                  "Şifre",
-                                  Icons.lock,
-                                  isPassword: true,
-                                  isVisible: !isObscure,
-                                  toggle: () => _obscurePassword.value =
-                                  !_obscurePassword.value,
-                                ),
-                                validator: (val) => val == null || val.length < 6
-                                    ? "Şifre en az 6 karakter"
-                                    : null,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 24),
-
-                          // Giriş Butonu
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: state is PharmacyLoginLoading
-                                  ? null
-                                  : () {
-                                if (_formKey.currentState!.validate()) {
-                                  cubit.login(
-                                    _emailController.text.trim(),
-                                    _passwordController.text.trim(),
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.teal.shade700,
-                                padding:
-                                const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: state is PharmacyLoginLoading
-                                  ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                                  : const Text(
-                                "Giriş Yap",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Kayıt Ol Bağlantısı
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFE6F4F1), Color(0xFFB2EDE4)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: BlocConsumer<PharmacyLoginCubit, PharmacyLoginState>(
+                  listener: (context, state) {
+                    if (state is PharmacyLoginSuccess) {
+                      final email = _emailController.text.trim();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Row(
                             children: [
-                              const Text("Hesabın yok mu?"),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) =>
-                                      PharmacyRegisterPage(),
+                              const Icon(
+                                Icons.check_circle,
+                                color: Colors.white,
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(child: Text('Hoş geldin, $email')),
+                            ],
+                          ),
+                          backgroundColor: Colors.green.shade400,
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const PharmacistMainPage(),
+                        ),
+                      );
+                    } else if (state is PharmacyLoginFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    final cubit = context.read<PharmacyLoginCubit>();
+
+                    return Card(
+                      elevation: 12,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      color: Colors.white.withOpacity(0.95),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.local_pharmacy_outlined,
+                                size: 60,
+                                color: Color(0xFF04BF8A),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Eczacı Giriş",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold,
                                     ),
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                "Hoş geldiniz! Lütfen giriş yapın",
+                                style: TextStyle(
+                                  color: textColor.withOpacity(0.6),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 24),
+
+                              // Email
+                              TextFormField(
+                                controller: _emailController,
+                                decoration: _inputDecoration(
+                                  "E-posta",
+                                  Icons.email,
+                                ),
+                                validator: (val) =>
+                                    val == null || !val.contains("@")
+                                    ? "Geçerli e-posta giriniz"
+                                    : null,
+                              ),
+                              const SizedBox(height: 14),
+
+                              // Password
+                              ValueListenableBuilder<bool>(
+                                valueListenable: _obscurePassword,
+                                builder: (context, isObscure, _) {
+                                  return TextFormField(
+                                    controller: _passwordController,
+                                    obscureText: isObscure,
+                                    decoration: _inputDecoration(
+                                      "Şifre",
+                                      Icons.lock,
+                                      isPassword: true,
+                                      isVisible: !isObscure,
+                                      toggle: () => _obscurePassword.value =
+                                          !_obscurePassword.value,
+                                    ),
+                                    validator: (val) =>
+                                        val == null || val.length < 6
+                                        ? "Şifre en az 6 karakter"
+                                        : null,
                                   );
                                 },
-                                child: Text(
-                                  "Kayıt Ol",
-                                  style: TextStyle(
-                                    color: Colors.teal.shade700,
-                                    fontWeight: FontWeight.w600,
+                              ),
+                              const SizedBox(height: 24),
+
+                              // Login Button
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(Icons.login),
+                                  onPressed: state is PharmacyLoginLoading
+                                      ? null
+                                      : () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            cubit.login(
+                                              _emailController.text.trim(),
+                                              _passwordController.text.trim(),
+                                            );
+                                          }
+                                        },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryColor,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                   ),
+                                  label: state is PharmacyLoginLoading
+                                      ? const CircularProgressIndicator(
+                                          color: Colors.white,
+                                        )
+                                      : const Text("Giriş Yap"),
                                 ),
+                              ),
+
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  const Expanded(child: Divider()),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: Text(
+                                      "veya",
+                                      style: TextStyle(
+                                        color: Colors.grey.shade700,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  const Expanded(child: Divider()),
+                                ],
+                              ),
+
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text("Hesabın yok mu?"),
+                                  TextButton.icon(
+                                    icon: const Icon(
+                                      Icons.person_add_alt_1,
+                                      size: 18,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              PharmacyRegisterPage(),
+                                        ),
+                                      );
+                                    },
+                                    label: Text(
+                                      "Kayıt Ol",
+                                      style: TextStyle(
+                                        color: buttonGreen,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),

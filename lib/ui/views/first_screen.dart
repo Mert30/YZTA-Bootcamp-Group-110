@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:smart_med_assistant/ui/views//pharmacy_register_page.dart';
-import 'package:smart_med_assistant/ui/views//patient_register_page.dart';
+import 'package:smart_med_assistant/ui/views/pharmacy_register_page.dart';
+import 'package:smart_med_assistant/ui/views/patient_register_page.dart';
 
 class FirstScreen extends StatefulWidget {
   const FirstScreen({super.key});
@@ -24,14 +24,14 @@ class _FirstScreenState extends State<FirstScreen>
   void pharmacyPageClick() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) =>  PharmacyRegisterPage()),
+      MaterialPageRoute(builder: (context) => PharmacyRegisterPage()),
     );
   }
 
   void patientPageClick() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PatientRegisterPage()),
+      MaterialPageRoute(builder: (context) => PatientRegisterPage()),
     );
   }
 
@@ -43,7 +43,6 @@ class _FirstScreenState extends State<FirstScreen>
   void initState() {
     super.initState();
 
-    // Logo animasyonu
     _logoController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
@@ -57,7 +56,6 @@ class _FirstScreenState extends State<FirstScreen>
       end: 1,
     ).animate(CurvedAnimation(parent: _logoController, curve: Curves.easeOut));
 
-    // Buton animasyonu
     _buttonsController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1000),
@@ -69,7 +67,6 @@ class _FirstScreenState extends State<FirstScreen>
       CurvedAnimation(parent: _buttonsController, curve: Curves.easeOut),
     );
 
-    // Animasyonları sırayla başlat
     _logoController.forward().then((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         _buttonsController.forward();
@@ -91,12 +88,22 @@ class _FirstScreenState extends State<FirstScreen>
     return Scaffold(
       body: Stack(
         children: [
-          // Arka plan görsel
           Positioned.fill(
-            child: Image.asset('assets/first3.jpg', fit: BoxFit.cover),
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF024059),
+                    Color(0xFF026873),
+                    Color(0xFF04BF8A),
+                  ],
+                ),
+              ),
+            ),
           ),
 
-          // LOGO ANİMASYONLU
           FadeTransition(
             opacity: _logoFade,
             child: ScaleTransition(
@@ -104,17 +111,44 @@ class _FirstScreenState extends State<FirstScreen>
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 100),
-                  child: Image.asset(
-                    'assets/MediMate.png',
-                    width: size.width * 0.5,
+                  padding: const EdgeInsets.only(top: 160),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(15),
+                        child: Image.asset(
+                          'assets/medimatenewlogo.png',
+                          width: size.width * 0.4,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text(
+                        "MediMate'e Hoş Geldiniz",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
 
-          // BUTONLAR ANİMASYONLU
           FadeTransition(
             opacity: _buttonsFade,
             child: ScaleTransition(
@@ -130,15 +164,22 @@ class _FirstScreenState extends State<FirstScreen>
                         "Eczacı Giriş",
                         Icons.local_pharmacy,
                         pharmacyPageClick,
+                        color: const Color(0xFF025940),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 15),
                       _buildButton(
                         "Hasta Giriş",
                         Icons.person,
                         patientPageClick,
+                        color: const Color(0xFF03A64A),
                       ),
-                      const SizedBox(height: 12),
-                      _buildButton("Çıkış", Icons.exit_to_app, exitClick),
+                      const SizedBox(height: 15),
+                      _buildButton(
+                        "Çıkış",
+                        Icons.exit_to_app,
+                        exitClick,
+                        color: Colors.red.shade400,
+                      ),
                     ],
                   ),
                 ),
@@ -150,23 +191,30 @@ class _FirstScreenState extends State<FirstScreen>
     );
   }
 
-  Widget _buildButton(String text, IconData icon, VoidCallback onPressed) {
+  Widget _buildButton(
+    String text,
+    IconData icon,
+    VoidCallback onPressed, {
+    required Color color,
+  }) {
     return SizedBox(
-      width: 200,
-      height: 50,
+      width: 250,
+      height: 60,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
+          foregroundColor: color,
           elevation: 6,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
+          shadowColor: color.withOpacity(0.4),
         ),
         onPressed: onPressed,
-        icon: Icon(icon, color: Colors.teal),
+        icon: Icon(icon, color: color, size: 25),
         label: Text(
           text,
-          style: const TextStyle(fontSize: 20, color: Colors.teal),
+          style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600),
         ),
       ),
     );

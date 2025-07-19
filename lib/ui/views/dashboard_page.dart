@@ -1,91 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:smart_med_assistant/ui/views//add_medicine_page.dart';
-import 'package:smart_med_assistant/ui/views//patients_page.dart';
-import 'package:smart_med_assistant/ui/views//stock_page.dart';
 
-class PharmacistPanelPage extends StatelessWidget {
-  const PharmacistPanelPage({super.key});
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.teal.shade50,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    final cardColor = const Color(0xFF03A64A).withOpacity(0.9);
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Align(
+        alignment: Alignment.center,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 800),
+          child: ListView(
+            shrinkWrap: true,
             children: [
-              const SizedBox(height: 16),
-              Text(
-                "Hoş geldiniz 👋",
+              const Text(
+                "Hoş Geldiniz, Eczacım!",
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal.shade800,
+                  color: Color(0xFF024059),
                 ),
+                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 8),
-              Text(
-                "İşlemlerinizi aşağıdan seçebilirsiniz.",
-                style: TextStyle(fontSize: 16, color: Colors.teal.shade700),
+              const SizedBox(height: 24),
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children: [
+                  _buildStatCard(
+                    "Toplam İlaç",
+                    "112",
+                    Icons.medical_services,
+                    cardColor,
+                  ),
+                  _buildStatCard(
+                    "Kritik Stok",
+                    "4",
+                    Icons.warning_amber_rounded,
+                    Colors.redAccent,
+                  ),
+                  _buildStatCard(
+                    "Hasta Sayısı",
+                    "36",
+                    Icons.people,
+                    const Color(0xFF026873),
+                  ),
+                  _buildStatCard(
+                    "Bugünkü Satış",
+                    "₺1.340",
+                    Icons.attach_money,
+                    Colors.orange,
+                  ),
+                ],
               ),
-              const SizedBox(height: 30),
-
-              Expanded(
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  children: [
-                    _buildPanelCard(
-                      context,
-                      title: "İlaç Ekle",
-                      icon: Icons.add_box_outlined,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddMedicinePage(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildPanelCard(
-                      context,
-                      title: "Hastalarım",
-                      icon: Icons.people_alt_outlined,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const PatientsPage(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildPanelCard(
-                      context,
-                      title: "Stok",
-                      icon: Icons.inventory_2_outlined,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const StockPage(),
-                          ),
-                        );
-                      },
-                    ),
-                    _buildPanelCard(
-                      context,
-                      title: "Bildirimler",
-                      icon: Icons.notifications,
-                      onTap: () {
-                        // Bildirimler sayfası eklenecek
-                      },
-                    ),
-                  ],
+              const SizedBox(height: 32),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: const Color(0xFF04BF8A).withOpacity(0.2),
+                ),
+                padding: const EdgeInsets.all(16),
+                child: const Text(
+                  "📌 Not: Son kullanma tarihi yaklaşan 3 ilaç var. Stok takibini unutmayın!",
+                  style: TextStyle(fontSize: 16, color: Colors.black87),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],
@@ -95,43 +77,38 @@ class PharmacistPanelPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPanelCard(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      splashColor: Colors.teal.shade100,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.teal.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+  Widget _buildStatCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return Container(
+      width: 160,
+      height: 120,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 4)),
+        ],
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white, size: 32),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: Colors.teal.shade700, size: 40),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.teal.shade800,
-              ),
-            ),
-          ],
-        ),
+          ),
+          Text(title, style: const TextStyle(color: Colors.white70)),
+        ],
       ),
     );
   }
