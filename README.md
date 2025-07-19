@@ -66,7 +66,8 @@ __4. Medication History and Reporting (Optional Development)__
 # PRODUCT BACKLOG
 [Open Product Backlog in Jira](https://yzta-grup110.atlassian.net/jira/software/projects/BSMT/boards/34/backlog?epics=visible&atlOrigin=eyJpIjoiN2QyZDg0NjhlMWQyNGJlMjgwZjk4MmY1ZjUwMWEzYjgiLCJwIjoiaiJ9)
 
-# SPRINT 1 
+<details>
+<summary><strong><h1> SPRINT 1 </h1></strong></summary>
 
 - **Sprint Notes**
 	- The product's goal, core features, and target user group were clearly defined.  
@@ -102,9 +103,10 @@ __4. Medication History and Reporting (Optional Development)__
 	- What Went Well: Team members took ownership of their tasks and worked diligently to complete them. Regular and effective communication was maintained via the WhatsApp group.
 
 	- What Could Be Improved: Scheduling recurring meetings at specific days and times could help improve coordination.
+</details>
 
-
-# SPRINT 2
+<details>
+<summary><strong><h1> SPRINT 2 </h1></strong></summary>
 
 - **Sprint Notes:**
 
@@ -134,3 +136,5 @@ __4. Medication History and Reporting (Optional Development)__
 - **Product Screenshots**
 - **Sprint Review**
 - **Sprint Retrospective**
+
+</details>
