@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:smart_med_assistant/ui/views/first_screen.dart';
 import 'package:smart_med_assistant/ui/views/settings_page.dart';
 
 import 'dashboard_page.dart';
