@@ -106,10 +106,30 @@ __4. Medication History and Reporting (Optional Development)__
 
 # SPRINT 2
 
-- **Sprint Notes**
-- **Estimated Story Points to Complete:**
-- **Estimation Logic:**
-- **Daily Scrum:**
+- **Sprint Notes:**
+
+	- At the beginning of the sprint, the project scope was expanded to include the pharmacist role in the system.
+	- Separate login systems were configured for both patient and pharmacist roles.
+	- A dedicated panel was created for pharmacists to prescribe medications to patients.
+	- A page was developed for patients to view their prescribed medications.
+	- The process of generating medication explanations with `Google Gemini API` was initiated.
+	- Due to limitations in accessing external APIs, a static `JSON` dataset was adopted.
+	- Leveraging a `Gemini + RAG (Retrieval-Augmented Generation) `architecture, AI-powered medication descriptions were successfully generated using information from the dataset.
+	- The project's code structure was refactored to align with the `Block Pattern` architecture.
+	- Database connection with `Firebase` was established, and data recording operations were successfully implemented.
+	- Regular team meetings were held.
+	- Team members completed their tasks on time and with dedication. Communication was maintained via `WhatsApp` and `Google Meet`.
+
+- **Estimated Story Points to Complete:** `50`
+
+- **Estimation Logic:** tasks were assigned story points based on estimated effort, complexity level, and dependencies. A Fibonacci sequence-based system (1, 2, 3, 5, 7) was used for scoring:
+	- `2` Points – Simple, low-complexity tasks that can be completed quickly  
+	- `3` Points – Moderately complex tasks requiring a few hours of work  
+	- `5` Points – Tasks involving integrations or requiring extra testing effort  
+	- `7` Points – High-complexity tasks that affect multiple components or the overall system  
+
+- **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint2-daily-scrum-report.md>)
+
 - **Sprint Board Updates**
 - **Product Screenshots**
 - **Sprint Review**
