@@ -66,8 +66,7 @@ __4. Medication History and Reporting (Optional Development)__
 # PRODUCT BACKLOG
 [Open Product Backlog in Jira](https://yzta-grup110.atlassian.net/jira/software/projects/BSMT/boards/34/backlog?epics=visible&atlOrigin=eyJpIjoiN2QyZDg0NjhlMWQyNGJlMjgwZjk4MmY1ZjUwMWEzYjgiLCJwIjoiaiJ9)
 
-<details>
-<summary><strong><h1> SPRINT 1 </h1></strong></summary>
+# SPRINT 1
 
 - **Sprint Notes**
 	- The product's goal, core features, and target user group were clearly defined.  
@@ -103,10 +102,8 @@ __4. Medication History and Reporting (Optional Development)__
 	- What Went Well: Team members took ownership of their tasks and worked diligently to complete them. Regular and effective communication was maintained via the WhatsApp group.
 
 	- What Could Be Improved: Scheduling recurring meetings at specific days and times could help improve coordination.
-</details>
 
-<details>
-<summary><strong><h1> SPRINT 2 </h1></strong></summary>
+# SPRINT 2 
 
 - **Sprint Notes:**
 
@@ -120,6 +117,7 @@ __4. Medication History and Reporting (Optional Development)__
 	- The project's code structure was refactored to align with the `Block Pattern` architecture.
 	- Database connection with `Firebase` was established, and data recording operations were successfully implemented.
 	- Regular team meetings were held.
+	- Throughout Sprint 2, tasks in the Jira backlog were structured using the epic → user story → task hierarchy for better organization and clarity.
 	- Team members completed their tasks on time and with dedication. Communication was maintained via `WhatsApp` and `Google Meet`.
 
 - **Estimated Story Points to Complete:** `50`
@@ -133,8 +131,11 @@ __4. Medication History and Reporting (Optional Development)__
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint2-daily-scrum-report.md>)
 
 - **Sprint Board Updates**
+	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board1.jpg)
+	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board2.jpg)
+	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board3.jpg)
+	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board4.jpg)
+
 - **Product Screenshots**
 - **Sprint Review**
 - **Sprint Retrospective**
-
-</details>
