@@ -89,18 +89,23 @@ class _FirstScreenState extends State<FirstScreen>
       body: Stack(
         children: [
           Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF024059),
-                    Color(0xFF026873),
-                    Color(0xFF04BF8A),
-                  ],
+            child: Stack(
+              children: [
+                // Gradient overlay
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xAA024059), // Şeffaflık eklendi
+                        Color(0xAA026873),
+                        Color(0xAA04BF8A),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
 

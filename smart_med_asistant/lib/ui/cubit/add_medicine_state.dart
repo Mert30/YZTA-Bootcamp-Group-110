@@ -12,8 +12,8 @@ class AddMedicineFailure extends AddMedicineState {
   final String message;
   AddMedicineFailure({required this.message});
 }
+
 class AddMedicineAIResponse extends AddMedicineState {
   final String aiSummary;
-
   AddMedicineAIResponse(this.aiSummary);
 }

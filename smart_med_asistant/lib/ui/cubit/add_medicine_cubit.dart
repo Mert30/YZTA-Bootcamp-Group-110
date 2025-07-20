@@ -10,7 +10,8 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
   final PrescriptionRepository _repo;
   final GeminiService _geminiService;
 
-  AddMedicineCubit(this._repo, this._geminiService) : super(AddMedicineInitial());
+  AddMedicineCubit(this._repo, this._geminiService)
+    : super(AddMedicineInitial());
 
   // 🧠 Yapay Zeka ile İlaç Bilgisi Getirme
   Future<void> fetchMedicineInfoFromAI(String barcode) async {
@@ -78,5 +79,4 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
       emit(AddMedicineFailure(message: e.toString()));
     }
   }
-
 }

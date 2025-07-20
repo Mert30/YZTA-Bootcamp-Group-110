@@ -73,11 +73,9 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/first3.jpg
-    - assets/MediMate.png
-    - assets/medimatelogo.png
+    - assets/images/background.jpg
     - assets/ilac.json
-    - assets/medimatenewlogo.png
+    - assets/images/medimatenewlogo.png
     - assets/animations/success.json
   # To add assets to your application, add an assets section, like this:
   # assets:
