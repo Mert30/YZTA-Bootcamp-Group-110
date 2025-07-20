@@ -92,5 +92,5 @@
 
 ---
 
-### 📅 16 - 18 Temmuz
-• Uygulamanın tasarımı ve kullanıcı deneyimi geliştirildi. 
+### 📅 17 - 18 Temmuz
+- Uygulamanın arayüz tasarımı ve kullanıcı deneyimi geliştirildi. 

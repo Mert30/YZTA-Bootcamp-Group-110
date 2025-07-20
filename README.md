@@ -138,16 +138,11 @@ __4. Medication History and Reporting (Optional Development)__
 - **Product Screenshots**
 
 - **Sprint Review**
-	- Pharmacist Role Implementation: A new pharmacist role was integrated into the system, enabling pharmacists to define medications for patients.
-
+	- Pharmacist Role Implementation:  A new pharmacist role was integrated into the system, which allowed pharmacists to define medications for patients.
 	- Medication Assignment Panel: A functional interface was developed for pharmacists to add medicines using barcode input.
-
-	- Patient Medication View: Patients can now view medications assigned to them, along with AI-generated explanations.
-
-	- AI Integration with Gemini + RAG: The app now uses a static JSON dataset and the Gemini API to generate clear and user-friendly medication summaries.
-
+	- Patient Medication View: A page was developed for patients to view medications assigned to them, along with AI-generated explanations.
+	- AI Integration with Gemini + RAG: A static JSON dataset and the Gemini API were used to generate clear and user-friendly medication summaries.
 	- Firebase Integration: Real-time database capabilities were implemented to securely store and retrieve user and medication data.
-
 	- BLoC Architecture Refactoring: The codebase was restructured according to the BLoC pattern for better maintainability and scalability.
 
 - **Sprint Retrospective**
