@@ -131,10 +131,9 @@ __4. Medication History and Reporting (Optional Development)__
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint2-daily-scrum-report.md>)
 
 - **Sprint Board Updates**
-	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board1.jpg)
+
+	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board.jpg)
 	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board2.jpg)
-	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board3.jpg)
-	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board4.jpg)
 
 - **Product Screenshots**
 - **Sprint Review**
