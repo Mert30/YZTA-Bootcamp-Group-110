@@ -146,3 +146,6 @@ __4. Medication History and Reporting (Optional Development)__
 	- BLoC Architecture Refactoring: The codebase was restructured according to the BLoC pattern for better maintainability and scalability.
 
 - **Sprint Retrospective**
+	- What Went Well: Problems encountered during the sprint were quickly addressed, and the team focused on finding solutions collaboratively. Effective communication and teamwork were achieved among the team members. Additionally, the transition to the BLoC architecture made the project’s code structure more organized and maintainable.
+
+	- What Could Be Improved: To enhance the security of the GitHub repository, measures such as branch protection rules could be implemented. Moreover, using the project management tool Jira more actively and consistently could provide benefits in the next sprint.
