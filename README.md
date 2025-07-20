@@ -1,6 +1,6 @@
 # TEAM NAME 
 
-_YZTA Bootcamp Group 110_
+_MediMate Squad 110_
 
 # TEAM ROLES
 
