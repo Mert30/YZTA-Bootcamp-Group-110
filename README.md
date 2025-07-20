@@ -136,7 +136,8 @@ __4. Medication History and Reporting (Optional Development)__
 	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board_2.jpg)
 
 - **Product Screenshots**
-        [MediMate-Sprint2](https://drive.google.com/drive/folders/1uVxNyLKgyaW3chgnGlmQRTq-g-Bd0RqQ?usp=sharing)
+    
+	[MediMate-Sprint2](https://drive.google.com/drive/folders/1uVxNyLKgyaW3chgnGlmQRTq-g-Bd0RqQ?usp=sharing)
   
 - **Sprint Review**
 	- Pharmacist Role Implementation:  A new pharmacist role was integrated into the system, which allowed pharmacists to define medications for patients.
