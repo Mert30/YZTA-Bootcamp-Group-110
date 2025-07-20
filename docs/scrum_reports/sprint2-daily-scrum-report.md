@@ -51,7 +51,7 @@
 
 ---
 
-### 📅 10–12 Temmuz
+### 📅 10 – 12 Temmuz
 - Eczacı ana sayfası arayüzü geliştirildi.  
 - Veritabanı yapısı düzenlendi.  
 - Eczacının tanımladığı ilaçların hasta panelinde görüntülenmesi sağlandı.  
@@ -89,3 +89,8 @@
 ### 📅 16 Temmuz (Toplantı)
 - Uygulamanın kullanıcı deneyimi ve işlevselliği değerlendirildi.
 - Bir sonraki toplantıya kadar odak noktasının arayüz iyileştirmeleri ve kullanıcı dostu tasarım olması kararlaştırıldı.
+
+---
+
+### 📅 16 - 18 Temmuz
+• Uygulamanın tasarımı ve kullanıcı deneyimi geliştirildi. 
