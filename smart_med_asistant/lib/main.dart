@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:smart_med_assistant/data/utils/medicine_name_finder.dart';
 
 import 'package:smart_med_assistant/firebase_options.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
@@ -34,6 +35,7 @@ class ThemeCubit extends Cubit<AppThemeMode> {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MedicineNameFinder.loadJson();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(BlocProvider(create: (_) => ThemeCubit(), child: const MyApp()));
 }
