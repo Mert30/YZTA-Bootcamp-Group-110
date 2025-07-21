@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_med_assistant/ui/views/pharmacy_login_page.dart';
 import 'package:smart_med_assistant/ui/views/privacy_settings_page.dart';
 import 'package:smart_med_assistant/ui/views/theme_settings_page.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // Giriş sayfası varsa import et
 import 'about_page.dart';
@@ -88,29 +92,101 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  Future<void> _selectAndUploadImage(BuildContext context, String uid) async {
+    try {
+      final picker = ImagePicker();
+      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedFile == null) return;
+
+      final imageFile = File(pickedFile.path);
+      final storageRef = FirebaseStorage.instance.ref().child(
+        'profile_pictures/$uid.jpg',
+      );
+
+      await storageRef.putFile(imageFile);
+      final downloadUrl = await storageRef.getDownloadURL();
+
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'profileImageUrl': downloadUrl,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Profil resmi güncellendi"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata oluştu: $e"), backgroundColor: Colors.red),
+      );
+    }
+  }
+
   Widget _buildProfileCard() {
-    return Card(
-      color: const Color(0xFF022B42),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: ListTile(
-        leading: const CircleAvatar(
-          backgroundColor: Color(0xFF04BF8A),
-          radius: 28,
-          child: Icon(Icons.person, color: Colors.white, size: 30),
-        ),
-        title: const Text(
-          'Ecz. Ahmet Yılmaz',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        subtitle: const Text(
-          'ahmet.yilmaz@example.com',
-          style: TextStyle(color: Colors.white70),
-        ),
-        trailing: const Icon(Icons.edit, color: Colors.white54),
-        onTap: () {
-          // Profil düzenleme
-        },
-      ),
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+
+    return FutureBuilder(
+      future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          );
+        }
+
+        if (!snapshot.hasData || !snapshot.data!.exists) {
+          return const ListTile(
+            title: Text(
+              'Kullanıcı bilgisi bulunamadı.',
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        }
+
+        final userData = snapshot.data!.data()!;
+        final fullname = userData['fullname'] ?? 'Bilinmiyor';
+        final email = userData['email'] ?? 'E-posta bulunamadı';
+        final profileImageUrl = userData['profileImageUrl'];
+
+        return Card(
+          color: const Color(0xFF022B42),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: ListTile(
+            leading: GestureDetector(
+              onTap: () => _selectAndUploadImage(context, uid!),
+              child: CircleAvatar(
+                backgroundColor: const Color(0xFF04BF8A),
+                radius: 28,
+                backgroundImage: profileImageUrl != null
+                    ? NetworkImage(profileImageUrl)
+                    : null,
+                child: profileImageUrl == null
+                    ? const Icon(Icons.person, color: Colors.white, size: 30)
+                    : null,
+              ),
+            ),
+            title: Text(
+              'Ecz. $fullname',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              email,
+              style: const TextStyle(color: Colors.white70),
+            ),
+            trailing: const Icon(Icons.edit, color: Colors.white54),
+            onTap: () {
+              _selectAndUploadImage(context, uid!);
+            },
+          ),
+        );
+      },
     );
   }
 

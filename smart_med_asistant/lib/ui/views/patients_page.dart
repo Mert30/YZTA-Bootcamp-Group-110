@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:smart_med_assistant/ui/views/dashboard_page.dart';
 
 class PatientsPage extends StatelessWidget {
   const PatientsPage({super.key});
@@ -22,19 +23,6 @@ class PatientsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
                 children: [
-                  InkWell(
-                    onTap: () => Navigator.pop(context),
-                    borderRadius: BorderRadius.circular(30),
-                    splashColor: mediumBlue.withOpacity(0.2),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 28,
-                        color: mediumBlue,
-                      ),
-                    ),
-                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Center(

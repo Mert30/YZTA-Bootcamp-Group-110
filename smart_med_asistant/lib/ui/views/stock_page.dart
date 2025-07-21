@@ -21,20 +21,6 @@ class StockPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
                 children: [
-                  InkWell(
-                    onTap: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const PharmacistMainPage(),
-                      ),
-                    ),
-                    borderRadius: BorderRadius.circular(30),
-                    splashColor: darkGreen.withOpacity(0.3),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.arrow_back, size: 28, color: darkBlue),
-                    ),
-                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Center(

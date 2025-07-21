@@ -1,7 +1,50 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  String? fullname;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFullName();
+  }
+
+  Future<void> fetchFullName() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid != null) {
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .get();
+
+        final data = doc.data();
+        if (data != null && data['fullname'] != null) {
+          setState(() {
+            fullname = data['fullname'];
+          });
+        } else {
+          setState(() {
+            fullname = "Eczacım";
+          });
+        }
+      }
+    } catch (e) {
+      debugPrint("Hata: $e");
+      setState(() {
+        fullname = "Eczacım";
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +59,9 @@ class DashboardPage extends StatelessWidget {
           child: ListView(
             shrinkWrap: true,
             children: [
-              const Text(
-                "Hoş Geldiniz, Eczacım!",
-                style: TextStyle(
+              Text(
+                "Hoş Geldiniz, ${fullname ?? '...'}!",
+                style: const TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF024059),
@@ -89,7 +132,7 @@ class DashboardPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 4)),
         ],
       ),

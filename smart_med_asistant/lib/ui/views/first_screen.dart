@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart'; // Lottie import edildi
 import 'package:smart_med_assistant/ui/views/pharmacy_register_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_register_page.dart';
 
@@ -88,27 +89,33 @@ class _FirstScreenState extends State<FirstScreen>
     return Scaffold(
       body: Stack(
         children: [
+          /// 🔴 LOTTIE ANIMASYONU ARKAPLANDA
           Positioned.fill(
-            child: Stack(
-              children: [
-                // Gradient overlay
-                Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xAA024059), // Şeffaflık eklendi
-                        Color(0xAA026873),
-                        Color(0xAA04BF8A),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            child: Lottie.asset(
+              'assets/animations/firstScreenAnimation.json',
+              fit: BoxFit.contain,
+              repeat: true,
             ),
           ),
-
+          /*
+          /// 🔵 OVERLAY (butonları rahat görmek için koyu filtre)
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xAA024059),
+                    Color(0xAA026873),
+                    Color(0xAA04BF8A),
+                  ],
+                ),
+              ),
+            ),
+          ),
+*/
+          /// 🟢 LOGO ve HOŞ GELDİNİZ YAZISI
           FadeTransition(
             opacity: _logoFade,
             child: ScaleTransition(
@@ -116,7 +123,7 @@ class _FirstScreenState extends State<FirstScreen>
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 160),
+                  padding: const EdgeInsets.only(top: 90),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -138,13 +145,13 @@ class _FirstScreenState extends State<FirstScreen>
                           width: size.width * 0.4,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 10),
                       const Text(
                         "MediMate'e Hoş Geldiniz",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.lightGreen,
                         ),
                       ),
                     ],
@@ -154,6 +161,7 @@ class _FirstScreenState extends State<FirstScreen>
             ),
           ),
 
+          /// 🟡 BUTONLAR
           FadeTransition(
             opacity: _buttonsFade,
             child: ScaleTransition(
@@ -161,7 +169,7 @@ class _FirstScreenState extends State<FirstScreen>
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 70),
+                  padding: const EdgeInsets.only(bottom: 60),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -169,21 +177,21 @@ class _FirstScreenState extends State<FirstScreen>
                         "Eczacı Giriş",
                         Icons.local_pharmacy,
                         pharmacyPageClick,
-                        color: const Color(0xFF025940),
+                        color: Colors.white,
                       ),
                       const SizedBox(height: 15),
                       _buildButton(
                         "Hasta Giriş",
                         Icons.person,
                         patientPageClick,
-                        color: const Color(0xFF03A64A),
+                        color: Colors.white,
                       ),
                       const SizedBox(height: 15),
                       _buildButton(
                         "Çıkış",
                         Icons.exit_to_app,
                         exitClick,
-                        color: Colors.red.shade400,
+                        color: Colors.red,
                       ),
                     ],
                   ),
@@ -207,7 +215,7 @@ class _FirstScreenState extends State<FirstScreen>
       height: 60,
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.lightGreen,
           foregroundColor: color,
           elevation: 6,
           shape: RoundedRectangleBorder(

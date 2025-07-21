@@ -74,22 +74,6 @@ class PharmacyLoginPage extends StatelessWidget {
                 child: BlocConsumer<PharmacyLoginCubit, PharmacyLoginState>(
                   listener: (context, state) {
                     if (state is PharmacyLoginSuccess) {
-                      final email = _emailController.text.trim();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              const Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(child: Text('Hoş geldin, $email')),
-                            ],
-                          ),
-                          backgroundColor: Colors.green.shade400,
-                        ),
-                      );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

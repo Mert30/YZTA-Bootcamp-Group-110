@@ -100,7 +100,7 @@ class _PharmacyRegisterPageState extends State<PharmacyRegisterPage> {
                                 "Hemen kaydol ve sisteme giriş yap",
                                 style: TextStyle(
                                   color: textColor.withOpacity(0.6),
-                                  fontSize: 14,
+                                  fontSize: 15,
                                 ),
                               ),
                               const SizedBox(height: 24),

@@ -98,27 +98,9 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          Row(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              InkWell(
-                                onTap: () => Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const PharmacistMainPage(),
-                                  ),
-                                ),
-                                borderRadius: BorderRadius.circular(30),
-                                splashColor: darkGreen.withOpacity(0.3),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.arrow_back,
-                                    size: 28,
-                                    color: darkBlue,
-                                  ),
-                                ),
-                              ),
                               const SizedBox(width: 12),
                               Text(
                                 "İlaç Bilgisi Ekle",

@@ -49,6 +49,8 @@ dependencies:
   convex_bottom_bar: ^3.2.0
   fl_chart: ^1.0.0
   iconsax: ^0.0.8
+  image_picker: ^1.1.2
+  firebase_storage: ^12.4.10
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,7 @@ flutter:
   uses-material-design: true
   
   assets:
+    - assets/animations/firstScreenAnimation.json
     - assets/ilac.json
     - assets/images/medimatenewlogo.png
     - assets/animations/success.json

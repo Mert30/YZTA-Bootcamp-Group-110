@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/data/repo/patient_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/patient_register_cubit.dart';
 import 'package:smart_med_assistant/ui/views/patient_login_page.dart';
+import 'package:smart_med_assistant/ui/views/success_animation_page.dart';
 
 class PatientRegisterPage extends StatelessWidget {
   PatientRegisterPage({super.key});
@@ -36,15 +37,14 @@ class PatientRegisterPage extends StatelessWidget {
             child: BlocConsumer<PatientRegisterCubit, PatientRegisterState>(
               listener: (context, state) {
                 if (state is PatientRegisterSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Kayıt başarılı! Giriş yapabilirsiniz."),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const PatientLoginPage()),
+                    MaterialPageRoute(
+                      builder: (_) => SuccessAnimationPage(
+                        message: 'Kayıt başarılı!',
+                        nextPage: PatientLoginPage(),
+                      ),
+                    ),
                   );
                 } else if (state is PatientRegisterFailure) {
                   ScaffoldMessenger.of(context).showSnackBar(
