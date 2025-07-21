@@ -38,6 +38,9 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
     required String patientEmail,
     required DateTime startDate,
     required DateTime finishDate,
+    required String dozaj,
+    required String usageType, // Aç/Tok
+    required String selectedTime, // Sabah/Öğle/Akşam
   }) async {
     emit(AddMedicineLoading());
 
@@ -61,6 +64,9 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
         barcode: barcode,
         startDate: startDate,
         finishDate: finishDate,
+        dozaj: dozaj,
+        usageType: usageType,
+        selectedTime: selectedTime,
         addedBy: uid,
         id: '',
         descriptionAI: parsedAI['descriptionAI'],

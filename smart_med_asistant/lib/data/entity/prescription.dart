@@ -5,6 +5,11 @@ class Prescription {
   final DateTime finishDate;
   final String addedBy;
 
+  // Kullanıcıdan gelen bilgiler
+  final String dozaj;
+  final String usageType; // Aç/Tok
+  final String selectedTime; // Sabah/Öğle/Akşam
+
   // Gemini AI'dan gelen yanıtlar:
   final String? descriptionAI;
   final String? usageAI;
@@ -16,6 +21,9 @@ class Prescription {
     required this.startDate,
     required this.finishDate,
     required this.addedBy,
+    required this.dozaj,
+    required this.usageType,
+    required this.selectedTime,
     this.descriptionAI,
     this.usageAI,
     this.sideEffectsAI,
@@ -27,10 +35,13 @@ class Prescription {
       'startDate': startDate.toIso8601String(),
       'finishDate': finishDate.toIso8601String(),
       'addedBy': addedBy,
-      'timestamp': DateTime.now().toIso8601String(),
+      'dozaj': dozaj,
+      'usageType': usageType,
+      'selectedTime': selectedTime,
       'descriptionAI': descriptionAI,
       'usageAI': usageAI,
       'sideEffectsAI': sideEffectsAI,
+      'timestamp': DateTime.now().toIso8601String(),
     };
   }
 
@@ -41,6 +52,9 @@ class Prescription {
       startDate: DateTime.tryParse(map['startDate'] ?? '') ?? DateTime.now(),
       finishDate: DateTime.tryParse(map['finishDate'] ?? '') ?? DateTime.now(),
       addedBy: map['addedBy'] ?? '',
+      dozaj: map['dozaj'] ?? '',
+      usageType: map['usageType'] ?? '',
+      selectedTime: map['selectedTime'] ?? '',
       descriptionAI: map['descriptionAI'],
       usageAI: map['usageAI'],
       sideEffectsAI: map['sideEffectsAI'],

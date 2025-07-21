@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/patient_prescriptions_cubit.dart';
+import 'package:smart_med_assistant/ui/views/patient_login_page.dart';
 import 'package:smart_med_assistant/ui/views/prescription_detail_page.dart';
 
 class PatientPrescriptionsPage extends StatelessWidget {
@@ -30,6 +31,15 @@ class PatientPrescriptionsPage extends StatelessWidget {
           title: const Text("İlaç Listem"),
           backgroundColor: mediumGreen,
           elevation: 6,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => PatientLoginPage()),
+              );
+            },
+          ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
 import '../../data/repo/pharmacy_repository.dart';
 import '../../ui/cubit/pharmacy_login_cubit.dart';
 import '../../ui/views/pharmacy_main_page.dart';
@@ -218,54 +219,28 @@ class PharmacyLoginPage extends StatelessWidget {
                                 ),
                               ),
 
-                              const SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  const Expanded(child: Divider()),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                    ),
-                                    child: Text(
-                                      "veya",
-                                      style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  const Expanded(child: Divider()),
-                                ],
-                              ),
-
                               const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text("Hesabın yok mu?"),
-                                  TextButton.icon(
-                                    icon: const Icon(
-                                      Icons.person_add_alt_1,
-                                      size: 18,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (_) =>
-                                              PharmacyRegisterPage(),
-                                        ),
-                                      );
-                                    },
-                                    label: Text(
-                                      "Kayıt Ol",
-                                      style: TextStyle(
-                                        color: buttonGreen,
-                                        fontWeight: FontWeight.bold,
+                              Align(
+                                alignment: Alignment.center,
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const PasswordResetPage(),
                                       ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Şifremi Unuttum?",
+                                    style: TextStyle(
+                                      color: primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 14,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),

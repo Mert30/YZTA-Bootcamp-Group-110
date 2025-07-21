@@ -73,7 +73,6 @@ flutter:
   uses-material-design: true
   
   assets:
-    - assets/images/background.jpg
     - assets/ilac.json
     - assets/images/medimatenewlogo.png
     - assets/animations/success.json

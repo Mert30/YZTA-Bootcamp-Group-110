@@ -92,6 +92,47 @@ class PrescriptionDetailPage extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 10),
+            // Dozaj
+            if (prescription.dozaj.isNotEmpty) ...[
+              const Text(
+                "Dozaj:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(prescription.dozaj),
+              const SizedBox(height: 10),
+            ],
+
+            // Açlık-Tokluk ilişkisi
+            if (prescription.usageType.isNotEmpty) ...[
+              const Text(
+                "Yemekle İlişki:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(prescription.usageType),
+              const SizedBox(height: 10),
+            ],
+
+            // Zamanlar (Sabah, Öğle, Akşam)
+            if (prescription.selectedTime.isNotEmpty) ...[
+              const Text(
+                "Zamanlar:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Wrap(
+                spacing: 8,
+                children: prescription.selectedTime
+                    .split(',')
+                    .map(
+                      (time) => Chip(
+                        label: Text(time.trim()), // trim() boşlukları temizler
+                        backgroundColor: const Color(0xFF026873),
+                        labelStyle: const TextStyle(color: Colors.white),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
           ],
         ),
       ),

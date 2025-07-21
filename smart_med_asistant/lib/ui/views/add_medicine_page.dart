@@ -18,9 +18,13 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _barcodeController = TextEditingController();
   final TextEditingController _patientEmailController = TextEditingController();
+  final TextEditingController _dozajController = TextEditingController();
 
   DateTime? _startDate;
   DateTime? _finishDate;
+
+  String? _selectedUsageType; // Aç / Tok
+  final Set<String> _selectedTimes = {}; // Sabah / Öğle / Akşam
 
   String? aiDescription;
 
@@ -127,7 +131,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 20),
                           // Barkod
                           _buildTextField(
                             controller: _barcodeController,
@@ -165,7 +169,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 ? 'Barkod giriniz'
                                 : null,
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 20),
 
                           // AI Açıklaması
                           if (aiDescription != null) ...[
@@ -211,7 +215,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 ? 'E-posta giriniz'
                                 : null,
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 20),
 
                           // Tarihler
                           _datePickerField(
@@ -233,7 +237,96 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                             mediumBlue: mediumBlue,
                             lightGreen: lightGreen,
                           ),
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 20),
+                          // Dozaj
+                          _buildTextField(
+                            controller: _dozajController,
+                            label: 'Dozaj (örnek: 1 tablet)',
+                            icon: Icons.medication,
+                            validator: (val) => val == null || val.isEmpty
+                                ? 'Dozaj giriniz'
+                                : null,
+                          ),
+                          const SizedBox(height: 20),
+
+                          // Aç mı Tok mu - Radio
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "İlaç Kullanımı",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: darkGreen,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: ['Aç', 'Tok'].map((val) {
+                                  return Expanded(
+                                    child: RadioListTile<String>(
+                                      title: Text(
+                                        val == 'Aç'
+                                            ? "Aç karnına"
+                                            : "Tok karnına",
+                                      ),
+                                      value: val,
+                                      groupValue: _selectedUsageType,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _selectedUsageType = value;
+                                        });
+                                      },
+                                      activeColor: mediumBlue,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Zaman - Radio
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "İlaç Zamanı",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: darkGreen,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Column(
+                                children: ['Sabah', 'Öğle', 'Akşam'].map((
+                                  time,
+                                ) {
+                                  return CheckboxListTile(
+                                    title: Text(time),
+                                    value: _selectedTimes.contains(time),
+                                    onChanged: (checked) {
+                                      setState(() {
+                                        if (checked == true) {
+                                          _selectedTimes.add(time);
+                                        } else {
+                                          _selectedTimes.remove(time);
+                                        }
+                                      });
+                                    },
+                                    activeColor: mediumBlue,
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 25),
 
                           // Kaydet Butonu
                           SizedBox(
@@ -244,7 +337,9 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                   : () {
                                       if (_formKey.currentState!.validate() &&
                                           _startDate != null &&
-                                          _finishDate != null) {
+                                          _finishDate != null &&
+                                          _selectedUsageType != null &&
+                                          _selectedTimes.isNotEmpty) {
                                         context
                                             .read<AddMedicineCubit>()
                                             .saveMedicine(
@@ -255,6 +350,12 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                                       .trim(),
                                               startDate: _startDate!,
                                               finishDate: _finishDate!,
+                                              dozaj: _dozajController.text
+                                                  .trim(),
+                                              usageType: _selectedUsageType!,
+                                              selectedTime: _selectedTimes.join(
+                                                ', ',
+                                              ), // örn: "Sabah, Akşam"
                                             );
                                       }
                                     },
@@ -268,6 +369,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                       ),
                                     )
                                   : const Icon(
+                                      size: 25,
                                       Icons.save_alt_rounded,
                                       color: Colors.white,
                                     ),
@@ -275,7 +377,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 "Kaydet",
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
