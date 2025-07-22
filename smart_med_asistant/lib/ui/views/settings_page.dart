@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
-import 'package:smart_med_assistant/ui/views/pharmacy_login_page.dart';
 import 'package:smart_med_assistant/ui/views/privacy_settings_page.dart';
 import 'package:smart_med_assistant/ui/views/theme_settings_page.dart';
 import 'dart:io';

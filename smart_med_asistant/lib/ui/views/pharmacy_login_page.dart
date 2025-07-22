@@ -4,7 +4,6 @@ import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
 import '../../data/repo/pharmacy_repository.dart';
 import '../../ui/cubit/pharmacy_login_cubit.dart';
 import '../../ui/views/pharmacy_main_page.dart';
-import 'pharmacy_register_page.dart';
 
 class PharmacyLoginPage extends StatelessWidget {
   PharmacyLoginPage({super.key});

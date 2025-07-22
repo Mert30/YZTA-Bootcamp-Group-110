@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/repo/prescription_repository.dart';
@@ -31,6 +32,21 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
     } catch (e) {
       emit(AddMedicineFailure(message: "AI verisi alınamadı: ${e.toString()}"));
     }
+  }
+
+  Future<Map<String, dynamic>?> fetchStockMedicineByBarcode(
+    String barcode,
+  ) async {
+    final query = await FirebaseFirestore.instance
+        .collection('stock')
+        .where('barcode', isEqualTo: barcode)
+        .limit(1)
+        .get();
+
+    if (query.docs.isNotEmpty) {
+      return query.docs.first.data();
+    }
+    return null;
   }
 
   Future<void> saveMedicine({

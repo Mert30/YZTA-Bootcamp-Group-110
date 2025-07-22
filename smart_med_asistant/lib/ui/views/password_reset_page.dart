@@ -6,7 +6,7 @@ class PasswordResetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _emailController = TextEditingController();
+    final emailController = TextEditingController();
     final Color primaryColor = const Color(0xFF026873);
 
     return Scaffold(
@@ -74,7 +74,7 @@ class PasswordResetPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
                   TextField(
-                    controller: _emailController,
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: "E-posta",
                       prefixIcon: Icon(Icons.email, color: primaryColor),
@@ -98,7 +98,7 @@ class PasswordResetPage extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        final email = _emailController.text.trim();
+                        final email = emailController.text.trim();
                         if (email.contains('@')) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(

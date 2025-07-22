@@ -5,7 +5,6 @@ import 'package:smart_med_assistant/data/service/gemini_service.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/ui/cubit/add_medicine_cubit.dart';
 import 'package:smart_med_assistant/ui/views/barcode_scanner_page.dart';
-import 'package:smart_med_assistant/ui/views/pharmacy_main_page.dart';
 
 class AddMedicinePage extends StatefulWidget {
   const AddMedicinePage({super.key});

@@ -60,7 +60,7 @@ class PatientsPage extends StatelessWidget {
                     itemCount: prescriptions.length,
                     itemBuilder: (context, index) {
                       final presc = prescriptions[index];
-                      final patientUid = presc['uid'] as String?;
+                      final patientUid = presc['patientUid'] as String?;
 
                       if (patientUid == null) {
                         return ListTile(

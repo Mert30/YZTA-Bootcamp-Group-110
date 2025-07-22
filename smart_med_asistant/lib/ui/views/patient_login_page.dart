@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
 import '../../data/repo/patient_repository.dart'; // varsa
 import '../../ui/cubit/patient_login_cubit.dart';
-import '../../ui/views/patient_register_page.dart';
 import '../../ui/views/patient_prescriptions_page.dart';
 
 class PatientLoginPage extends StatefulWidget {
