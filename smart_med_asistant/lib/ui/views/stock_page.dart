@@ -114,10 +114,102 @@ class StockPage extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                              color: mediumBlue.withOpacity(0.7),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: Colors.red.shade400,
+                                size: 26,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      title: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.warning_amber_rounded,
+                                            color: Colors.orange.shade800,
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            "İlacı Sil",
+                                            style: TextStyle(
+                                              color: darkBlue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      content: Text(
+                                        "$productName adlı ilacı silmek istediğinizden emin misiniz?",
+                                        style: TextStyle(color: darkBlue),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.of(context).pop(),
+                                          child: Text(
+                                            "İptal",
+                                            style: TextStyle(
+                                              color: mediumBlue,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            final messenger =
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ); // 📌 Burada al
+                                            Navigator.of(
+                                              context,
+                                            ).pop(); // dialogu kapat
+
+                                            try {
+                                              await FirebaseFirestore.instance
+                                                  .collection('stock')
+                                                  .doc(doc.id)
+                                                  .delete();
+                                              messenger.showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    '$productName başarıyla silindi.',
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.green.shade600,
+                                                ),
+                                              );
+                                            } catch (e) {
+                                              messenger.showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Silme işlemi başarısız: $e',
+                                                  ),
+                                                  backgroundColor:
+                                                      Colors.red.shade400,
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Text(
+                                            "Evet, Sil",
+                                            style: TextStyle(
+                                              color: Colors.red.shade600,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
                             ),
                           ),
                         ),

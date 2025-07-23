@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'critical_stock_page.dart';
+
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 
@@ -10,148 +12,186 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  String? fullname;
+  final Color darkBlue = const Color(0xFF024059);
+  final Color lightGreen = const Color(0xFF04BF8A);
+  final Color mediumBlue = const Color(0xFF026873);
 
-  @override
-  void initState() {
-    super.initState();
-    fetchFullName();
-  }
-
-  Future<void> fetchFullName() async {
-    try {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid != null) {
-        final doc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .get();
-
-        final data = doc.data();
-        if (data != null && data['fullname'] != null) {
-          setState(() {
-            fullname = data['fullname'];
-          });
-        } else {
-          setState(() {
-            fullname = "Eczacım";
-          });
-        }
-      }
-    } catch (e) {
-      debugPrint("Hata: $e");
-      setState(() {
-        fullname = "Eczacım";
-      });
+  Future<String> getPharmacistName() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      return "Eczacım"; // Kullanıcı giriş yapmamışsa default isim
     }
+    final doc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    if (doc.exists) {
+      final data = doc.data();
+      if (data != null &&
+          data['role'] == 'eczacı' &&
+          data['fullName'] != null) {
+        return data['fullName'] as String;
+      }
+    }
+    return "Eczacı"; // Veri yoksa default isim
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final cardColor = const Color(0xFF03A64A).withOpacity(0.9);
+  Future<int> getTotalMedicineCount() async {
+    final snapshot = await FirebaseFirestore.instance.collection('stock').get();
+    return snapshot.size;
+  }
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Align(
-        alignment: Alignment.center,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 800),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              Text(
-                "Hoş Geldiniz, ${fullname ?? '...'}!",
-                style: const TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF024059),
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                alignment: WrapAlignment.center,
-                children: [
-                  _buildStatCard(
-                    "Toplam İlaç",
-                    "112",
-                    Icons.medical_services,
-                    cardColor,
-                  ),
-                  _buildStatCard(
-                    "Kritik Stok",
-                    "4",
-                    Icons.warning_amber_rounded,
-                    Colors.redAccent,
-                  ),
-                  _buildStatCard(
-                    "Hasta Sayısı",
-                    "36",
-                    Icons.people,
-                    const Color(0xFF026873),
-                  ),
-                  _buildStatCard(
-                    "Bugünkü Satış",
-                    "₺1.340",
-                    Icons.attach_money,
-                    Colors.orange,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: const Color(0xFF04BF8A).withOpacity(0.2),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: const Text(
-                  "📌 Not: Son kullanma tarihi yaklaşan 3 ilaç var. Stok takibini unutmayın!",
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
+  Future<int> getCriticalStockCount() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('stock')
+        .where('stock_quantity', isLessThan: 5)
+        .get();
+    return snapshot.size;
+  }
+
+  Widget buildCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color iconColor,
+    VoidCallback? onTap,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      color: Colors.white,
+      elevation: 6,
+      margin: const EdgeInsets.only(bottom: 16),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 24,
+            vertical: 20,
           ),
+          leading: Icon(icon, color: iconColor, size: 40),
+          title: Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: darkBlue,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Text(
+            subtitle,
+            style: TextStyle(color: darkBlue.withOpacity(0.7), fontSize: 16),
+          ),
+          trailing: onTap != null
+              ? Icon(
+                  Icons.arrow_forward_ios,
+                  size: 18,
+                  color: Colors.grey.shade400,
+                )
+              : null,
         ),
       ),
     );
   }
 
-  Widget _buildStatCard(
-    String title,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      width: 160,
-      height: 120,
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(2, 4)),
-        ],
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: Colors.white, size: 32),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: lightGreen.withOpacity(0.08),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            const SizedBox(height: 30),
+
+            // Hoşgeldiniz + Gerçek Eczacı İsmi
+            FutureBuilder<String>(
+              future: getPharmacistName(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Text(
+                    'Hata: ${snapshot.error}',
+                    style: TextStyle(color: darkBlue),
+                  );
+                }
+                final name = snapshot.data ?? "Eczacım";
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 30),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    'Hoşgeldiniz, $name 👋',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: darkBlue,
+                    ),
+                  ),
+                );
+              },
             ),
-          ),
-          Text(title, style: const TextStyle(color: Colors.white70)),
-        ],
+
+            // Toplam İlaç Sayısı
+            FutureBuilder<int>(
+              future: getTotalMedicineCount(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Text('Hata: ${snapshot.error}');
+                }
+                final count = snapshot.data ?? 0;
+                return buildCard(
+                  icon: Icons.medication,
+                  title: 'Toplam İlaç Sayısı',
+                  subtitle: '$count adet kayıtlı ilaç var',
+                  iconColor: mediumBlue,
+                );
+              },
+            ),
+
+            // Kritik Stok Sayısı (Tıklanabilir)
+            FutureBuilder<int>(
+              future: getCriticalStockCount(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Text('Hata: ${snapshot.error}');
+                }
+                final count = snapshot.data ?? 0;
+                return buildCard(
+                  icon: Icons.warning_amber_rounded,
+                  title: 'Kritik Stok Sayısı',
+                  subtitle: '$count ilacın stoğu kritik seviyede',
+                  iconColor: Colors.redAccent,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CriticalStockPage(),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+
+            // Placeholder Kart: Hasta Sayısı
+            buildCard(
+              icon: Icons.people,
+              title: 'Toplam Hasta Sayısı',
+              subtitle: 'Veri alınamadı (örnek gösterim)',
+              iconColor: Colors.deepPurple,
+            ),
+          ],
+        ),
       ),
     );
   }

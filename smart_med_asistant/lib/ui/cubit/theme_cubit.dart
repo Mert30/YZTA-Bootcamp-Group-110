@@ -5,10 +5,6 @@ class ThemeCubit extends Cubit<ThemeState> {
   ThemeCubit() : super(ThemeState.light());
 
   void toggleTheme() {
-    if (state.isDark) {
-      emit(ThemeState.light());
-    } else {
-      emit(ThemeState.dark());
-    }
+    emit(state.isDark ? ThemeState.light() : ThemeState.dark());
   }
 }
