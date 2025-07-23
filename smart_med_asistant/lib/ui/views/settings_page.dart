@@ -7,8 +7,6 @@ import 'package:smart_med_assistant/ui/views/theme_settings_page.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-// Giriş sayfası varsa import et
 import 'about_page.dart';
 
 class SettingsPage extends StatelessWidget {

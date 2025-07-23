@@ -51,7 +51,7 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
 
   Future<void> saveMedicine({
     required String barcode,
-    required String patientEmail,
+    required String patientUid,
     required DateTime startDate,
     required DateTime finishDate,
     required String dozaj,
@@ -93,7 +93,7 @@ class AddMedicineCubit extends Cubit<AddMedicineState> {
       // 💾 Firestore'a kaydet
       await _repo.addPrescription(
         prescription: prescription,
-        patientEmail: patientEmail,
+        patientEmail: patientUid,
       );
 
       emit(AddMedicineSuccess());

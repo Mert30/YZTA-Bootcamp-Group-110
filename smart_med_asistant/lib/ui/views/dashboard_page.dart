@@ -17,23 +17,37 @@ class _DashboardPageState extends State<DashboardPage> {
   final Color mediumBlue = const Color(0xFF026873);
 
   Future<String> getPharmacistName() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) {
-      return "Eczacım"; // Kullanıcı giriş yapmamışsa default isim
-    }
-    final doc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get();
-    if (doc.exists) {
-      final data = doc.data();
-      if (data != null &&
-          data['role'] == 'eczacı' &&
-          data['fullName'] != null) {
-        return data['fullName'] as String;
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null || user.email == null) {
+        print("Giriş yapan kullanıcı yok.");
+        return "Eczacım";
       }
+
+      print("Giriş yapan email: ${user.email}");
+
+      final query = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: user.email)
+          .where('role', isEqualTo: 'eczaci')
+          .limit(1)
+          .get();
+
+      print("Eşleşen eczacı sayısı: ${query.docs.length}");
+
+      if (query.docs.isNotEmpty) {
+        final data = query.docs.first.data();
+        print("Gelen kullanıcı verisi: $data");
+        return data['fullname'] ?? "Eczacı";
+      } else {
+        print("Eşleşen eczacı bulunamadı.");
+        return "Eczacı";
+      }
+    } catch (e) {
+      print("HATA: $e");
+      return "Eczacı";
     }
-    return "Eczacı"; // Veri yoksa default isim
   }
 
   Future<int> getTotalMedicineCount() async {
@@ -44,7 +58,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<int> getCriticalStockCount() async {
     final snapshot = await FirebaseFirestore.instance
         .collection('stock')
-        .where('stock_quantity', isLessThan: 5)
+        .where('stock_quantity', isLessThan: 10)
         .get();
     return snapshot.size;
   }

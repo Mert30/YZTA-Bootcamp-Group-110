@@ -1,13 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class StockPage extends StatelessWidget {
+class StockPage extends StatefulWidget {
   const StockPage({super.key});
 
+  @override
+  State<StockPage> createState() => _StockPageState();
+}
+
+class _StockPageState extends State<StockPage> {
   final Color darkBlue = const Color(0xFF024059);
   final Color mediumBlue = const Color(0xFF026873);
   final Color lightGreen = const Color(0xFF04BF8A);
   final Color darkGreen = const Color(0xFF025940);
+
+  final TextEditingController _searchController = TextEditingController();
+  String searchText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +47,37 @@ class StockPage extends StatelessWidget {
               ),
             ),
 
-            // Stok listesi
+            // 🔍 Search Bar
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchText = value.toLowerCase().trim();
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: "İlaç ara...",
+                  prefixIcon: Icon(Icons.search, color: mediumBlue),
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(color: lightGreen.withOpacity(0.3)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(color: darkGreen, width: 2),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            // 📦 Stok listesi
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
@@ -53,17 +91,26 @@ class StockPage extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
+
                   final docs = snapshot.data?.docs ?? [];
 
-                  if (docs.isEmpty) {
-                    return const Center(child: Text('Stokta ilaç yok.'));
+                  final filteredDocs = docs.where((doc) {
+                    final data = doc.data()! as Map<String, dynamic>;
+                    final name = (data['productName'] ?? '')
+                        .toString()
+                        .toLowerCase();
+                    return name.contains(searchText);
+                  }).toList();
+
+                  if (filteredDocs.isEmpty) {
+                    return const Center(child: Text('İlaç bulunamadı.'));
                   }
 
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: docs.length,
+                    itemCount: filteredDocs.length,
                     itemBuilder: (context, index) {
-                      final doc = docs[index];
+                      final doc = filteredDocs[index];
                       final data = doc.data()! as Map<String, dynamic>;
 
                       final productName = data['productName'] ?? 'İsimsiz İlaç';
@@ -80,7 +127,7 @@ class StockPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16),
                           splashColor: lightGreen.withOpacity(0.3),
                           onTap: () {
-                            // İlaç detay sayfası veya stok güncelleme açılabilir
+                            // detay vs.
                           },
                           child: ListTile(
                             contentPadding: const EdgeInsets.symmetric(
@@ -121,6 +168,7 @@ class StockPage extends StatelessWidget {
                                 size: 26,
                               ),
                               onPressed: () {
+                                // silme dialogu
                                 showDialog(
                                   context: context,
                                   builder: (context) {
@@ -164,12 +212,8 @@ class StockPage extends StatelessWidget {
                                         TextButton(
                                           onPressed: () async {
                                             final messenger =
-                                                ScaffoldMessenger.of(
-                                                  context,
-                                                ); // 📌 Burada al
-                                            Navigator.of(
-                                              context,
-                                            ).pop(); // dialogu kapat
+                                                ScaffoldMessenger.of(context);
+                                            Navigator.of(context).pop();
 
                                             try {
                                               await FirebaseFirestore.instance

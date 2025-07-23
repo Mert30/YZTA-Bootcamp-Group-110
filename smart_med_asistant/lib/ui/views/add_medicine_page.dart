@@ -326,7 +326,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                             .saveMedicine(
                                               barcode: _barcodeController.text
                                                   .trim(),
-                                              patientEmail:
+                                              patientUid:
                                                   _patientEmailController.text
                                                       .trim(),
                                               startDate: _startDate!,
