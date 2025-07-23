@@ -13,10 +13,7 @@ class AboutPage extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF04BF8A)),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const SettingsPage()),
-          ),
+          onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Hakkında',
