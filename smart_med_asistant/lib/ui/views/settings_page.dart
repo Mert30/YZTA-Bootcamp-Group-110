@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
 import 'package:smart_med_assistant/ui/views/privacy_settings_page.dart';
-import 'package:smart_med_assistant/ui/views/theme_settings_page.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';

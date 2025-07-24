@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/data/utils/medicine_name_finder.dart';
 import 'package:smart_med_assistant/ui/cubit/patient_prescriptions_cubit.dart';
-import 'package:smart_med_assistant/ui/views/patient_login_page.dart';
+import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
 import 'package:smart_med_assistant/ui/views/prescription_detail_page.dart';
 
 class PatientPrescriptionsPage extends StatefulWidget {
@@ -116,7 +116,7 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (_) => PatientLoginPage()),
+                MaterialPageRoute(builder: (_) => PatientHomePage()),
               );
             },
           ),

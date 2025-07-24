@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
+import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
 import '../../data/repo/patient_repository.dart'; // varsa
 import '../../ui/cubit/patient_login_cubit.dart';
 import '../../ui/views/patient_prescriptions_page.dart';
@@ -79,29 +80,10 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                 child: BlocConsumer<PatientLoginCubit, PatientLoginState>(
                   listener: (context, state) {
                     if (state is PatientLoginSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Row(
-                            children: [
-                              const Icon(
-                                Icons.check_circle,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  'Hoş geldin, ${_emailController.text.trim()}',
-                                ),
-                              ),
-                            ],
-                          ),
-                          backgroundColor: Colors.green.shade400,
-                        ),
-                      );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const PatientPrescriptionsPage(),
+                          builder: (_) => const PatientHomePage(),
                         ),
                       );
                     } else if (state is PatientLoginFailure) {
