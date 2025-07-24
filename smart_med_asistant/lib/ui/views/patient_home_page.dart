@@ -119,76 +119,92 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 padding: EdgeInsets.zero,
                 decoration: const BoxDecoration(color: Color(0xFF025940)),
                 child: Container(
+                  width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  height: 200,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Stack(
+                      Row(
                         children: [
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.white,
-                            backgroundImage: profileImageUrl != null
-                                ? NetworkImage(profileImageUrl!)
-                                : null,
-                            child: profileImageUrl == null
-                                ? Text(
-                                    fullName.isNotEmpty
-                                        ? fullName[0].toUpperCase()
-                                        : 'H',
-                                    style: const TextStyle(
-                                      fontSize: 36,
-                                      color: Color(0xFF025940),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: CircleAvatar(
-                              radius: 14,
-                              backgroundColor: Colors.green,
-                              child: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: const Icon(
-                                  Icons.edit,
-                                  size: 18,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  if (_user != null) {
-                                    _selectAndUploadImage(
-                                      context,
-                                      _user!.email!,
-                                    );
-                                  }
-                                },
+                          Stack(
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.white,
+                                backgroundImage: profileImageUrl != null
+                                    ? NetworkImage(profileImageUrl!)
+                                    : null,
+                                child: profileImageUrl == null
+                                    ? Text(
+                                        fullName.isNotEmpty
+                                            ? fullName[0].toUpperCase()
+                                            : 'H',
+                                        style: const TextStyle(
+                                          fontSize: 36,
+                                          color: Color(0xFF025940),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    : null,
                               ),
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_user != null) {
+                                      _selectAndUploadImage(
+                                        context,
+                                        _user!.email!,
+                                      );
+                                    }
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 14,
+                                    backgroundColor: Colors.green,
+                                    child: const Icon(
+                                      Icons.edit,
+                                      size: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  fullName,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  _user?.email ?? '',
+                                  style: const TextStyle(color: Colors.white70),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
                             ),
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        fullName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _user?.email ?? '',
-                        style: const TextStyle(color: Colors.white70),
                       ),
                     ],
                   ),
                 ),
               ),
+
+              const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(
                   Icons.medical_services,

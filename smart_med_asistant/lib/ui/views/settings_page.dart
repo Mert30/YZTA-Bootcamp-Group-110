@@ -269,7 +269,7 @@ class SettingsPage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           'Çıkış Yap',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: darkText, fontWeight: FontWeight.bold),
         ),
         content: Text(
           'Hesabınızdan çıkmak istediğinizden emin misiniz?',
