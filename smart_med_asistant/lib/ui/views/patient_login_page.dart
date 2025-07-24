@@ -4,7 +4,6 @@ import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
 import '../../data/repo/patient_repository.dart'; // varsa
 import '../../ui/cubit/patient_login_cubit.dart';
-import '../../ui/views/patient_prescriptions_page.dart';
 
 class PatientLoginPage extends StatefulWidget {
   const PatientLoginPage({super.key});

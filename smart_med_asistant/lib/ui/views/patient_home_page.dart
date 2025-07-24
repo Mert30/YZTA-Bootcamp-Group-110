@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
 import 'package:smart_med_assistant/ui/views/patient_prescriptions_page.dart';
+import 'package:smart_med_assistant/ui/views/patient_settings_page.dart';
 
 class PatientHomePage extends StatefulWidget {
   const PatientHomePage({super.key});
@@ -213,9 +214,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onTap: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Ayarlar sayfası yakında!')),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PatientSettingsPage(),
+                    ),
                   );
                 },
               ),

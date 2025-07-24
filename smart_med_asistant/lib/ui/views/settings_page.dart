@@ -14,7 +14,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Açık tema için renkler
-    final bgColor = Colors.grey[100]; // Açık gri zemin
+    final bgColor = Colors.grey[200]; // Açık gri zemin
     final cardColor = Colors.white;
     final primaryGreen = const Color(0xFF04BF8A);
     final darkText = Colors.grey[900];
@@ -24,7 +24,7 @@ class SettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[200],
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(
@@ -179,23 +179,47 @@ class SettingsPage extends StatelessWidget {
           child: ListTile(
             leading: GestureDetector(
               onTap: () => _selectAndUploadImage(context, uid!),
-              child: CircleAvatar(
-                backgroundColor: primaryGreen,
-                radius: 28,
-                backgroundImage: profileImageUrl != null
-                    ? NetworkImage(profileImageUrl)
-                    : null,
-                child: profileImageUrl == null
-                    ? Icon(Icons.person, color: Colors.white, size: 30)
-                    : null,
+              child: Stack(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: primaryGreen,
+                    radius: 28,
+                    backgroundImage: profileImageUrl != null
+                        ? NetworkImage(profileImageUrl)
+                        : null,
+                    child: profileImageUrl == null
+                        ? const Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 30,
+                          )
+                        : null,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: 1.5,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(Icons.edit, size: 16, color: primaryGreen),
+                    ),
+                  ),
+                ],
               ),
             ),
+
             title: Text(
               'Ecz. $fullname',
               style: TextStyle(color: darkText, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(email, style: TextStyle(color: mediumText)),
-            trailing: Icon(Icons.edit, color: Colors.grey[500]),
             onTap: () {
               _selectAndUploadImage(context, uid!);
             },
@@ -245,7 +269,7 @@ class SettingsPage extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
           'Çıkış Yap',
-          style: TextStyle(color: darkText, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         content: Text(
           'Hesabınızdan çıkmak istediğinizden emin misiniz?',
