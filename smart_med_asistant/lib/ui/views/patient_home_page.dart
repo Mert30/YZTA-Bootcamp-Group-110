@@ -99,6 +99,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF6FFFE),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Hasta Anasayfa'),
         backgroundColor: const Color(0xFF04BF8A),
         leading: Builder(
