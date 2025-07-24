@@ -10,7 +10,6 @@ class PrescriptionRepository {
     required Prescription prescription,
     required String patientEmail,
   }) async {
-    // 1️⃣ Hasta e-postasına göre kullanıcıyı bul
     final querySnapshot = await _firestore
         .collection('users')
         .where('email', isEqualTo: patientEmail)
@@ -24,7 +23,6 @@ class PrescriptionRepository {
 
     final patientId = querySnapshot.docs.first.id;
 
-    // 2️⃣ Firestore'a reçete ekle
     await _firestore
         .collection('users')
         .doc(patientId)
@@ -48,5 +46,18 @@ class PrescriptionRepository {
       final data = doc.data();
       return Prescription.fromFirestore(data, doc.id);
     }).toList();
+  }
+
+  // 🗑️ Giriş yapan hastanın bir reçetesini sil
+  Future<void> deletePrescription(String prescriptionId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) throw Exception("Oturum açılmamış.");
+
+    await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('prescriptions')
+        .doc(prescriptionId)
+        .delete();
   }
 }

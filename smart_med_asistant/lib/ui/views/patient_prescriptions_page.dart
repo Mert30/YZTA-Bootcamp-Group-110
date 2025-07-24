@@ -21,6 +21,8 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
   final Color lightGreen = const Color(0xFFB2EDE4);
   final Color textDark = const Color(0xFF024059);
 
+  final PrescriptionRepository _repository = PrescriptionRepository();
+
   String formatDate(DateTime? date) {
     if (date == null) return '-';
     return DateFormat('dd.MM.yyyy').format(date);
@@ -32,6 +34,69 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
     MedicineNameFinder.loadJson().then((_) {
       setState(() {});
     });
+  }
+
+  Future<void> _deletePrescription(
+    String prescriptionId,
+    String medicineName,
+  ) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: Colors.orange.shade800),
+            const SizedBox(width: 10),
+            const Text("Reçeteyi Sil"),
+          ],
+        ),
+        content: Text(
+          "$medicineName adlı ilacı silmek istediğinize emin misiniz?",
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text("İptal", style: TextStyle(color: mediumGreen)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(
+              "Sil",
+              style: TextStyle(
+                color: Colors.red.shade700,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm == true) {
+      try {
+        await _repository.deletePrescription(prescriptionId);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("$medicineName silindi."),
+              backgroundColor: Colors.green.shade600,
+            ),
+          );
+          // Reçeteleri tekrar yüklemek için cubit fetch fonksiyonunu çağır
+          context.read<PatientPrescriptionsCubit>().fetchPrescriptions();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Silme işlemi başarısız: $e"),
+              backgroundColor: Colors.red.shade400,
+            ),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -167,10 +232,24 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
                                 ],
                               ),
                             ),
-                            trailing: Icon(
-                              Icons.arrow_forward_ios,
-                              color: mediumGreen,
-                              size: 20,
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: mediumGreen,
+                                  size: 20,
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Colors.red.shade700,
+                                  ),
+                                  tooltip: "Sil",
+                                  onPressed: () =>
+                                      _deletePrescription(p.id, ilacAdi),
+                                ),
+                              ],
                             ),
                           ),
                         );

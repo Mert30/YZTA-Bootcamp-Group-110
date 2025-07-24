@@ -18,7 +18,7 @@ class StockUploader {
     for (var med in medicines) {
       final productName = med['Product_Name'] ?? 'İsimsiz';
       final barcode = med['barcode'] ?? '';
-      final stock_quantity =
+      final stockQuantity =
           100; // Başlangıç değeri isteğe göre değiştirilebilir
 
       // Aynı ürün daha önce eklenmiş mi kontrol et
@@ -31,7 +31,7 @@ class StockUploader {
         await firestore.collection('stock').add({
           'productName': productName,
           'barcode': barcode,
-          'stock_quantity': stock_quantity,
+          'stock_quantity': stockQuantity,
         });
       }
     }

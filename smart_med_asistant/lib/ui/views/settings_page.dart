@@ -14,47 +14,52 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Açık tema için renkler
+    final bgColor = Colors.grey[100]; // Açık gri zemin
+    final cardColor = Colors.white;
+    final primaryGreen = const Color(0xFF04BF8A);
+    final darkText = Colors.grey[900];
+    final mediumText = Colors.grey[700];
+    final iconColor = const Color(0xFF04BF8A);
+
     return Scaffold(
-      backgroundColor: const Color(0xFF011627),
+      backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF011627),
+        backgroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           'Ayarlar',
           style: TextStyle(
-            color: Color(0xFF04BF8A),
+            color: primaryGreen,
             fontWeight: FontWeight.bold,
             fontSize: 24,
           ),
         ),
         centerTitle: true,
+        iconTheme: IconThemeData(color: primaryGreen),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         children: [
-          _buildProfileCard(),
+          _buildProfileCard(
+            cardColor,
+            primaryGreen,
+            darkText,
+            mediumText,
+            iconColor,
+          ),
           const SizedBox(height: 16),
           _buildSettingsOption(
             icon: Icons.notifications_active,
             title: 'Bildirimler',
             subtitle: 'İlaç hatırlatmaları, güncellemeler',
             onTap: () {},
+            cardColor: cardColor,
+            iconColor: iconColor,
+            titleColor: darkText!,
+            subtitleColor: mediumText!,
           ),
-
-          // Burada SwitchListTile ile tema ayarı eklendi
-          _buildSettingsOption(
-            icon: Icons.color_lens,
-            title: 'Tema',
-            subtitle: 'Açık/Koyu mod ayarı',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ThemeSettingsPage()),
-              );
-            },
-          ),
-
           _buildSettingsOption(
             icon: Icons.lock,
             title: 'Gizlilik',
@@ -65,6 +70,10 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(builder: (_) => const PrivacySettingsPage()),
               );
             },
+            cardColor: cardColor,
+            iconColor: iconColor,
+            titleColor: darkText,
+            subtitleColor: mediumText,
           ),
           _buildSettingsOption(
             icon: Icons.info_outline,
@@ -76,14 +85,22 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const AboutPage()),
               );
             },
+            cardColor: cardColor,
+            iconColor: iconColor,
+            titleColor: darkText,
+            subtitleColor: mediumText,
           ),
           _buildSettingsOption(
             icon: Icons.logout,
             title: 'Çıkış Yap',
             subtitle: 'Hesaptan çık',
             onTap: () {
-              _showLogoutDialog(context);
+              _showLogoutDialog(context, primaryGreen, cardColor, darkText);
             },
+            cardColor: cardColor,
+            iconColor: iconColor,
+            titleColor: darkText,
+            subtitleColor: mediumText,
           ),
         ],
       ),
@@ -110,35 +127,42 @@ class SettingsPage extends StatelessWidget {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Profil resmi güncellendi"),
-          backgroundColor: Colors.green,
+        SnackBar(
+          content: const Text("Profil resmi güncellendi"),
+          backgroundColor: Colors.green[600],
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata oluştu: $e"), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text("Hata oluştu: $e"),
+          backgroundColor: Colors.red[400],
+        ),
       );
     }
   }
 
-  Widget _buildProfileCard() {
+  Widget _buildProfileCard(
+    Color cardColor,
+    Color primaryGreen,
+    Color? darkText,
+    Color? mediumText,
+    Color iconColor,
+  ) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
 
     return FutureBuilder(
       future: FirebaseFirestore.instance.collection('users').doc(uid).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(color: Colors.white),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (!snapshot.hasData || !snapshot.data!.exists) {
-          return const ListTile(
+          return ListTile(
             title: Text(
               'Kullanıcı bilgisi bulunamadı.',
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: darkText),
             ),
           );
         }
@@ -149,7 +173,7 @@ class SettingsPage extends StatelessWidget {
         final profileImageUrl = userData['profileImageUrl'];
 
         return Card(
-          color: const Color(0xFF022B42),
+          color: cardColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -157,28 +181,22 @@ class SettingsPage extends StatelessWidget {
             leading: GestureDetector(
               onTap: () => _selectAndUploadImage(context, uid!),
               child: CircleAvatar(
-                backgroundColor: const Color(0xFF04BF8A),
+                backgroundColor: primaryGreen,
                 radius: 28,
                 backgroundImage: profileImageUrl != null
                     ? NetworkImage(profileImageUrl)
                     : null,
                 child: profileImageUrl == null
-                    ? const Icon(Icons.person, color: Colors.white, size: 30)
+                    ? Icon(Icons.person, color: Colors.white, size: 30)
                     : null,
               ),
             ),
             title: Text(
               'Ecz. $fullname',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: darkText, fontWeight: FontWeight.bold),
             ),
-            subtitle: Text(
-              email,
-              style: const TextStyle(color: Colors.white70),
-            ),
-            trailing: const Icon(Icons.edit, color: Colors.white54),
+            subtitle: Text(email, style: TextStyle(color: mediumText)),
+            trailing: Icon(Icons.edit, color: Colors.grey[500]),
             onTap: () {
               _selectAndUploadImage(context, uid!);
             },
@@ -193,17 +211,21 @@ class SettingsPage extends StatelessWidget {
     required String title,
     required String subtitle,
     required VoidCallback onTap,
+    required Color cardColor,
+    required Color iconColor,
+    required Color titleColor,
+    required Color subtitleColor,
   }) {
     return Card(
-      color: const Color(0xFF022B42),
+      color: cardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF04BF8A), size: 28),
-        title: Text(title, style: const TextStyle(color: Colors.white)),
-        subtitle: Text(subtitle, style: const TextStyle(color: Colors.white70)),
-        trailing: const Icon(
+        leading: Icon(icon, color: iconColor, size: 28),
+        title: Text(title, style: TextStyle(color: titleColor)),
+        subtitle: Text(subtitle, style: TextStyle(color: subtitleColor)),
+        trailing: Icon(
           Icons.arrow_forward_ios,
-          color: Colors.white54,
+          color: Color(0xFF212121),
           size: 16,
         ),
         onTap: onTap,
@@ -211,28 +233,33 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(
+    BuildContext context,
+    Color primaryGreen,
+    Color cardColor,
+    Color? darkText,
+  ) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF022B42),
+        backgroundColor: cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
+        title: Text(
           'Çıkış Yap',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(color: darkText, fontWeight: FontWeight.bold),
         ),
-        content: const Text(
+        content: Text(
           'Hesabınızdan çıkmak istediğinizden emin misiniz?',
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: darkText?.withOpacity(0.7)),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('İptal', style: TextStyle(color: Colors.white)),
+            child: Text('İptal', style: TextStyle(color: primaryGreen)),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF04BF8A),
+              backgroundColor: primaryGreen,
               foregroundColor: Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -241,7 +268,7 @@ class SettingsPage extends StatelessWidget {
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
               Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => FirstScreen()),
+                MaterialPageRoute(builder: (_) => const FirstScreen()),
                 (route) => false,
               );
             },

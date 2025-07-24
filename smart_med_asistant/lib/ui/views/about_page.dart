@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_med_assistant/ui/views/settings_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
