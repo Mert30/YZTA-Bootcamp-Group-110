@@ -155,49 +155,79 @@ class _PatientSettingsPageState extends State<PatientSettingsPage> {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Çıkış Yap'),
-                  content: const Text(
-                    'Uygulamadan çıkmak istediğinize emin misiniz?',
-                  ),
+                  backgroundColor: Colors.white, // Açık renk arka plan
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
+                  ),
+                  title: const Text(
+                    'Çıkış Yap',
+                    style: TextStyle(
+                      color: Color(0xFF024059), // Koyu mavi başlık
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  content: const Text(
+                    'Uygulamadan çıkmak istediğinize emin misiniz?',
+                    style: TextStyle(color: Colors.black87), // Koyu metin
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('İptal'),
+                      child: const Text(
+                        'İptal',
+                        style: TextStyle(
+                          color: Color(0xFF04BF8A), // Açık yeşil iptal butonu
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF04BF8A),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        elevation: 6,
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
                         _signOut();
                       },
-                      child: const Text('Çıkış Yap'),
+                      child: const Text(
+                        'Çıkış Yap',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               );
             },
-            icon: const Icon(Icons.logout, color: Colors.white, size: 18),
+            icon: const Icon(Icons.logout, color: Colors.white, size: 20),
             label: const Text(
               'Çıkış Yap',
               style: TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: Colors.white,
               ),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF04BF8A),
-              padding: const EdgeInsets.symmetric(vertical: 14),
+              padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
+              elevation: 8,
+              shadowColor: const Color(0xFF04BF8A).withOpacity(0.5),
             ),
           ),
         ],

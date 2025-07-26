@@ -243,18 +243,32 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 leading: const Icon(Icons.logout, color: Colors.white),
                 title: const Text(
                   'Çıkış Yap',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Çıkış Yap'),
-                      content: const Text(
-                        'Uygulamadan çıkmak istediğinize emin misiniz?',
-                      ),
+                      backgroundColor: Colors.white, // Açık renk arka plan
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
+                      ),
+                      title: const Text(
+                        'Çıkış Yap',
+                        style: TextStyle(
+                          color: Color(0xFF024059), // Koyu mavi başlık
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      content: const Text(
+                        'Uygulamadan çıkmak istediğinize emin misiniz?',
+                        style: TextStyle(
+                          color: Colors.black87,
+                        ), // Okunaklı koyu renk içerik
                       ),
                       actions: [
                         TextButton(
@@ -263,13 +277,29 @@ class _PatientHomePageState extends State<PatientHomePage> {
                               context,
                             ).pop(); // Dialogu kapatır, çıkış yapmaz
                           },
-                          child: const Text('İptal'),
+                          child: const Text(
+                            'İptal',
+                            style: TextStyle(
+                              color: Color(
+                                0xFF04BF8A,
+                              ), // Açık yeşil iptal butonu
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(
+                              0xFF04BF8A,
+                            ), // Açık yeşil buton
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 12,
+                            ),
+                            elevation: 6,
                           ),
                           onPressed: () async {
                             await FirebaseAuth.instance.signOut();
@@ -282,7 +312,14 @@ class _PatientHomePageState extends State<PatientHomePage> {
                               ),
                             );
                           },
-                          child: const Text('Çıkış Yap'),
+                          child: const Text(
+                            'Çıkış Yap',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
                         ),
                       ],
                     ),
