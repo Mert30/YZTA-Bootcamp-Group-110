@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "632711552292",
-    "project_id": "yzta-bootcamp-group110",
-    "storage_bucket": "yzta-bootcamp-group110.firebasestorage.app"
+    "project_number": "424436659545",
+    "project_id": "medimate-90d89",
+    "storage_bucket": "medimate-90d89.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:632711552292:android:4600c9d87e6923bddce7b1",
+        "mobilesdk_app_id": "1:424436659545:android:31e6e3edf8cc66bfdfc848",
         "android_client_info": {
           "package_name": "com.example.smart_med_assistant"
         }
@@ -15,26 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBJqKxcZHEkfMhjmydWUUpVHiIR5f1vj8c"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:632711552292:android:eccc4bfd500b724ddce7b1",
-        "android_client_info": {
-          "package_name": "com.example.yzta_bootcamp_group110"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBJqKxcZHEkfMhjmydWUUpVHiIR5f1vj8c"
+          "current_key": "AIzaSyB58-HqUnPB07BtzSIwAj0NDzwlcXaTqaA"
         }
       ],
       "services": {

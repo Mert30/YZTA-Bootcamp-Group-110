@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyASZFBgfmyOm-jcbW5bCKeK8Zz_PLK34Wc',
-    appId: '1:632711552292:web:67a1beff03a40b55dce7b1',
-    messagingSenderId: '632711552292',
-    projectId: 'yzta-bootcamp-group110',
-    authDomain: 'yzta-bootcamp-group110.firebaseapp.com',
-    storageBucket: 'yzta-bootcamp-group110.firebasestorage.app',
-    measurementId: 'G-K84NNKZRHR',
+    apiKey: 'AIzaSyDxE2EgBawqPazGb8b7HgzBHwezOWkL9Tk',
+    appId: '1:424436659545:web:5068895cba3c1948dfc848',
+    messagingSenderId: '424436659545',
+    projectId: 'medimate-90d89',
+    authDomain: 'medimate-90d89.firebaseapp.com',
+    storageBucket: 'medimate-90d89.firebasestorage.app',
+    measurementId: 'G-BSCGNQ2NQY',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBJqKxcZHEkfMhjmydWUUpVHiIR5f1vj8c',
-    appId: '1:632711552292:android:4600c9d87e6923bddce7b1',
-    messagingSenderId: '632711552292',
-    projectId: 'yzta-bootcamp-group110',
-    storageBucket: 'yzta-bootcamp-group110.firebasestorage.app',
+    apiKey: 'AIzaSyB58-HqUnPB07BtzSIwAj0NDzwlcXaTqaA',
+    appId: '1:424436659545:android:31e6e3edf8cc66bfdfc848',
+    messagingSenderId: '424436659545',
+    projectId: 'medimate-90d89',
+    storageBucket: 'medimate-90d89.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCtIKKryjOzfIcIAiJDf_XnJHezmnHFmOo',
-    appId: '1:632711552292:ios:24f1151c577aa8fddce7b1',
-    messagingSenderId: '632711552292',
-    projectId: 'yzta-bootcamp-group110',
-    storageBucket: 'yzta-bootcamp-group110.firebasestorage.app',
+    apiKey: 'AIzaSyAAkt4BexXrrphHNPtA2f3YWK-ArJPDByI',
+    appId: '1:424436659545:ios:02ce437519e05022dfc848',
+    messagingSenderId: '424436659545',
+    projectId: 'medimate-90d89',
+    storageBucket: 'medimate-90d89.firebasestorage.app',
     iosBundleId: 'com.example.smartMedAssistant',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCtIKKryjOzfIcIAiJDf_XnJHezmnHFmOo',
-    appId: '1:632711552292:ios:24f1151c577aa8fddce7b1',
-    messagingSenderId: '632711552292',
-    projectId: 'yzta-bootcamp-group110',
-    storageBucket: 'yzta-bootcamp-group110.firebasestorage.app',
+    apiKey: 'AIzaSyAAkt4BexXrrphHNPtA2f3YWK-ArJPDByI',
+    appId: '1:424436659545:ios:02ce437519e05022dfc848',
+    messagingSenderId: '424436659545',
+    projectId: 'medimate-90d89',
+    storageBucket: 'medimate-90d89.firebasestorage.app',
     iosBundleId: 'com.example.smartMedAssistant',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyASZFBgfmyOm-jcbW5bCKeK8Zz_PLK34Wc',
-    appId: '1:632711552292:web:3be893b30527586cdce7b1',
-    messagingSenderId: '632711552292',
-    projectId: 'yzta-bootcamp-group110',
-    authDomain: 'yzta-bootcamp-group110.firebaseapp.com',
-    storageBucket: 'yzta-bootcamp-group110.firebasestorage.app',
-    measurementId: 'G-6W0RBVBKCN',
+    apiKey: 'AIzaSyDxE2EgBawqPazGb8b7HgzBHwezOWkL9Tk',
+    appId: '1:424436659545:web:c640aa92b8a2fd2adfc848',
+    messagingSenderId: '424436659545',
+    projectId: 'medimate-90d89',
+    authDomain: 'medimate-90d89.firebaseapp.com',
+    storageBucket: 'medimate-90d89.firebasestorage.app',
+    measurementId: 'G-QQFEM6756T',
   );
+
 }
