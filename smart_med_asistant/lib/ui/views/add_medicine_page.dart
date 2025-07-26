@@ -27,10 +27,11 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
 
   String? aiDescription;
 
-  final Color darkBlue = const Color(0xFF024059);
-  final Color mediumBlue = const Color(0xFF026873);
-  final Color lightGreen = const Color(0xFF04BF8A);
-  final Color darkGreen = const Color(0xFF025940);
+  // Yumuşatılmış, modern renk paleti
+  final Color darkBlue = const Color(0xFF1B3B5F); // Daha açık koyu mavi
+  final Color mediumBlue = const Color(0xFF3B7A99); // Pastel mavi
+  final Color lightGreen = const Color(0xFF66CDAA); // Soft mint-yeşili
+  final Color darkGreen = const Color(0xFF2E8B57); // Sakin koyu yeşil
 
   final geminiService = GeminiService(
     'AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE',
@@ -67,7 +68,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                           content: const Text(
                             "İlaç bilgisi başarıyla kaydedildi.",
                           ),
-                          backgroundColor: darkGreen,
+                          backgroundColor: darkGreen.withOpacity(0.85),
                           behavior: SnackBarBehavior.floating,
                         ),
                       );
@@ -170,10 +171,10 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(14),
                               decoration: BoxDecoration(
-                                color: lightGreen.withOpacity(0.25),
+                                color: lightGreen.withOpacity(0.2),
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
-                                  color: darkGreen.withOpacity(0.6),
+                                  color: darkGreen.withOpacity(0.5),
                                 ),
                               ),
                               child: Text(
@@ -239,7 +240,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
-                                  color: darkGreen,
+                                  color: darkBlue,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -269,7 +270,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
 
                           const SizedBox(height: 20),
 
-                          // Zaman - Radio
+                          // Zaman - Checkbox
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -278,7 +279,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: darkGreen,
+                                  color: darkBlue,
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -363,7 +364,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                                 ),
                               ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: darkGreen,
+                                backgroundColor: darkGreen.withOpacity(0.85),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 18,
                                 ),
@@ -405,7 +406,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
         prefixIcon: Icon(icon, color: mediumBlue),
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: lightGreen.withOpacity(0.2),
+        fillColor: lightGreen.withOpacity(0.15),
         labelStyle: TextStyle(color: darkBlue, fontWeight: FontWeight.w700),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(22),
@@ -441,7 +442,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
             prefixIcon: Icon(icon, color: mediumBlue),
             suffixIcon: Icon(Icons.calendar_today_rounded, color: mediumBlue),
             filled: true,
-            fillColor: lightGreen.withOpacity(0.25),
+            fillColor: lightGreen.withOpacity(0.2),
             labelStyle: TextStyle(color: darkBlue, fontWeight: FontWeight.w700),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(22),

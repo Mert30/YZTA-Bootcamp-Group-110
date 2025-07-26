@@ -12,18 +12,27 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
   bool isDataSharingEnabled = false;
   bool isKvkkApproved = false;
 
+  final Color lightGreen = const Color(0xFF04BF8A);
+
   @override
   Widget build(BuildContext context) {
+    // Beyaz taban + hafif yeşil ton:
+    final Color pageBackgroundColor = Color.lerp(
+      Colors.white,
+      lightGreen,
+      0.08,
+    )!;
+
     return Scaffold(
-      backgroundColor: const Color(0xFF011627),
+      backgroundColor: pageBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF011627),
+        backgroundColor: pageBackgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF04BF8A)),
-        title: const Text(
+        iconTheme: IconThemeData(color: lightGreen),
+        title: Text(
           'Veri Yönetimi',
           style: TextStyle(
-            color: Color(0xFF04BF8A),
+            color: lightGreen,
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
@@ -55,25 +64,24 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
           ),
           const SizedBox(height: 24),
           _sectionTitle("🛠️ Veri Kontrolleri"),
-          // KIRMIZI HESABI SİL BUTONU
           Card(
-            color: const Color(0xFF330000),
-            margin: const EdgeInsets.symmetric(vertical: 8),
+            color: Colors.white,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
+              side: BorderSide(color: Colors.redAccent, width: 2),
             ),
             child: ListTile(
-              title: const Text(
+              title: Text(
                 "Hesabını Sil",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.redAccent,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               subtitle: const Text(
                 "Tüm verilerini ve hesabını kalıcı olarak sil.",
-                style: TextStyle(color: Colors.white70),
+                style: TextStyle(color: Colors.black87),
               ),
               trailing: const Icon(
                 Icons.delete_forever,
@@ -87,7 +95,6 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             "Yakında eklenecek. Verilerini indirip inceleyebileceksin.",
           ),
           const SizedBox(height: 24),
-
           _sectionTitle("📊 Veri İzinleri"),
           SwitchListTile(
             value: isDataSharingEnabled,
@@ -96,15 +103,14 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             },
             title: const Text(
               "Analiz Amaçlı Anonim Veri Paylaşımına İzin Ver",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
             subtitle: const Text(
               "Bu seçenek açık olduğunda, uygulama kullanımı analiz edilmek üzere anonimleştirilmiş şekilde paylaşılır.",
-              style: TextStyle(color: Colors.white70),
+              style: TextStyle(color: Colors.black),
             ),
-            activeColor: const Color(0xFF04BF8A),
+            activeColor: lightGreen,
           ),
-
           CheckboxListTile(
             value: isKvkkApproved,
             onChanged: (val) {
@@ -112,16 +118,15 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             },
             title: const Text(
               "KVKK kapsamında kişisel verilerimin işlenmesini onaylıyorum",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
-            activeColor: const Color(0xFF04BF8A),
+            activeColor: lightGreen,
             controlAffinity: ListTileControlAffinity.leading,
           ),
-
           const SizedBox(height: 24),
           const Text(
             "📄 Kişisel verilerin KVKK ve ilgili mevzuatlara uygun şekilde işlenir.",
-            style: TextStyle(color: Colors.white70),
+            style: TextStyle(color: Colors.black),
           ),
         ],
       ),
@@ -133,8 +138,8 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
         title,
-        style: const TextStyle(
-          color: Color(0xFF04BF8A),
+        style: TextStyle(
+          color: lightGreen,
           fontSize: 18,
           fontWeight: FontWeight.bold,
         ),
@@ -143,10 +148,14 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
   }
 
   Widget _infoCard(String title, String content, {VoidCallback? onTap}) {
+    final Color lightGreen = const Color(0xFF04BF8A);
+
     return InkWell(
       onTap: onTap,
       child: Card(
-        color: const Color(0xFF022B42),
+        color: Colors.white,
+        elevation: 2,
+        shadowColor: lightGreen.withOpacity(0.2),
         margin: const EdgeInsets.symmetric(vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Padding(
@@ -156,14 +165,17 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: lightGreen,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               const SizedBox(height: 6),
-              Text(content, style: const TextStyle(color: Colors.white70)),
+              Text(
+                content,
+                style: const TextStyle(color: Colors.black87, fontSize: 14),
+              ),
             ],
           ),
         ),
@@ -172,38 +184,45 @@ class _PrivacySettingsPageState extends State<PrivacySettingsPage> {
   }
 
   void _showDeleteDialog(BuildContext context) {
+    final Color lightGreen = const Color(0xFF04BF8A);
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF022B42),
+        backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text(
           "Hesabı Sil",
           style: TextStyle(
             color: Colors.redAccent,
             fontWeight: FontWeight.bold,
+            fontSize: 20,
           ),
         ),
         content: const Text(
           "Hesabınızı kalıcı olarak silmek istediğinize emin misiniz?",
-          style: TextStyle(color: Colors.white70),
+          style: TextStyle(color: Colors.black87, fontSize: 16),
         ),
         actions: [
           TextButton(
-            child: const Text("İptal", style: TextStyle(color: Colors.white)),
+            child: const Text(
+              "İptal",
+              style: TextStyle(color: Colors.black54, fontSize: 16),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.redAccent,
               foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text("Sil"),
+            child: const Text("Sil", style: TextStyle(fontSize: 16)),
             onPressed: () async {
-              Navigator.pop(context); // dialogu kapat
+              Navigator.pop(context);
               try {
                 await FirebaseAuth.instance.currentUser?.delete();
                 if (context.mounted) {

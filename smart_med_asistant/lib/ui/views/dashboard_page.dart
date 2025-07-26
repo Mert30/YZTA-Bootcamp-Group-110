@@ -12,9 +12,24 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  final Color darkBlue = const Color(0xFF024059);
-  final Color lightGreen = const Color(0xFF04BF8A);
-  final Color mediumBlue = const Color(0xFF026873);
+  // Renk paleti
+  final Color darkBlue = const Color(0xFF0D3B66);
+  final Color mediumBlue = const Color(0xFF2A6F97);
+  final Color lightBlue = const Color(0xFFB1D4E0);
+  final Color softGreen = const Color(0xFF9BC1BC);
+  final Color redAccent = Colors.redAccent.shade200;
+
+  // Text Style
+  final TextStyle titleStyle = const TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: Color(0xFF0D3B66),
+  );
+
+  final TextStyle subtitleStyle = const TextStyle(
+    fontSize: 16,
+    color: Color(0xFF557A95),
+  );
 
   Future<String> getPharmacistName() async {
     try {
@@ -71,38 +86,46 @@ class _DashboardPageState extends State<DashboardPage> {
     VoidCallback? onTap,
   }) {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       color: Colors.white,
-      elevation: 6,
-      margin: const EdgeInsets.only(bottom: 16),
+      elevation: 8,
+      margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+      shadowColor: iconColor.withOpacity(0.3),
       child: InkWell(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         onTap: onTap,
-        child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 20,
-          ),
-          leading: Icon(icon, color: iconColor, size: 40),
-          title: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: darkBlue,
-              fontSize: 18,
-            ),
-          ),
-          subtitle: Text(
-            subtitle,
-            style: TextStyle(color: darkBlue.withOpacity(0.7), fontSize: 16),
-          ),
-          trailing: onTap != null
-              ? Icon(
+        splashColor: iconColor.withOpacity(0.2),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: iconColor.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Icon(icon, color: iconColor, size: 36),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: titleStyle),
+                    const SizedBox(height: 6),
+                    Text(subtitle, style: subtitleStyle),
+                  ],
+                ),
+              ),
+              if (onTap != null)
+                Icon(
                   Icons.arrow_forward_ios,
-                  size: 18,
+                  size: 20,
                   color: Colors.grey.shade400,
-                )
-              : null,
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -111,14 +134,12 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightGreen.withOpacity(0.08),
+      backgroundColor: softGreen.withOpacity(0.15),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         child: ListView(
           children: [
-            const SizedBox(height: 30),
-
-            // Hoşgeldiniz + Gerçek Eczacı İsmi
+            // Başlık
             FutureBuilder<String>(
               future: getPharmacistName(),
               builder: (context, snapshot) {
@@ -135,21 +156,24 @@ class _DashboardPageState extends State<DashboardPage> {
                 }
                 final name = snapshot.data ?? "Eczacım";
                 return Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    'Hoşgeldiniz, $name 👋',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: darkBlue,
-                    ),
+                  padding: const EdgeInsets.only(bottom: 32),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hoşgeldiniz, $name 👋',
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: darkBlue,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },
             ),
 
-            // Toplam İlaç Sayısı
             FutureBuilder<int>(
               future: getTotalMedicineCount(),
               builder: (context, snapshot) {
@@ -161,7 +185,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 }
                 final count = snapshot.data ?? 0;
                 return buildCard(
-                  icon: Icons.medication,
+                  icon: Icons.medication_rounded,
                   title: 'Toplam İlaç Sayısı',
                   subtitle: '$count adet kayıtlı ilaç var',
                   iconColor: mediumBlue,
@@ -169,7 +193,6 @@ class _DashboardPageState extends State<DashboardPage> {
               },
             ),
 
-            // Kritik Stok Sayısı (Tıklanabilir)
             FutureBuilder<int>(
               future: getCriticalStockCount(),
               builder: (context, snapshot) {
@@ -184,7 +207,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   icon: Icons.warning_amber_rounded,
                   title: 'Kritik Stok Sayısı',
                   subtitle: '$count ilacın stoğu kritik seviyede',
-                  iconColor: Colors.redAccent,
+                  iconColor: redAccent,
                   onTap: () {
                     Navigator.push(
                       context,
@@ -197,12 +220,27 @@ class _DashboardPageState extends State<DashboardPage> {
               },
             ),
 
-            // Placeholder Kart: Hasta Sayısı
             buildCard(
-              icon: Icons.people,
+              icon: Icons.people_alt_rounded,
               title: 'Toplam Hasta Sayısı',
               subtitle: 'Veri alınamadı (örnek gösterim)',
-              iconColor: Colors.deepPurple,
+              iconColor: Colors.deepPurple.shade400,
+            ),
+
+            // Yeni Bildirimler kartı
+            buildCard(
+              icon: Icons.notifications_active_rounded,
+              title: 'Bildirimler',
+              subtitle: 'Yeni bildirim yok',
+              iconColor: Colors.orange.shade700,
+              onTap: () {
+                // İstersen buraya bildirimler sayfası açılabilir
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Bildirimler sayfası açılacak.'),
+                  ),
+                );
+              },
             ),
           ],
         ),

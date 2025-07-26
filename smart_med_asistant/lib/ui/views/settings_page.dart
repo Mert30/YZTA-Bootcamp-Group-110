@@ -14,17 +14,17 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Açık tema için renkler
-    final bgColor = Colors.grey[200]; // Açık gri zemin
     final cardColor = Colors.white;
     final primaryGreen = const Color(0xFF04BF8A);
     final darkText = Colors.grey[900];
     final mediumText = Colors.grey[700];
     final iconColor = const Color(0xFF04BF8A);
+    final Color lightGreen = const Color(0xFF04BF8A);
 
     return Scaffold(
-      backgroundColor: bgColor,
+      backgroundColor: lightGreen.withOpacity(0.08),
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: lightGreen.withOpacity(0.08),
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text(

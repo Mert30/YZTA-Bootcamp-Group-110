@@ -6,15 +6,24 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF04BF8A);
-    const Color backgroundColor = Color(0xFFF4F6F8);
+    const Color secondaryColor = Color(0xFF029E70); // daha koyu ton
+    const Color backgroundColor = Color(0xFFFAFAFA);
     const Color headingColor = Color(0xFF1C1C1E);
-    const Color textColor = Color(0xFF4A4A4A);
+    const Color textColor = Color(0xFF3A3A3A);
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xFF04BF8A),
         elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [primaryColor, secondaryColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: backgroundColor),
           onPressed: () => Navigator.pop(context),
@@ -28,6 +37,7 @@ class AboutPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(24),
@@ -44,12 +54,12 @@ class AboutPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              Text('v1.0.0', style: TextStyle(color: Colors.black45)),
+              Text('v1.0.0', style: TextStyle(color: Colors.black54)),
               SizedBox(height: 24),
               Text(
                 'MediMate, kullanıcıların sağlıklarını en iyi şekilde yönetebilmeleri için geliştirilmiş kapsamlı bir ilaç takip ve yönetim asistanıdır. '
                 'Uygulama, ilaç kullanımını kolaylaştırırken, güvenli ve düzenli bir tedavi süreci sağlar.',
-                style: TextStyle(color: textColor, fontSize: 16, height: 1.4),
+                style: TextStyle(color: textColor, fontSize: 16, height: 1.5),
               ),
               SizedBox(height: 16),
               Text(
@@ -67,13 +77,13 @@ class AboutPage extends StatelessWidget {
                 '• Kişisel profil ve sağlık bilgileri yönetimi.\n'
                 '• Bildirimler sayesinde önemli uyarılardan haberdar olma.\n'
                 '• Güvenli veri saklama ve gizlilik politikalarına tam uyum.\n',
-                style: TextStyle(color: textColor, fontSize: 16, height: 1.4),
+                style: TextStyle(color: textColor, fontSize: 16, height: 1.5),
               ),
               SizedBox(height: 16),
               Text(
                 'MediMate, kullanıcı dostu arayüzü ve gelişmiş teknolojisi ile sağlık yönetimini basitleştirir. '
                 'Her yaştan kullanıcı için uygun olan bu uygulama, sağlığınıza değer verir ve tedavi sürecinizi destekler.',
-                style: TextStyle(color: textColor, fontSize: 16, height: 1.4),
+                style: TextStyle(color: textColor, fontSize: 16, height: 1.5),
               ),
               SizedBox(height: 24),
               Text(
