@@ -21,14 +21,31 @@ class PrescriptionRepository {
       throw Exception('Hasta bulunamadı');
     }
 
-    final patientId = querySnapshot.docs.first.id;
+    final patientDoc = querySnapshot.docs.first;
+    final patientId = patientDoc.id;
 
+    // Hastanın reçetelerine ekle
     await _firestore
         .collection('users')
         .doc(patientId)
         .collection('prescriptions')
         .add(prescription.toMap());
+
+    // 🔹 Ekleyen eczacının altına bu hastayı kaydet
+    final pharmacistUid = FirebaseAuth.instance.currentUser?.uid;
+    if (pharmacistUid != null) {
+      final pharmacistRef = _firestore.collection('users').doc(pharmacistUid);
+      final addedPatientRef = pharmacistRef.collection('added_patients').doc(patientId);
+
+      // Bu hasta daha önce eklenmemişse ekle
+      await addedPatientRef.set({
+        'email': patientDoc['email'],
+        'fullname': patientDoc['fullname'], // veya username, entity'ye bağlı
+        'addedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true)); // merge=true: üstüne yazmaz, günceller
+    }
   }
+
 
   // 🔹 Giriş yapan hastanın reçetelerini al
   Future<List<Prescription>> getPrescriptionsForCurrentUser() async {
@@ -60,4 +77,72 @@ class PrescriptionRepository {
         .doc(prescriptionId)
         .delete();
   }
+
+  Future<List<Map<String, dynamic>>> getPatientsWithPrescriptionsByPharmacist(String pharmacistUid) async {
+    final prescriptionSnapshots = await _firestore
+        .collectionGroup('prescriptions')
+        .where('addedBy', isEqualTo: pharmacistUid)
+        .get();
+
+    final patientIds = prescriptionSnapshots.docs
+        .map((doc) => doc.reference.parent.parent!.id) // users/{id}
+        .toSet();
+
+    List<Map<String, dynamic>> patients = [];
+
+    for (String id in patientIds) {
+      final userDoc = await _firestore.collection('users').doc(id).get();
+      if (userDoc.exists) {
+        final data = userDoc.data();
+        if (data != null) {
+          patients.add({
+            'email': data['email'],
+            'username': data['username'],
+          });
+        }
+      }
+    }
+
+    return patients;
+  }
+
+
+  Future<List<Map<String, dynamic>>> getPatientsWithPrescriptionsByEczaci(String eczaciEmail) async {
+    final usersSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('role', isEqualTo: 'hasta')
+        .get();
+
+    List<Map<String, dynamic>> patients = [];
+
+    for (var userDoc in usersSnapshot.docs) {
+      final prescriptionsSnapshot = await userDoc.reference
+          .collection('prescriptions')
+          .where('addedBy', isEqualTo: eczaciEmail)
+          .limit(1)
+          .get();
+
+      if (prescriptionsSnapshot.docs.isNotEmpty) {
+        patients.add(userDoc.data());
+      }
+    }
+
+    return patients;
+  }
+
+  Future<List<Map<String, dynamic>>> getPatientsAddedByPharmacist() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) throw Exception("Eczacı oturumu açık değil");
+
+    final snapshot = await _firestore
+        .collection('users')
+        .doc(uid)
+        .collection('added_patients')
+        .orderBy('addedAt', descending: true)
+        .get();
+
+    return snapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+
 }

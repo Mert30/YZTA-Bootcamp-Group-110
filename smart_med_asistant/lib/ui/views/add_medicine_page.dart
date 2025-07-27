@@ -7,10 +7,12 @@ import 'package:smart_med_assistant/ui/cubit/add_medicine_cubit.dart';
 import 'package:smart_med_assistant/ui/views/barcode_scanner_page.dart';
 
 class AddMedicinePage extends StatefulWidget {
-  const AddMedicinePage({super.key});
+  final String? patientEmail; // yeni parametre
+  const AddMedicinePage({Key? key, this.patientEmail}) : super(key: key);
 
   @override
   State<AddMedicinePage> createState() => _AddMedicinePageState();
+
 }
 
 class _AddMedicinePageState extends State<AddMedicinePage> {
@@ -36,6 +38,16 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
   final geminiService = GeminiService(
     'AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE',
   );
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Hastanın emaili varsa, ilgili controller'a ata
+    if (widget.patientEmail != null) {
+      _patientEmailController.text = widget.patientEmail!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
