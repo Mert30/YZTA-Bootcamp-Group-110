@@ -223,7 +223,7 @@ class _DashboardPageState extends State<DashboardPage> {
             buildCard(
               icon: Icons.people_alt_rounded,
               title: 'Toplam Hasta Sayısı',
-              subtitle: 'Veri alınamadı (örnek gösterim)',
+              subtitle: 'Henüz hastanız bulunmuyor.',
               iconColor: Colors.deepPurple.shade400,
             ),
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_settings_page.dart';
 
 class PatientResetPasswordPage extends StatelessWidget {

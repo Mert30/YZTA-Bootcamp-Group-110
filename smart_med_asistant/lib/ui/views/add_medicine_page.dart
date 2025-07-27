@@ -8,11 +8,10 @@ import 'package:smart_med_assistant/ui/views/barcode_scanner_page.dart';
 
 class AddMedicinePage extends StatefulWidget {
   final String? patientEmail; // yeni parametre
-  const AddMedicinePage({Key? key, this.patientEmail}) : super(key: key);
+  const AddMedicinePage({super.key, this.patientEmail});
 
   @override
   State<AddMedicinePage> createState() => _AddMedicinePageState();
-
 }
 
 class _AddMedicinePageState extends State<AddMedicinePage> {

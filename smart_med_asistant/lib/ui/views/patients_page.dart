@@ -12,33 +12,59 @@ class PatientsPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => PatientsCubit(PrescriptionRepository())..fetchPatients(),
       child: Scaffold(
-        appBar: AppBar(title: const Text("Hastalarım")),
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          centerTitle: true,
+          title: const Text("Hastalarım"),
+        ),
         body: BlocBuilder<PatientsCubit, PatientsState>(
           builder: (context, state) {
             if (state is PatientsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is PatientsLoaded) {
               if (state.patients.isEmpty) {
-                return const Center(child: Text("Henüz hasta eklenmemiş."));
+                return const Center(
+                  child: Text(
+                    "Henüz hasta eklenmemiş.",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                );
               }
 
               return ListView.builder(
                 itemCount: state.patients.length,
                 itemBuilder: (context, index) {
                   final patient = state.patients[index];
-                  return ListTile(
-                    title: Text(patient['fullname'] ?? 'Ad yok'),
-                    subtitle: Text(patient['email'] ?? 'Email yok'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => AddMedicinePage(
-                            patientEmail: patient['email'], // maili yolla
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        backgroundColor: Colors.teal,
+                        child: Icon(Icons.person, color: Colors.white),
+                      ),
+                      title: Text(
+                        patient['fullname'] ?? 'Ad yok',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(patient['email'] ?? 'Email yok'),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                AddMedicinePage(patientEmail: patient['email']),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 },
               );
