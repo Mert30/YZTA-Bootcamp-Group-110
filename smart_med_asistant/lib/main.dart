@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:smart_med_assistant/data/service/stock_uploader.dart';  Kullanılmaycak daha
 
+import 'package:smart_med_assistant/data/service/notification_service.dart';
 import 'package:smart_med_assistant/firebase_options.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
 
@@ -37,6 +38,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //await StockUploader.uploadMedicinesFromExportedJson(); Bir kereye mahsus çalışması lazımdı bu kodun firebase den 20K veriyi çekmek için
+  await NotificationService.initialize();   
   runApp(BlocProvider(create: (_) => ThemeCubit(), child: const MyApp()));
 }
 
