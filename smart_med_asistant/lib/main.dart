@@ -38,7 +38,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   //await StockUploader.uploadMedicinesFromExportedJson(); Bir kereye mahsus çalışması lazımdı bu kodun firebase den 20K veriyi çekmek için
-  await NotificationService.initialize();   
+  await NotificationService.initialize();
   runApp(BlocProvider(create: (_) => ThemeCubit(), child: const MyApp()));
 }
 

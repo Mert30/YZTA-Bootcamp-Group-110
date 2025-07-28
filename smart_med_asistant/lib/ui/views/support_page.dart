@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
+import 'package:smart_med_assistant/ui/views/patient_settings_page.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({super.key});
@@ -102,6 +104,17 @@ class _SupportPageState extends State<SupportPage> {
       backgroundColor: const Color(0xFFF4F6F8),
       appBar: AppBar(
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PatientSettingsPage(),
+              ),
+            );
+          },
+        ),
         title: Row(
           children: [
             const Icon(Icons.support_agent, color: Colors.white),

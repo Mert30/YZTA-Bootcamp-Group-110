@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart'; // Lottie için import
+import 'package:smart_med_assistant/ui/views/disease_detection_page.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
 import 'package:smart_med_assistant/ui/views/gemini_chat_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_prescriptions_page.dart';
@@ -236,6 +237,24 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => PatientSettingsPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.health_and_safety,
+                  color: Color(0xFF025940),
+                ),
+                title: const Text(
+                  'Teşhisler',
+                  style: TextStyle(color: Color(0xFF025940)),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DiseaseDetectionPage(),
                     ),
                   );
                 },

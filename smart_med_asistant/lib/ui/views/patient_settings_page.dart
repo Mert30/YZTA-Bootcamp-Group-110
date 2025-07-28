@@ -74,7 +74,7 @@ class _PatientSettingsPageState extends State<PatientSettingsPage> {
             ),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const PatientResetPasswordPage(),
