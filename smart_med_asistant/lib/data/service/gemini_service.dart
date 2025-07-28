@@ -12,6 +12,12 @@ class GeminiService {
     apiKey: apiKey,
   );
 
+  late final ChatSession _chat;
+  
+  void startChatSession() {
+    _chat = _model.startChat();
+  }
+
   Future<Map<String, dynamic>> loadIlacMap() async {
     final jsonString = await rootBundle.loadString('assets/ilac.json');
     final List<dynamic> fullJson = json.decode(jsonString);
@@ -44,22 +50,15 @@ class GeminiService {
     return parsed;
   }
 
-  Future<String> fetchGeminiSummary(Map<String, dynamic> ilac) async {
-    final prompt = buildPrompt(ilac);
-    final content = [Content.text(prompt)];
-    final response = await _model.generateContent(content);
-    return response.text ?? "Yanıt alınamadı.";
-  }
-
   String buildPrompt(Map<String, dynamic> ilac) {
     return '''
 Aşağıdaki ilaç bilgilerini dikkate alarak cevap oluştur:
 
-• İlaç Adı: ${ilac['Product_Name'] ?? 'Bilinmiyor'}
-• Etken Madde: ${ilac['Active_Ingredient'] ?? 'Bilinmiyor'}
-• ATC Kodu: ${ilac['ATC_code'] ?? 'Bilinmiyor'}
-• Kategori: ${ilac['Category_1'] ?? '-'} > ${ilac['Category_2'] ?? '-'} > ${ilac['Category_3'] ?? '-'} > ${ilac['Category_4'] ?? '-'} > ${ilac['Category_5'] ?? '-'}
-• Açıklama: ${ilac['Description'] ?? 'Bilinmiyor'}
+• İlaç Adı: ${ilac['Product_Name']}
+• Etken Madde: ${ilac['Active_Ingredient']}
+• ATC Kodu: ${ilac['ATC_code']}
+• Kategori: ${ilac['Category_1']} > ${ilac['Category_2']} > ${ilac['Category_3']} > ${ilac['Category_4']} > ${ilac['Category_5']}
+• Açıklama: ${ilac['Description']}
 
 Aşağıdaki sorulara kısa, sade ve hastanın anlayabileceği şekilde tek tek numaralandırarak yanıt ver:
 
@@ -71,34 +70,48 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
 ''';
   }
 
-  // Hastanın istediği soruyu alıp Gemini'den cevap alıyor
-  Future<String> askCustomQuestion(
-    Map<String, dynamic> ilac,
-    String userQuestion,
-  ) async {
-    final ilacInfo =
-        '''
-İlaç Adı: ${ilac['Product_Name'] ?? 'Bilinmiyor'}
-Etken Madde: ${ilac['Active_Ingredient'] ?? 'Bilinmiyor'}
-ATC Kodu: ${ilac['ATC_code'] ?? 'Bilinmiyor'}
-Kategori: ${ilac['Category_1'] ?? '-'} > ${ilac['Category_2'] ?? '-'} > ${ilac['Category_3'] ?? '-'} > ${ilac['Category_4'] ?? '-'} > ${ilac['Category_5'] ?? '-'}
-Açıklama: ${ilac['Description'] ?? 'Bilinmiyor'}
-''';
-
-    final prompt =
-        '''
-Aşağıdaki ilaç bilgilerini göz önünde bulundurarak kullanıcının sorusuna sade, doğru ve anlaşılır şekilde yanıt ver. Eğer bilgi yetersizse bunu da belirt.
-
-$ilacInfo
-
-Kullanıcının sorusu: "$userQuestion"
-
-Cevap:
-''';
-
+  Future<String> fetchGeminiSummary(Map<String, dynamic> ilac) async {
+    final prompt = buildPrompt(ilac);
     final content = [Content.text(prompt)];
     final response = await _model.generateContent(content);
-    return response.text ??
-        "Sorunu anlayamadım ya da yeterli bilgiye ulaşamadım.";
+    return response.text ?? "Yanıt alınamadı.";
   }
+
+  Future<String> askGeneralQuestion(String question) async {
+    final ilacMap = await loadIlacMap();
+
+    final foundIlac = ilacMap.entries.firstWhere(
+      (entry) =>
+          question.contains(entry.key) ||
+          question.toLowerCase().contains(
+              (entry.value['Product_Name'] ?? '').toString().toLowerCase()),
+      orElse: () => const MapEntry('', null),
+    );
+
+    if (foundIlac.value != null) {
+      final prompt = '''
+  Kullanıcının sorusu: "$question"
+
+  Aşağıda verilen ilaç bilgilerini kullanarak bu soruya hastanın anlayacağı sade bir dille, kısa ama açıklayıcı bir şekilde cevap ver.
+
+  • İlaç Adı: ${foundIlac.value!['Product_Name']}
+  • Etken Madde: ${foundIlac.value!['Active_Ingredient']}
+  • Açıklama: ${foundIlac.value!['Description']}
+  • Kategori: ${foundIlac.value!['Category_1']} > ${foundIlac.value!['Category_2']} > ${foundIlac.value!['Category_3']}
+
+  Kısa cümlelerle, doğrudan ve anlaşılır cevap ver. Gereksiz tekrar veya akademik dil kullanma. Lütfen cevabında kalın, italik, yıldızlı veya diğer biçimlendirmeleri kullanma. Düz metin (plain text) olarak yanıtla.
+  ''';
+
+      final content = [Content.text(prompt)];
+      final response = await _model.generateContent(content);
+      return response.text ?? "Yanıt alınamadı.";
+    } else {
+      // Eğer ilaç bulunamazsa, yine de Gemini'ye soruyu gönder
+      final fallbackResponse =
+          await _model.generateContent([Content.text(question)]);
+      return fallbackResponse.text ?? "Sorunuzu anlayamadım. Lütfen tekrar deneyin.";
+    }
+  }
+
+
 }
