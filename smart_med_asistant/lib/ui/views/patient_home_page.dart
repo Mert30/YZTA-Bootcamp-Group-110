@@ -103,7 +103,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Hasta Anasayfa'),
-        backgroundColor: const Color(0xFF04BF8A),
+        backgroundColor: Colors.teal.shade700,
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu),

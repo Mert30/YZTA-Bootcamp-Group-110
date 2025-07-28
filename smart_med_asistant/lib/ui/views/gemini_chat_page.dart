@@ -19,9 +19,7 @@ class _GeminiChatPageState extends State<GeminiChatPage>
   @override
   void initState() {
     super.initState();
-    _geminiService = GeminiService(
-      'YOUR_API_KEY', // <-- Gerçek API anahtarını buraya koy
-    );
+    _geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE');
   }
 
   @override
