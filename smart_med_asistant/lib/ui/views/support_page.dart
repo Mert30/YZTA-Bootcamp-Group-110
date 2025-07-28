@@ -101,6 +101,7 @@ class _SupportPageState extends State<SupportPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F6F8),
       appBar: AppBar(
+        centerTitle: true,
         title: Row(
           children: [
             const Icon(Icons.support_agent, color: Colors.white),

@@ -113,7 +113,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
       ),
       drawer: Drawer(
         child: Container(
-          color: const Color(0xFF011627),
+          color: const Color(0xFFF6FFFE),
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
@@ -210,11 +210,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
               ListTile(
                 leading: const Icon(
                   Icons.medical_services,
-                  color: Colors.white,
+                  color: Color(0xFF025940),
                 ),
                 title: const Text(
                   'İlaçlarım',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color(0xFF025940)),
                 ),
                 onTap: () {
                   Navigator.push(
@@ -226,10 +226,10 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.settings, color: Colors.white),
+                leading: const Icon(Icons.settings, color: Color(0xFF025940)),
                 title: const Text(
                   'Ayarlar',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color(0xFF025940)),
                 ),
                 onTap: () {
                   Navigator.push(
@@ -241,13 +241,10 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.logout, color: Colors.white),
+                leading: const Icon(Icons.logout, color: Color(0xFF025940)),
                 title: const Text(
                   'Çıkış Yap',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(color: Color(0xFF025940)),
                 ),
                 onTap: () {
                   showDialog(
@@ -356,25 +353,62 @@ class _PatientHomePageState extends State<PatientHomePage> {
               ),
             ),
           ),
+          // Chatbot animasyonu ve konuşma balonu
           Positioned(
-            bottom: 16,
-            right: 16,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GeminiChatPage()),
-                );
-              },
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              child: Lottie.asset(
-                'assets/animations/chatbot.json',
-                width: 70,
-                height: 70,
-                fit: BoxFit.cover,
-                repeat: true,
-              ),
+            bottom: 20,
+            right: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Konuşma kutusu
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: const Text(
+                    'Bana soru sorabilirsin 🧠',
+                    style: TextStyle(
+                      color: Colors.teal,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+
+                // Chatbot animasyonlu buton
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const GeminiChatPage(),
+                      ),
+                    );
+                  },
+                  child: SizedBox(
+                    width: 70,
+                    height: 70,
+                    child: Lottie.asset(
+                      'assets/animations/chatbot.json',
+                      fit: BoxFit.cover,
+                      repeat: true,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

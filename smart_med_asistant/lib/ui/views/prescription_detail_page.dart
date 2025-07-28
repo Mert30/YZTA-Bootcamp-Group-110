@@ -19,7 +19,7 @@ class PrescriptionDetailPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("İlaç Detayları"),
-        backgroundColor: const Color(0xFF024059),
+        backgroundColor: Colors.teal.shade700,
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -61,7 +61,7 @@ class PrescriptionDetailPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF026873),
+                color: Colors.teal,
               ),
             ),
             const SizedBox(height: 12),
@@ -127,7 +127,7 @@ class PrescriptionDetailPage extends StatelessWidget {
                     .map(
                       (time) => Chip(
                         label: Text(time.trim()), // trim() boşlukları temizler
-                        backgroundColor: const Color(0xFF026873),
+                        backgroundColor: Colors.teal.shade700,
                         labelStyle: const TextStyle(color: Colors.white),
                       ),
                     )
@@ -142,7 +142,7 @@ class PrescriptionDetailPage extends StatelessWidget {
 
   Widget buildInfoCard(String title, String content) {
     return Card(
-      color: Colors.white54, // Arka planı beyaz yaptık
+      color: Colors.white, // Arka planı beyaz yaptık
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 1,
       child: Padding(
@@ -155,9 +155,7 @@ class PrescriptionDetailPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(
-                  0xFF026873,
-                ), // Başlık rengini biraz daha yumuşattık
+                color: Colors.teal, // Başlık rengini biraz daha yumuşattık
               ),
             ),
             const SizedBox(height: 8),
