@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,6 +14,13 @@ class _SupportPageState extends State<SupportPage> {
   bool _isSending = false;
 
   final Color primaryColor = const Color(0xFF04BF8A);
+
+  Future<void> _saveAnonymousComment(String comment) async {
+    await FirebaseFirestore.instance.collection('comments').add({
+      'comment': comment,
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+  }
 
   void _submitFeedback() async {
     final message = _feedbackController.text.trim();
@@ -42,6 +50,9 @@ class _SupportPageState extends State<SupportPage> {
 
     setState(() => _isSending = true);
     await Future.delayed(const Duration(seconds: 2));
+
+    await _saveAnonymousComment(message);
+
     if (!context.mounted) return;
 
     showDialog(

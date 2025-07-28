@@ -108,6 +108,7 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
       child: Scaffold(
         backgroundColor: lightGreen.withOpacity(0.5),
         appBar: AppBar(
+          centerTitle: true,
           title: const Text("İlaç Listem"),
           backgroundColor: mediumGreen,
           elevation: 6,

@@ -17,6 +17,7 @@ class PrescriptionDetailPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFEFF5F4),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("İlaç Detayları"),
         backgroundColor: const Color(0xFF024059),
         foregroundColor: Colors.white,
