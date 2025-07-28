@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/data/service/gemini_service.dart';
+import 'package:smart_med_assistant/ui/cubit/chatbot_cubit.dart';
 
-class GeminiChatPage extends StatefulWidget {
-  const GeminiChatPage({super.key});
+class GeminiChatPage extends StatelessWidget {
+
+  const GeminiChatPage({super.key});  //All final variables must be initialized, but 'ilac' isn't Try adding an initializer for the field.
 
   @override
-  State<GeminiChatPage> createState() => _GeminiChatPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ChatbotCubit(            
+        geminiService: GeminiService("AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE"), 
+      ),
+      child: const _GeminiChatView(),
+    );
+  }
 }
 
-class _GeminiChatPageState extends State<GeminiChatPage>
-    with TickerProviderStateMixin {
-  final TextEditingController _controller = TextEditingController();
-  final List<Map<String, String>> _messages = [];
-  late GeminiService _geminiService;
-  final ScrollController _scrollController = ScrollController();
-  bool _isLoading = false;
+class _GeminiChatView extends StatefulWidget {
+  const _GeminiChatView({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    _geminiService = GeminiService('AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE');
-  }
+  State<_GeminiChatView> createState() => _GeminiChatViewState();
+}
+
+class _GeminiChatViewState extends State<_GeminiChatView>
+    with TickerProviderStateMixin {
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -29,39 +37,8 @@ class _GeminiChatPageState extends State<GeminiChatPage>
     super.dispose();
   }
 
-  Future<void> _handleSendMessage() async {
-    final question = _controller.text.trim();
-    if (question.isEmpty) return;
-
-    setState(() {
-      _messages.add({'sender': 'user', 'text': question});
-      _controller.clear();
-      _isLoading = true;
-    });
-
-    _scrollToBottom();
-
-    try {
-      final response = await _geminiService.askCustomQuestion({}, question);
-      setState(() {
-        _messages.add({'sender': 'gemini', 'text': response});
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _messages.add({
-          'sender': 'gemini',
-          'text': "Cevap alınamadı. Hata: $e",
-        });
-        _isLoading = false;
-      });
-    }
-
-    _scrollToBottom();
-  }
-
   void _scrollToBottom() {
-    Future.delayed(const Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
@@ -73,9 +50,9 @@ class _GeminiChatPageState extends State<GeminiChatPage>
   }
 
   Widget _buildMessage(Map<String, String> message) {
-    final isUser = message['sender'] == 'user';
+    final isUser = message['role'] == 'user';
     final bgColor = isUser ? Colors.teal.shade600 : Colors.grey.shade200;
-    final textColor = isUser ? Colors.white : Colors.grey.shade900;
+    final textColor = isUser ? Colors.white : Colors.black87;
 
     final borderRadius = BorderRadius.only(
       topLeft: const Radius.circular(18),
@@ -124,11 +101,7 @@ class _GeminiChatPageState extends State<GeminiChatPage>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.chat_bubble_outline,
-            size: 80,
-            color: Colors.teal.shade200,
-          ),
+          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.teal.shade200),
           const SizedBox(height: 20),
           Text(
             "Merhaba! Sorularını aşağıdan yazarak benden cevabını alabilirsin.",
@@ -142,6 +115,15 @@ class _GeminiChatPageState extends State<GeminiChatPage>
         ],
       ),
     );
+  }
+
+  void _handleSendMessage() {
+    final question = _controller.text.trim();
+    if (question.isEmpty) return;
+
+    context.read<ChatbotCubit>().sendMessage(question);
+    _controller.clear();
+    _scrollToBottom();
   }
 
   @override
@@ -158,74 +140,70 @@ class _GeminiChatPageState extends State<GeminiChatPage>
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: _messages.isEmpty
-                  ? _buildEmptyChat()
-                  : ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.only(top: 12, bottom: 12),
-                      itemCount: _messages.length,
-                      itemBuilder: (context, index) =>
-                          _buildMessage(_messages[index]),
-                    ),
-            ),
-            if (_isLoading)
-              const Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: CircularProgressIndicator(
-                  color: Colors.teal,
-                  strokeWidth: 3,
+        child: BlocBuilder<ChatbotCubit, ChatbotState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                Expanded(
+                  child: state.messages.isEmpty
+                      ? _buildEmptyChat()
+                      : ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.only(top: 12, bottom: 12),
+                          itemCount: state.messages.length,
+                          itemBuilder: (context, index) =>
+                              _buildMessage(state.messages[index]),
+                        ),
                 ),
-              ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              color: Colors.white,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      textInputAction: TextInputAction.send,
-                      decoration: InputDecoration(
-                        hintText: 'Sorunuzu yazın...',
-                        filled: true,
-                        fillColor: Colors.teal.shade50,
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 14,
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          textInputAction: TextInputAction.send,
+                          decoration: InputDecoration(
+                            hintText: 'Sorunuzu yazın...',
+                            filled: true,
+                            fillColor: Colors.teal.shade50,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 14,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          onSubmitted: (_) => _handleSendMessage(),
                         ),
-                        border: OutlineInputBorder(
+                      ),
+                      const SizedBox(width: 12),
+                      Material(
+                        color: Colors.teal.shade600,
+                        borderRadius: BorderRadius.circular(30),
+                        child: InkWell(
                           borderRadius: BorderRadius.circular(30),
-                          borderSide: BorderSide.none,
+                          onTap: _handleSendMessage,
+                          splashColor: Colors.teal.shade300,
+                          child: Container(
+                            padding: const EdgeInsets.all(14),
+                            child: const Icon(
+                              Icons.send,
+                              color: Colors.white,
+                              size: 26,
+                            ),
+                          ),
                         ),
                       ),
-                      onSubmitted: (_) => _handleSendMessage(),
-                    ),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  Material(
-                    color: Colors.teal.shade600,
-                    borderRadius: BorderRadius.circular(30),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(30),
-                      onTap: _handleSendMessage,
-                      splashColor: Colors.teal.shade300,
-                      child: Container(
-                        padding: const EdgeInsets.all(14),
-                        child: const Icon(
-                          Icons.send,
-                          color: Colors.white,
-                          size: 26,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
