@@ -35,6 +35,7 @@ class _PatientSettingsPageState extends State<PatientSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Ayarlar'),
         backgroundColor: const Color(0xFF04BF8A),
       ),

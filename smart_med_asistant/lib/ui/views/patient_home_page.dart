@@ -4,7 +4,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottie/lottie.dart'; // Lottie için import
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
+import 'package:smart_med_assistant/ui/views/gemini_chat_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_prescriptions_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_settings_page.dart';
 
@@ -204,7 +206,6 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 10),
               ListTile(
                 leading: const Icon(
@@ -252,46 +253,38 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      backgroundColor: Colors.white, // Açık renk arka plan
+                      backgroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       title: const Text(
                         'Çıkış Yap',
                         style: TextStyle(
-                          color: Color(0xFF024059), // Koyu mavi başlık
+                          color: Color(0xFF024059),
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
                       ),
                       content: const Text(
                         'Uygulamadan çıkmak istediğinize emin misiniz?',
-                        style: TextStyle(
-                          color: Colors.black87,
-                        ), // Okunaklı koyu renk içerik
+                        style: TextStyle(color: Colors.black87),
                       ),
                       actions: [
                         TextButton(
                           onPressed: () {
-                            Navigator.of(
-                              context,
-                            ).pop(); // Dialogu kapatır, çıkış yapmaz
+                            Navigator.of(context).pop();
                           },
                           child: const Text(
                             'İptal',
                             style: TextStyle(
-                              color: Color(
-                                0xFF04BF8A,
-                              ), // Açık yeşil iptal butonu
+                              color: Color(0xFF04BF8A),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(
-                              0xFF04BF8A,
-                            ), // Açık yeşil buton
+                            backgroundColor: const Color(0xFF04BF8A),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -303,8 +296,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                           ),
                           onPressed: () async {
                             await FirebaseAuth.instance.signOut();
-                            Navigator.of(context).pop(); // Dialogu kapat
-                            Navigator.pop(context); // Drawer'ı kapat
+                            Navigator.of(context).pop();
+                            Navigator.pop(context);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -330,32 +323,61 @@ class _PatientHomePageState extends State<PatientHomePage> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.favorite, color: Color(0xFF04BF8A), size: 60),
-              const SizedBox(height: 20),
-              Text(
-                'Hoşgeldin, $fullName!',
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF025940),
-                ),
-                textAlign: TextAlign.center,
+      body: Stack(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.favorite,
+                    color: Color(0xFF04BF8A),
+                    size: 60,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Hoşgeldin, $fullName!',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF025940),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Sağlık bilgilerine buradan kolayca ulaşabilirsin.',
+                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              const Text(
-                'Sağlık bilgilerine buradan kolayca ulaşabilirsin.',
-                style: TextStyle(fontSize: 16, color: Colors.black54),
-                textAlign: TextAlign.center,
-              ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => GeminiChatPage()),
+                );
+              },
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              child: Lottie.asset(
+                'assets/animations/chatbot.json',
+                width: 70,
+                height: 70,
+                fit: BoxFit.cover,
+                repeat: true,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

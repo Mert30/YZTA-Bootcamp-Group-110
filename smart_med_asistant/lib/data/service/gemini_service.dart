@@ -44,15 +44,22 @@ class GeminiService {
     return parsed;
   }
 
+  Future<String> fetchGeminiSummary(Map<String, dynamic> ilac) async {
+    final prompt = buildPrompt(ilac);
+    final content = [Content.text(prompt)];
+    final response = await _model.generateContent(content);
+    return response.text ?? "Yanıt alınamadı.";
+  }
+
   String buildPrompt(Map<String, dynamic> ilac) {
     return '''
 Aşağıdaki ilaç bilgilerini dikkate alarak cevap oluştur:
 
-• İlaç Adı: ${ilac['Product_Name']}
-• Etken Madde: ${ilac['Active_Ingredient']}
-• ATC Kodu: ${ilac['ATC_code']}
-• Kategori: ${ilac['Category_1']} > ${ilac['Category_2']} > ${ilac['Category_3']} > ${ilac['Category_4']} > ${ilac['Category_5']}
-• Açıklama: ${ilac['Description']}
+• İlaç Adı: ${ilac['Product_Name'] ?? 'Bilinmiyor'}
+• Etken Madde: ${ilac['Active_Ingredient'] ?? 'Bilinmiyor'}
+• ATC Kodu: ${ilac['ATC_code'] ?? 'Bilinmiyor'}
+• Kategori: ${ilac['Category_1'] ?? '-'} > ${ilac['Category_2'] ?? '-'} > ${ilac['Category_3'] ?? '-'} > ${ilac['Category_4'] ?? '-'} > ${ilac['Category_5'] ?? '-'}
+• Açıklama: ${ilac['Description'] ?? 'Bilinmiyor'}
 
 Aşağıdaki sorulara kısa, sade ve hastanın anlayabileceği şekilde tek tek numaralandırarak yanıt ver:
 
@@ -64,10 +71,34 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
 ''';
   }
 
-  Future<String> fetchGeminiSummary(Map<String, dynamic> ilac) async {
-    final prompt = buildPrompt(ilac);
+  // Hastanın istediği soruyu alıp Gemini'den cevap alıyor
+  Future<String> askCustomQuestion(
+    Map<String, dynamic> ilac,
+    String userQuestion,
+  ) async {
+    final ilacInfo =
+        '''
+İlaç Adı: ${ilac['Product_Name'] ?? 'Bilinmiyor'}
+Etken Madde: ${ilac['Active_Ingredient'] ?? 'Bilinmiyor'}
+ATC Kodu: ${ilac['ATC_code'] ?? 'Bilinmiyor'}
+Kategori: ${ilac['Category_1'] ?? '-'} > ${ilac['Category_2'] ?? '-'} > ${ilac['Category_3'] ?? '-'} > ${ilac['Category_4'] ?? '-'} > ${ilac['Category_5'] ?? '-'}
+Açıklama: ${ilac['Description'] ?? 'Bilinmiyor'}
+''';
+
+    final prompt =
+        '''
+Aşağıdaki ilaç bilgilerini göz önünde bulundurarak kullanıcının sorusuna sade, doğru ve anlaşılır şekilde yanıt ver. Eğer bilgi yetersizse bunu da belirt.
+
+$ilacInfo
+
+Kullanıcının sorusu: "$userQuestion"
+
+Cevap:
+''';
+
     final content = [Content.text(prompt)];
     final response = await _model.generateContent(content);
-    return response.text ?? "Yanıt alınamadı.";
+    return response.text ??
+        "Sorunu anlayamadım ya da yeterli bilgiye ulaşamadım.";
   }
 }
