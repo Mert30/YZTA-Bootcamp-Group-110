@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/bmi_page.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/diabetes_page.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/heart_disease_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/pregnancy_risk_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/psychological_check_page.dart';
 
@@ -9,8 +11,28 @@ class DiseaseDetectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final diseases = [
-      {"title": "Kalp Hastalığı", "icon": Icons.favorite, "onTap": () {}},
-      {"title": "Diyabet", "icon": Icons.bloodtype, "onTap": () {}},
+      {
+        "title": "Kalp Hastalığı",
+        "icon": Icons.favorite,
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HeartDiseasePage()),
+          );
+        },
+      },
+      {
+        "title": "Diyabet",
+        "icon": Icons.bloodtype,
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DiabetesDetectionPage(),
+            ),
+          );
+        },
+      },
       {"title": "Göğüs Kanseri", "icon": Icons.search, "onTap": () {}},
       {
         "title": "Obezite / VKİ",

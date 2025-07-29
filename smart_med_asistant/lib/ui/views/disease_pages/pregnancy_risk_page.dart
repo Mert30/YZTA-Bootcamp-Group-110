@@ -21,7 +21,7 @@ class _PregnancyRiskPageState extends State<PregnancyRiskPage> {
   final heartRateController = TextEditingController();
 
   String? result;
-  late Interpreter interpreter;
+  Interpreter? _interpreter;
 
   @override
   void initState() {
@@ -30,9 +30,14 @@ class _PregnancyRiskPageState extends State<PregnancyRiskPage> {
   }
 
   Future<void> loadModel() async {
-    interpreter = await Interpreter.fromAsset(
-      'models/pregnancy_risk_model.tflite',
-    );
+    try {
+      _interpreter = await Interpreter.fromAsset(
+        'assets/ml_models/pregnancy_risk_model.tflite',
+      );
+      setState(() {});
+    } catch (e) {
+      print("Model yüklenirken hata oluştu: $e");
+    }
   }
 
   void predict() {
@@ -48,7 +53,7 @@ class _PregnancyRiskPageState extends State<PregnancyRiskPage> {
     ];
     var output = List.filled(1 * 3, 0.0).reshape([1, 3]);
 
-    interpreter.run(input, output);
+    _interpreter?.run(input, output);
 
     int predictedIndex = output[0].indexOf(
       output[0].reduce((a, b) => a > b ? a : b),
