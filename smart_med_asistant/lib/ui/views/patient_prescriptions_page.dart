@@ -83,7 +83,6 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
               backgroundColor: Colors.green.shade600,
             ),
           );
-          // Reçeteleri tekrar yüklemek için cubit fetch fonksiyonunu çağır
           context.read<PatientPrescriptionsCubit>().fetchPrescriptions();
         }
       } catch (e) {
@@ -97,6 +96,69 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
         }
       }
     }
+  }
+
+  void _showInteractionDetails(BuildContext context, String analysis) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.8,
+            maxWidth: MediaQuery.of(context).size.width * 0.9,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Row(
+                  children: [
+                    Icon(Icons.warning_amber_rounded, 
+                        color: Colors.orange[800], size: 28),
+                    const SizedBox(width: 8),
+                    Text(
+                      'İlaç Etkileşim Uyarısı',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.orange[800],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(height: 1),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    analysis,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('ANLADIM'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -157,104 +219,167 @@ class _PatientPrescriptionsPageState extends State<PatientPrescriptionsPage> {
                       );
                     }
 
-                    return ListView.builder(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 20,
-                      ),
-                      itemCount: prescriptions.length,
-                      itemBuilder: (context, index) {
-                        final p = prescriptions[index];
-                        final ilacAdi = MedicineNameFinder.getMedicineName(
-                          p.barcode,
-                        );
-
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          elevation: 4,
-                          margin: const EdgeInsets.only(bottom: 16),
-                          shadowColor: mediumGreen.withOpacity(0.2),
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      PrescriptionDetailPage(prescription: p),
-                                ),
-                              );
-                            },
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 16,
-                            ),
-                            leading: Container(
+                    return Column(
+                      children: [
+                        // Etkileşim Uyarı Banner'ı
+                        if (state.interactionAnalysis?.isNotEmpty ?? false)
+                          InkWell(
+                            onTap: () => _showInteractionDetails(
+                                context, state.interactionAnalysis!),
+                            child: Container(
+                              width: double.infinity,
                               padding: const EdgeInsets.all(12),
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
-                                color: mediumGreen.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                Icons.medication,
-                                color: darkGreen,
-                                size: 32,
-                              ),
-                            ),
-                            title: Text(
-                              ilacAdi,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: textDark,
-                              ),
-                            ),
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Başlangıç: ${formatDate(p.startDate)}",
-                                    style: TextStyle(
-                                      color: textDark.withOpacity(0.75),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "Bitiş: ${formatDate(p.finishDate)}",
-                                    style: TextStyle(
-                                      color: textDark.withOpacity(0.75),
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                color: Colors.orange[100],
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: Colors.orange),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.orange.shade100,
+                                    Colors.orange.shade50
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.orange.withOpacity(0.1),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
                                   ),
                                 ],
                               ),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: mediumGreen,
-                                  size: 20,
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Colors.red.shade700,
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.warning_amber_rounded,
+                                      color: Colors.orange),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      "İlaç etkileşim uyarısı! Detaylar için tıklayın.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: Colors.orange[800],
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                    ),
                                   ),
-                                  tooltip: "Sil",
-                                  onPressed: () =>
-                                      _deletePrescription(p.id, ilacAdi),
-                                ),
-                              ],
+                                  const Icon(Icons.chevron_right,
+                                      color: Colors.orange),
+                                ],
+                              ),
                             ),
                           ),
-                        );
-                      },
+
+                        // İlaç Listesi
+                        Expanded(
+                          child: ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            itemCount: prescriptions.length,
+                            itemBuilder: (context, index) {
+                              final p = prescriptions[index];
+                              final ilacAdi = MedicineNameFinder.getMedicineName(
+                                p.barcode,
+                              );
+
+                              return Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                elevation: 4,
+                                margin: const EdgeInsets.only(bottom: 16),
+                                shadowColor: mediumGreen.withOpacity(0.2),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            PrescriptionDetailPage(
+                                                prescription: p),
+                                      ),
+                                    );
+                                  },
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                    vertical: 16,
+                                  ),
+                                  leading: Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: mediumGreen.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Icon(
+                                      Icons.medication,
+                                      color: darkGreen,
+                                      size: 32,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    ilacAdi,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      color: textDark,
+                                    ),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 6),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Başlangıç: ${formatDate(p.startDate)}",
+                                          style: TextStyle(
+                                            color: textDark.withOpacity(0.75),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "Bitiş: ${formatDate(p.finishDate)}",
+                                          style: TextStyle(
+                                            color: textDark.withOpacity(0.75),
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: mediumGreen,
+                                        size: 20,
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Colors.red.shade700,
+                                        ),
+                                        tooltip: "Sil",
+                                        onPressed: () =>
+                                            _deletePrescription(p.id, ilacAdi),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     );
                   }
 

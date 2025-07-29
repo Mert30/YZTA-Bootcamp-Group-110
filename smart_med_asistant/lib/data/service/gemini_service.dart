@@ -113,5 +113,48 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
     }
   }
 
+  Future<String> analyzeDrugInteractions(List<String> barcodes) async {
+    final ilacMap = await loadIlacMap();
 
+    final selectedIlaclar = barcodes
+        .where((barcode) => ilacMap.containsKey(barcode))
+        .map((barcode) => ilacMap[barcode]!)
+        .toList();
+
+    if (selectedIlaclar.length < 2) {
+      return "İlaç etkileşimi için en az iki ilaç gerekli.";
+    }
+
+    final StringBuffer ilacListesi = StringBuffer();
+    for (var ilac in selectedIlaclar) {
+      ilacListesi.writeln("""
+  • İlaç Adı: ${ilac['Product_Name']}
+  • Etken Madde: ${ilac['Active_Ingredient']}
+  • Açıklama: ${ilac['Description']}
+  """);
+    }
+
+    final String prompt = '''
+    Aşağıda reçetede yer alan ilaçların adları, etken maddeleri ve açıklamaları verilmiştir. Bu ilaçlar aynı anda bir hastaya reçete edilmiştir.
+
+    İlaçlar:
+    $ilacListesi
+
+    Bu ilaçlar arasında bilinen bir ilaç etkileşimi, çakışma ya da zararlı kombinasyon var mı?
+
+    Yanıtında şunları belirt:
+    - Etkileşim varsa hangi ilaçlar arasında olduğunu belirt.
+    - Etkileşimin türünü ve potansiyel etkilerini açıkla.
+    - Ciddi bir etkileşim varsa bunu özellikle vurgula.
+
+    Yanıtı sadece aşağıdaki biçimde, hastanın anlayacağı sade ve açık cümlelerle ver:
+    - "Evet, bu ilaçlar arasında..." gibi gereksiz giriş cümleleri kullanma.
+    - Gereksiz akademik terimler, süslü başlıklar veya özel biçimlendirmeler kullanma.
+    - Yanıtı sade, açık ve kısa tut. Kullanıcı dostu, anlaşılır bir dille açıklayıcı olarak yaz.
+    ''';
+
+    final content = [Content.text(prompt)];
+    final response = await _model.generateContent(content);
+    return response.text ?? "Etkileşim bilgisi alınamadı.";
+  }
 }
