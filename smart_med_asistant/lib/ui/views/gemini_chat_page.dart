@@ -4,14 +4,15 @@ import 'package:smart_med_assistant/data/service/gemini_service.dart';
 import 'package:smart_med_assistant/ui/cubit/chatbot_cubit.dart';
 
 class GeminiChatPage extends StatelessWidget {
-
-  const GeminiChatPage({super.key});  //All final variables must be initialized, but 'ilac' isn't Try adding an initializer for the field.
+  const GeminiChatPage({
+    super.key,
+  }); //All final variables must be initialized, but 'ilac' isn't Try adding an initializer for the field.
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ChatbotCubit(            
-        geminiService: GeminiService("AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE"), 
+      create: (_) => ChatbotCubit(
+        geminiService: GeminiService("AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE"),
       ),
       child: const _GeminiChatView(),
     );
@@ -19,7 +20,7 @@ class GeminiChatPage extends StatelessWidget {
 }
 
 class _GeminiChatView extends StatefulWidget {
-  const _GeminiChatView({super.key});
+  const _GeminiChatView();
 
   @override
   State<_GeminiChatView> createState() => _GeminiChatViewState();
@@ -101,7 +102,11 @@ class _GeminiChatViewState extends State<_GeminiChatView>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.chat_bubble_outline, size: 80, color: Colors.teal.shade200),
+          Icon(
+            Icons.chat_bubble_outline,
+            size: 80,
+            color: Colors.teal.shade200,
+          ),
           const SizedBox(height: 20),
           Text(
             "Merhaba! Sorularını aşağıdan yazarak benden cevabını alabilirsin.",
@@ -156,7 +161,10 @@ class _GeminiChatViewState extends State<_GeminiChatView>
                         ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                   color: Colors.white,
                   child: Row(
                     children: [

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/bmi_page.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/pregnancy_risk_page.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/psychological_check_page.dart';
 
 class DiseaseDetectionPage extends StatelessWidget {
   const DiseaseDetectionPage({super.key});
@@ -9,18 +12,39 @@ class DiseaseDetectionPage extends StatelessWidget {
       {"title": "Kalp Hastalığı", "icon": Icons.favorite, "onTap": () {}},
       {"title": "Diyabet", "icon": Icons.bloodtype, "onTap": () {}},
       {"title": "Göğüs Kanseri", "icon": Icons.search, "onTap": () {}},
-      {"title": "Obezite / VKİ", "icon": Icons.monitor_weight, "onTap": () {}},
+      {
+        "title": "Obezite / VKİ",
+        "icon": Icons.monitor_weight,
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const BmiPage()),
+          );
+        },
+      },
       {
         "title": "Gebelik Riskleri",
         "icon": Icons.pregnant_woman,
-        "onTap": () {},
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const PregnancyRiskPage()),
+          );
+        },
       },
       {"title": "Göz Hastalıkları", "icon": Icons.visibility, "onTap": () {}},
       {"title": "Akciğer Hastalıkları", "icon": Icons.air, "onTap": () {}},
       {
         "title": "Psikolojik Rahatsızlıklar",
         "icon": Icons.psychology,
-        "onTap": () {},
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PsychologicalCheckPage(),
+            ),
+          );
+        },
       },
     ];
 

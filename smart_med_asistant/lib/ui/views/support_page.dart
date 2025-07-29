@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_settings_page.dart';
 
 class SupportPage extends StatefulWidget {

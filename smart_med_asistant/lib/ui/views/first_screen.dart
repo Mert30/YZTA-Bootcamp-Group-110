@@ -36,10 +36,6 @@ class _FirstScreenState extends State<FirstScreen>
     );
   }
 
-  void exitClick() {
-    SystemNavigator.pop();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -97,24 +93,7 @@ class _FirstScreenState extends State<FirstScreen>
               repeat: true,
             ),
           ),
-          /*
-          /// 🔵 OVERLAY (butonları rahat görmek için koyu filtre)
-          Positioned.fill(
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xAA024059),
-                    Color(0xAA026873),
-                    Color(0xAA04BF8A),
-                  ],
-                ),
-              ),
-            ),
-          ),
-*/
+
           /// 🟢 LOGO ve HOŞ GELDİNİZ YAZISI
           FadeTransition(
             opacity: _logoFade,
@@ -169,7 +148,7 @@ class _FirstScreenState extends State<FirstScreen>
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 60),
+                  padding: const EdgeInsets.only(bottom: 110),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -185,13 +164,6 @@ class _FirstScreenState extends State<FirstScreen>
                         Icons.person,
                         patientPageClick,
                         color: Colors.white,
-                      ),
-                      const SizedBox(height: 15),
-                      _buildButton(
-                        "Çıkış",
-                        Icons.exit_to_app,
-                        exitClick,
-                        color: Colors.red,
                       ),
                     ],
                   ),
