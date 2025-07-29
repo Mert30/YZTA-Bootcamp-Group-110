@@ -55,7 +55,8 @@ dependencies:
   timezone: ^0.10.1
   permission_handler: ^12.0.1
   google_fonts: ^6.2.1
-
+  tflite_flutter: ^0.11.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,6 +87,7 @@ flutter:
     - assets/animations/success.json
     - assets/animations/loading.json
     - assets/animations/chatbot.json
+    - assets/ml_models/pregnancy_risk_model.tflite
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

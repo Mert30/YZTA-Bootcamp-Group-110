@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart'; // Lottie import edildi
 import 'package:smart_med_assistant/ui/views/pharmacy_register_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_register_page.dart';
@@ -120,7 +119,7 @@ class _FirstScreenState extends State<FirstScreen>
                         ),
                         padding: const EdgeInsets.all(15),
                         child: Image.asset(
-                          'assets/medimatenewlogo.png',
+                          'assets/images/medimatenewlogo.png',
                           width: size.width * 0.4,
                         ),
                       ),
