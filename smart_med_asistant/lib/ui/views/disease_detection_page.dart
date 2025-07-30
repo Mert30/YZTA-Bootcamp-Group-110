@@ -35,7 +35,7 @@ class DiseaseDetectionPage extends StatelessWidget {
         },
       },
       {
-        "title": "Obezite / VKİ",
+        "title": "Vücut Kitle İndeksi",
         "icon": Icons.monitor_weight,
         "onTap": () {
           Navigator.pushReplacement(

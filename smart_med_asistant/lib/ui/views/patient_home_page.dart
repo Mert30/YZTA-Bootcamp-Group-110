@@ -226,21 +226,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   );
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.settings, color: Color(0xFF025940)),
-                title: const Text(
-                  'Ayarlar',
-                  style: TextStyle(color: Color(0xFF025940)),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PatientSettingsPage(),
-                    ),
-                  );
-                },
-              ),
+
               ListTile(
                 leading: const Icon(
                   Icons.health_and_safety,
@@ -255,6 +241,21 @@ class _PatientHomePageState extends State<PatientHomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DiseaseDetectionPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings, color: Color(0xFF025940)),
+                title: const Text(
+                  'Ayarlar',
+                  style: TextStyle(color: Color(0xFF025940)),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PatientSettingsPage(),
                     ),
                   );
                 },
