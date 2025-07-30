@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/bmi_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/diabetes_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/heart_disease_page.dart';
+import 'package:smart_med_assistant/ui/views/disease_pages/lung_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/pregnancy_risk_page.dart';
 import 'package:smart_med_assistant/ui/views/disease_pages/psychological_check_page.dart';
 
@@ -33,7 +34,6 @@ class DiseaseDetectionPage extends StatelessWidget {
           );
         },
       },
-      {"title": "Göğüs Kanseri", "icon": Icons.search, "onTap": () {}},
       {
         "title": "Obezite / VKİ",
         "icon": Icons.monitor_weight,
@@ -55,7 +55,16 @@ class DiseaseDetectionPage extends StatelessWidget {
         },
       },
       {"title": "Göz Hastalıkları", "icon": Icons.visibility, "onTap": () {}},
-      {"title": "Akciğer Hastalıkları", "icon": Icons.air, "onTap": () {}},
+      {
+        "title": "Akciğer Hastalıkları",
+        "icon": Icons.air,
+        "onTap": () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LungDetectionPage()),
+          );
+        },
+      },
       {
         "title": "Psikolojik Rahatsızlıklar",
         "icon": Icons.psychology,
