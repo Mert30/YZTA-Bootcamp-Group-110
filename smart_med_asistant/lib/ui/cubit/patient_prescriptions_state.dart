@@ -8,8 +8,9 @@ class PatientPrescriptionsLoading extends PatientPrescriptionsState {}
 
 class PatientPrescriptionsLoaded extends PatientPrescriptionsState {
   final List<Prescription> prescriptions;
+  final String? interactionAnalysis; 
 
-  PatientPrescriptionsLoaded(this.prescriptions);
+  PatientPrescriptionsLoaded(this.prescriptions, {this.interactionAnalysis});
 }
 
 class PatientPrescriptionsError extends PatientPrescriptionsState {

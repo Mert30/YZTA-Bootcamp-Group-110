@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/data/entity/prescription.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/data/service/notification_service.dart';
+import 'package:smart_med_assistant/data/service/gemini_service.dart';
 
 part 'patient_prescriptions_state.dart';
 
@@ -22,8 +23,21 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
       // Bildirimleri planla
       await _planNotificationsFromPrescriptions(prescriptions);
 
+      // Gemini ile etkileşim analizi
+      final barcodes = prescriptions.map((e) => e.barcode).where((e) => e.isNotEmpty).toList();
+
+      if (barcodes.length >= 2) {
+        final geminiService = GeminiService("AIzaSyCogncljqhDbk53iFWtLvfXGmoKOCmUnuE");
+        geminiService.startChatSession();
+
+        final result = await geminiService.analyzeDrugInteractions(barcodes);
+
+        // Yeni state emit et (aynı reçeteler + etkileşim sonucu)
+        emit(PatientPrescriptionsLoaded(prescriptions, interactionAnalysis: result));
+      }
+
       // Test bildirimi (geliştirme aşamasında kullanın)
-      await _scheduleTestNotification();
+      //await _scheduleTestNotification();
     } catch (e) {
       emit(PatientPrescriptionsError(e.toString()));
     }
@@ -163,4 +177,24 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
       body: 'Bu bildirim hemen gösterildi!',
     );
   }
+
+  Future<String> analyzeDrugInteractionsWithGemini(GeminiService geminiService) async {
+    if (state is! PatientPrescriptionsLoaded) {
+      return "Reçeteler yüklenmedi. Lütfen tekrar deneyin.";
+    }
+
+    final prescriptions = (state as PatientPrescriptionsLoaded).prescriptions;
+
+    final barcodes = prescriptions
+        .map((e) => e.barcode)
+        .where((barcode) => barcode.isNotEmpty)
+        .toList();
+
+    if (barcodes.length < 2) {
+      return "Etkileşim analizi için en az iki ilaç gerekli.";
+    }
+
+    return await geminiService.analyzeDrugInteractions(barcodes);
+  }
+
 }
