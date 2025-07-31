@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_med_assistant/data/service/notification_service.dart';
 import 'package:smart_med_assistant/ui/views/first_screen.dart';
 import 'package:smart_med_assistant/ui/views/patient_reset_password_page.dart';
 import 'package:smart_med_assistant/ui/views/support_page.dart';
+import 'package:smart_med_assistant/ui/cubit/patient_prescriptions_cubit.dart';
 
 class PatientSettingsPage extends StatefulWidget {
   const PatientSettingsPage({super.key});
@@ -15,12 +19,92 @@ class _PatientSettingsPageState extends State<PatientSettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool _notificationsEnabled = true;
+  bool _isLoading = false;
 
-  void _toggleNotifications(bool value) {
+  @override
+  void initState() {
+    super.initState();
+    _loadNotificationSettings();
+  }
+
+  Future<void> _loadNotificationSettings() async {
     setState(() {
-      _notificationsEnabled = value;
+      _isLoading = true;
     });
-    // Burada bildirim ayarları Firestore veya local preferences kaydedilebilir
+    
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final enabled = await NotificationService.areNotificationsEnabled();
+      
+      setState(() {
+        _notificationsEnabled = enabled;
+      });
+    } catch (e) {
+      print('Bildirim ayarları yüklenirken hata: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _toggleNotifications(bool value) async {
+    if (_isLoading) return;
+    
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Önce NotificationService'e kaydet
+      await NotificationService.setNotificationsEnabled(value);
+      
+      // Sonra yerel state'i güncelle
+      setState(() {
+        _notificationsEnabled = value;
+      });
+
+      if (value) {
+        // Bildirimleri yeniden etkinleştir
+        final cubit = context.read<PatientPrescriptionsCubit>();
+        await cubit.rescheduleNotifications();
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Bildirimler etkinleştirildi'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        // Tüm bildirimleri iptal et
+        await NotificationService.cancelAll();
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Bildirimler devre dışı bırakıldı'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Bildirim ayarı değiştirilirken hata: $e');
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Hata: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      
+      // Hata durumunda eski değere geri dön
+      setState(() {
+        _notificationsEnabled = !value;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _signOut() async {
