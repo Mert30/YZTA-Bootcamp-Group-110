@@ -4,6 +4,7 @@ import 'package:smart_med_assistant/data/entity/prescription.dart';
 import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 import 'package:smart_med_assistant/data/service/notification_service.dart';
 import 'package:smart_med_assistant/data/service/gemini_service.dart';
+import 'package:smart_med_assistant/data/utils/medicine_name_finder.dart';
 
 part 'patient_prescriptions_state.dart';
 
@@ -20,8 +21,10 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
       final prescriptions = await _repository.getPrescriptionsForCurrentUser();
       emit(PatientPrescriptionsLoaded(prescriptions));
 
-      // Bildirimleri planla
-      await _planNotificationsFromPrescriptions(prescriptions);
+      // Bildirim durumunu kontrol et ve buna göre planlama yap
+      if (await NotificationService.areNotificationsEnabled()) {
+        await _planNotificationsFromPrescriptions(prescriptions);
+      }
 
       // Gemini ile etkileşim analizi
       final barcodes = prescriptions.map((e) => e.barcode).where((e) => e.isNotEmpty).toList();
@@ -62,6 +65,14 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
     List<Prescription> prescriptions,
   ) async {
     try {
+    
+      // Önce bildirimlerin açık olup olmadığını kontrol et
+      final notificationsEnabled = await NotificationService.areNotificationsEnabled();
+      if (!notificationsEnabled) {
+        print('Bildirimler kapalı, planlama yapılmıyor');
+        return;
+      }
+
       // Önceki bildirimleri temizle
       await NotificationService.cancelAll();
 
@@ -84,8 +95,9 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
           print('Reçete süresi dolmuş: ${prescription.barcode}');
           continue;
         }
-
-        print('Aktif reçete işleniyor: ${prescription.barcode}');
+        
+        final ilacAdi = MedicineNameFinder.getMedicineName(prescription.barcode);
+        print('Aktif reçete işleniyor: $ilacAdi');
 
         // Zaman etiketlerini ayır ve temizle
         final timeLabels = prescription.selectedTime
@@ -103,13 +115,13 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
             await NotificationService.scheduleDailyNotification(
               id: notificationId++,
               title: 'İlaç Hatırlatma 💊',
-              body: '${prescription.barcode} ilacını alma zamanınız geldi!',
+              body: '$ilacAdi ilacını alma zamanınız geldi!',
               time: timeOfDay,
               payload: 'medicine_${prescription.barcode}_$timeLabel',
             );
             scheduledCount++;
             print(
-              'Bildirim zamanlandı: ${prescription.barcode} - $timeLabel (${timeOfDay.hour}:${timeOfDay.minute})',
+              'Bildirim zamanlandı: $ilacAdi - $timeLabel (${timeOfDay.hour}:${timeOfDay.minute})',
             );
           } else {
             print('Tanınmayan zaman etiketi: $timeLabel');
@@ -133,7 +145,7 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
       case 'sabah':
         return const TimeOfDay(hour: 8, minute: 0); // Sabah 08:00
       case 'öğle':
-        return const TimeOfDay(hour: 13, minute: 15); // Öğle 13:15
+        return const TimeOfDay(hour: 12, minute: 8); // Öğle 13:15
       case 'akşam':
         return const TimeOfDay(hour: 19, minute: 0); // Akşam 19:00
       default:
@@ -160,7 +172,13 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
   Future<void> rescheduleNotifications() async {
     if (state is PatientPrescriptionsLoaded) {
       final prescriptions = (state as PatientPrescriptionsLoaded).prescriptions;
-      await _planNotificationsFromPrescriptions(prescriptions);
+      final notificationsEnabled = await NotificationService.areNotificationsEnabled();
+      
+      if (notificationsEnabled) {
+        await _planNotificationsFromPrescriptions(prescriptions);
+      } else {
+        print('Bildirimler kapalı, yeniden planlama yapılmıyor');
+      }
     }
   }
 
@@ -176,6 +194,10 @@ class PatientPrescriptionsCubit extends Cubit<PatientPrescriptionsState> {
       title: 'Anlık Test Bildirimi',
       body: 'Bu bildirim hemen gösterildi!',
     );
+  }
+
+  Future<bool> checkNotificationsEnabled() async {
+    return await NotificationService.areNotificationsEnabled();
   }
 
   Future<String> analyzeDrugInteractionsWithGemini(GeminiService geminiService) async {

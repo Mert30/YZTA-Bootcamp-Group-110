@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -94,6 +95,12 @@ class NotificationService {
     String? payload,
   }) async {
     try {
+      // Bildirimler kapalıysa işlem yapma
+      if (!(await areNotificationsEnabled())) {
+        print('Bildirimler kapalı, zamanlama yapılmadı');
+        return;
+      }
+
       final now = tz.TZDateTime.now(tz.local);
       
       // Bugün için zamanlanmış saat
@@ -177,6 +184,20 @@ class NotificationService {
       print('Tek seferlik bildirim zamanlama hatası: $e');
     }
   }
+
+  static Future<bool> areNotificationsEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('notifications_enabled') ?? true;
+  }
+
+  static Future<void> setNotificationsEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('notifications_enabled', enabled);
+    
+    if (!enabled) {
+      await cancelAll();
+    }
+  }  
 
   // Zamanlanan bildirimleri listele (debug için)
   static Future<void> listScheduledNotifications() async {
