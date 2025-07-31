@@ -226,22 +226,6 @@ class _DashboardPageState extends State<DashboardPage> {
               subtitle: 'Henüz hastanız bulunmuyor.',
               iconColor: Colors.deepPurple.shade400,
             ),
-
-            // Yeni Bildirimler kartı
-            buildCard(
-              icon: Icons.notifications_active_rounded,
-              title: 'Bildirimler',
-              subtitle: 'Yeni bildirim yok',
-              iconColor: Colors.orange.shade700,
-              onTap: () {
-                // İstersen buraya bildirimler sayfası açılabilir
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Bildirimler sayfası açılacak.'),
-                  ),
-                );
-              },
-            ),
           ],
         ),
       ),

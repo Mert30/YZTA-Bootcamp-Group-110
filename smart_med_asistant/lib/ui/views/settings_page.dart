@@ -50,16 +50,6 @@ class SettingsPage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           _buildSettingsOption(
-            icon: Icons.notifications_active,
-            title: 'Bildirimler',
-            subtitle: 'İlaç hatırlatmaları, güncellemeler',
-            onTap: () {},
-            cardColor: cardColor,
-            iconColor: iconColor,
-            titleColor: darkText!,
-            subtitleColor: mediumText!,
-          ),
-          _buildSettingsOption(
             icon: Icons.lock,
             title: 'Gizlilik',
             subtitle: 'Veri yönetimi ve izinler',
@@ -71,8 +61,8 @@ class SettingsPage extends StatelessWidget {
             },
             cardColor: cardColor,
             iconColor: iconColor,
-            titleColor: darkText,
-            subtitleColor: mediumText,
+            titleColor: darkText!,
+            subtitleColor: mediumText!,
           ),
           _buildSettingsOption(
             icon: Icons.info_outline,

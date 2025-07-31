@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_med_assistant/ui/views/password_reset_page.dart';
 import 'package:smart_med_assistant/ui/views/patient_home_page.dart';
-import '../../data/repo/patient_repository.dart'; // varsa
+import 'package:firebase_auth/firebase_auth.dart';
+import '../../data/repo/patient_repository.dart';
 import '../../ui/cubit/patient_login_cubit.dart';
 
 class PatientLoginPage extends StatefulWidget {
@@ -18,7 +19,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
   final _passwordController = TextEditingController();
   final ValueNotifier<bool> _obscurePassword = ValueNotifier(true);
 
-  // Renkleri eczacı loginle aynı yaptım:
+  // Renkler
   final Color primaryColor = const Color(0xFF026873);
   final Color accentColor = const Color(0xFF04BF8A);
   final Color inputBorderColor = const Color(0xFF025940);
@@ -86,10 +87,48 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                         ),
                       );
                     } else if (state is PatientLoginFailure) {
+                      String errorMessage = state.error;
+
+                      if (errorMessage.contains('user-not-found')) {
+                        errorMessage =
+                            "Bu e-posta ile kayıtlı bir kullanıcı bulunamadı.";
+                      } else if (errorMessage.contains('wrong-password')) {
+                        errorMessage = "Şifre yanlış. Lütfen tekrar deneyin.";
+                      } else if (errorMessage.contains('invalid-email')) {
+                        errorMessage = "Geçersiz e-posta adresi.";
+                      }
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(state.error),
-                          backgroundColor: Colors.red,
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          duration: const Duration(seconds: 4),
+                          content: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade600,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.error_outline,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Text(
+                                    errorMessage,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     }

@@ -52,7 +52,7 @@ class _EyeDetectionPageState extends State<EyeDetectionPage> {
     setState(() => _loading = true);
 
     // Örnek varsayım: Model 224x224 girdi alıyor ve 4 sınıf döndürüyor
-    final imageBytes = image.readAsBytesSync();
+
     var input = List.generate(
       1,
       (_) => List.generate(

@@ -59,7 +59,6 @@ class _HeartDiseasePageState extends State<HeartDiseasePage> {
       double.parse(thalController.text),
     ];
 
-    var inputShape = interpreter.getInputTensor(0).shape;
     var outputShape = interpreter.getOutputTensor(0).shape;
     var output = List.filled(outputShape[1], 0.0).reshape([1, outputShape[1]]);
 
@@ -142,7 +141,6 @@ class _HeartDiseasePageState extends State<HeartDiseasePage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) predict();
                 },
-                child: const Text("Riski Hesapla"),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF04BF8A),
                   foregroundColor: Colors.white,
@@ -154,6 +152,7 @@ class _HeartDiseasePageState extends State<HeartDiseasePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
+                child: const Text("Riski Hesapla"),
               ),
               const SizedBox(height: 24),
               if (result != null)
