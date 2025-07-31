@@ -171,7 +171,9 @@ class _GeminiChatViewState extends State<_GeminiChatView>
                       Expanded(
                         child: TextField(
                           controller: _controller,
-                          textInputAction: TextInputAction.send,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.newline,
+                          maxLines: null,
                           decoration: InputDecoration(
                             hintText: 'Sorunuzu yazın...',
                             filled: true,
