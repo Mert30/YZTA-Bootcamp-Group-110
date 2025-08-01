@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_med_assistant/ui/views/pharmacy_main_page.dart';
 import '../../../data/repo/prescription_repository.dart';
 import '../cubit/patients_cubit.dart';
 import 'add_medicine_page.dart';
@@ -13,6 +14,17 @@ class PatientsPage extends StatelessWidget {
       create: (_) => PatientsCubit(PrescriptionRepository())..fetchPatients(),
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PharmacistMainPage(),
+                ), // buraya yönlendireceğin sayfayı yaz
+              );
+            },
+          ),
           backgroundColor: Colors.teal,
           centerTitle: true,
           title: const Text("Hastalarım"),

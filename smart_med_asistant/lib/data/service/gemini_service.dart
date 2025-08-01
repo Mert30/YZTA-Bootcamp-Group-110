@@ -100,6 +100,8 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
   • Kategori: ${foundIlac.value!['Category_1']} > ${foundIlac.value!['Category_2']} > ${foundIlac.value!['Category_3']}
 
   ÖNEMLİ UYARILAR:
+  Sen yalnızca ilaçlar, eczacılık, sağlık ve tıbbi konularda eğitim almış bir yardımcı asistan botsun. 
+  Futbol, magazin, siyaset, teknoloji gibi tıbbi olmayan konularla ilgili sorulara cevap vermemelisin.
   1. Yalnızca düz metin (plain text) formatında cevap ver
   2. **, *, _ gibi biçimlendirme sembollerini KESİNLİKLE KULLANMA
   3. Cevabını "-", "•" gibi madde işaretleriyle başlatma
