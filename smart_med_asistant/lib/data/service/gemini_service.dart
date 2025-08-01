@@ -99,7 +99,11 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
   • Açıklama: ${foundIlac.value!['Description']}
   • Kategori: ${foundIlac.value!['Category_1']} > ${foundIlac.value!['Category_2']} > ${foundIlac.value!['Category_3']}
 
-  Kısa cümlelerle, doğrudan ve anlaşılır cevap ver. Gereksiz tekrar veya akademik dil kullanma. Lütfen cevabında kalın, italik, yıldızlı veya diğer biçimlendirmeleri kullanma. Düz metin (plain text) olarak yanıtla.
+  ÖNEMLİ UYARILAR:
+  1. Yalnızca düz metin (plain text) formatında cevap ver
+  2. **, *, _ gibi biçimlendirme sembollerini KESİNLİKLE KULLANMA
+  3. Cevabını "-", "•" gibi madde işaretleriyle başlatma
+  4. Doğrudan ve basit bir dille cevapla  
   ''';
 
       final content = [Content.text(prompt)];
@@ -109,7 +113,7 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
       // Eğer ilaç bulunamazsa, yine de Gemini'ye soruyu gönder
       final fallbackResponse =
           await _model.generateContent([Content.text(question)]);
-      return fallbackResponse.text ?? "Sorunuzu anlayamadım. Lütfen tekrar deneyin.";
+      return _cleanResponse(fallbackResponse.text ?? "Sorunuzu anlayamadım. Lütfen tekrar deneyin.");
     }
   }
 
@@ -157,4 +161,15 @@ Cevabı sana verilen ilaç bilgilerine göre oluştur. Lütfen yalnızca 1., 2.,
     final response = await _model.generateContent(content);
     return response.text ?? "Etkileşim bilgisi alınamadı.";
   }
+}
+
+String _cleanResponse(String response) {
+  // Tüm biçimlendirme sembollerini kaldır
+  return response
+      .replaceAll('**', '')
+      .replaceAll('*', '')
+      .replaceAll('_', '')
+      .replaceAll('#', '')
+      .replaceAll('```', '')
+      .trim();
 }

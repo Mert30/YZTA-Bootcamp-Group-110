@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'critical_stock_page.dart';
+import 'package:smart_med_assistant/data/repo/prescription_repository.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -12,6 +13,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  final PrescriptionRepository _prescriptionRepo = PrescriptionRepository();
   // Renk paleti
   final Color darkBlue = const Color(0xFF0D3B66);
   final Color mediumBlue = const Color(0xFF2A6F97);
@@ -76,6 +78,16 @@ class _DashboardPageState extends State<DashboardPage> {
         .where('stock_quantity', isLessThan: 10)
         .get();
     return snapshot.size;
+  }
+
+  Future<int> getTotalPatientCount() async {
+    try {
+      final patients = await _prescriptionRepo.getPatientsAddedByPharmacist();
+      return patients.length;
+    } catch (e) {
+      print("Hasta sayısı alınırken hata: $e");
+      return 0;
+    }
   }
 
   Widget buildCard({
@@ -220,11 +232,25 @@ class _DashboardPageState extends State<DashboardPage> {
               },
             ),
 
-            buildCard(
-              icon: Icons.people_alt_rounded,
-              title: 'Toplam Hasta Sayısı',
-              subtitle: 'Henüz hastanız bulunmuyor.',
-              iconColor: Colors.deepPurple.shade400,
+            FutureBuilder<int>(
+              future: getTotalPatientCount(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return Text('Hata: ${snapshot.error}');
+                }
+                final count = snapshot.data ?? 0;
+                return buildCard(
+                  icon: Icons.people_alt_rounded,
+                  title: 'Toplam Hasta Sayısı',
+                  subtitle: count > 0 
+                      ? '$count hasta size tanımlı' 
+                      : 'Henüz hastanız bulunmuyor',
+                  iconColor: Colors.deepPurple.shade400,
+                );
+              },
             ),
           ],
         ),
