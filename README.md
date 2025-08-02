@@ -151,3 +151,32 @@ __4. Medication History and Reporting (Optional Development)__
 	- What Went Well: Problems encountered during the sprint were quickly addressed, and the team focused on finding solutions collaboratively. Effective communication and teamwork were achieved among the team members. Additionally, the transition to the BLoC architecture made the project’s code structure more organized and maintainable.
 
 	- What Could Be Improved: To enhance the security of the GitHub repository, measures such as branch protection rules could be implemented. Moreover, using the project management tool Jira more actively and consistently could provide benefits in the next sprint.
+
+# SPRINT 3 
+
+- **Sprint Notes:**
+
+	- The Firebase quota issue caused by excessive data load was resolved by integrating a new Firebase project.
+	- Core features such as password reset, stock tracking, and patient listing were developed for both pharmacist and patient panels; page designs were also improved.
+	- A system was implemented to automatically send `medication reminders` to patients based on prescriptions defined by the pharmacist.
+	As the main focus of the sprint, AI integration was carried out by adding a `Gemini API-powered chatbot` that answers user questions and a feature that `analyzes drug interactions`.
+	- A `Diagnoses` page was added to the patient panel, and models were developed to predict disease risks. Some models were attempted to be integrated into the project, but the expected performance was not achieved.
+	- General testing of the application was completed, and the detected bugs were fixed.
+	- Throughout Sprint 3, tasks in the Jira backlog were structured using the epic → user story → task hierarchy for better organization and clarity.
+	- Team members completed their tasks on time and with dedication.
+	- Regular team meetings were held. Internal communication was maintained via `WhatsApp` and `Google Meet`.
+
+- **Estimated Story Points to Complete:**
+
+- **Estimation Logic:**
+
+- **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint3-daily-scrum-report.md>)
+
+- **Sprint Board Updates**
+
+- **Product Screenshots**
+
+- **Sprint Review**
+
+- **Sprint Retrospective**
+
