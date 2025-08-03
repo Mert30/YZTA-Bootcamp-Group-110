@@ -136,7 +136,6 @@ __4. Medication History and Reporting (Optional Development)__
 	![Sprint 2 Board](./docs/sprint_board_updates/sprint2-board/sprint2_board_2.jpg)
 
 - **Product Screenshots**
-    
 	[MediMate-Sprint2](https://drive.google.com/drive/folders/1uVxNyLKgyaW3chgnGlmQRTq-g-Bd0RqQ?usp=sharing)
   
 - **Sprint Review**
@@ -185,7 +184,8 @@ __4. Medication History and Reporting (Optional Development)__
 	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board4.jpg)
 	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board5.jpg)
 
-- **Product Screenshots**
+- **Product Screenshots**  
+        [MediMate-Sprint3]([https://drive.google.com/drive/folders/1uVxNyLKgyaW3chgnGlmQRTq-g-Bd0RqQ?usp=drive_link](https://drive.google.com/file/d/1bDc7vafpRupN9JnY7XUPXLWNJGeuzlCD/view?usp=drive_link))
 
 - **Sprint Review**
 
