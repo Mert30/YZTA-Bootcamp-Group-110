@@ -15,53 +15,35 @@ __*MediMate*__ – Smart Medication Tracking Assistant
 
 # PRODUCT DESCRIPTION
 
-MediMate is an AI-powered mobile app developed to simplify medication management for users. It uses barcode scanning, OCR, and GenAI technologies to provide simple, reliable, and personalized information about medications. It also encourages regular and safe medication use by creating personalized reminders for users. It simplifies both individual health tracking and tracking the medications of family members.
+MediMate is a mobile healthcare assistant designed to improve medication management and health awareness for patients through AI-powered features and real-time support. MediMate enables pharmacists to define personalized prescriptions, while patients can easily track their medications, receive timely reminders, and access detailed information about their treatment. With integrated Gemini AI services, users benefit from intelligent drug explanations and interaction risk alerts. MediMate aims to support safer, smarter, and more accessible healthcare experiences.
 
 # PRODUCT FEATURES
 
-__1. Medication Identification and Information via Barcode__
+- Personalized Medication Management: Pharmacists can assign customized prescriptions directly to patients within the app.
 
-- Scanning the barcode on the medication box using a camera
+- Real-Time Medication Tracking: Patients can view their current medications, dosages, and schedules in an intuitive interface.
 
-- Reading barcode data using OpenCV and OCR
+- Automated Reminders: Timely notifications help patients take their medications on schedule, improving adherence.
 
-- Providing simple explanations about the medication's intended use, side effects, and dosage instructions using GenAI
+- AI-Powered Drug Information: Using Gemini AI, the app provides easy-to-understand explanations about medications and their uses.
 
-- Analyzing and alerting the user about potential interactions with their current medications
+- Drug Interaction Alerts: The system analyzes potential interactions between multiple medications and warns patients proactively.
 
-__2. Smart Medication Reminder System__
+- Intelligent Chatbot: An AI-driven chatbot answers users’ medication and health-related questions in natural language, providing personalized and accurate information.
 
-- Entering information such as medication name, dosage, frequency of use, start and end dates
+- Secure Data Storage: Integration with Firebase ensures safe and reliable storage of user data and medication records.
 
-- Reminders with automatic timed push notifications
-
-- Ensuring complete medication use with dosage tracking
-
-__3. Personalization and Safe Use__
-
-- Special analyses based on the user's age, health status, allergy history, and other data
-
-- Warnings about medications with interaction risks
-
-- Easy-to-use, simple, and age-friendly interface
-
-__4. Medication History and Reporting (Optional Development)__
-
-- Reports on users' previous medication use and regularity
-
-- Creation of PDF reports that can be shared with doctors
+- User-Friendly Design: The app features clear navigation and accessible interfaces for both patients and pharmacists.
 
 # TARGET AUDIENCE
 
-- Elderly individuals and those with chronic illnesses (those who take medication regularly)
+- Patients: Individuals of all ages who regularly take medication, struggle to keep track of their prescriptions, or want to learn more about their treatments.
 
-- Family members who monitor medication use (for parents, children)
+- Pharmacists: Healthcare professionals who want to easily manage patient prescriptions digitally, assign medications, and enhance patient follow-up.
 
-- Individuals with busy work schedules (at high risk of forgetting to take their medication)
+- Caregivers: Family members or professional caregivers supporting elderly, chronic patients, or those requiring continuous health monitoring by assisting with medication management.
 
-- Users with vision or cognitive impairments (who require simpler information and reminders)
-
-- Healthcare professionals (doctors and nurses who want to make it easier for their patients to take their medication)
+- Healthcare Institutions: Clinics and hospitals seeking digital solutions to improve patient safety and medication tracking.
 
 # PRODUCT BACKLOG
 [Open Product Backlog in Jira](https://yzta-grup110.atlassian.net/jira/software/projects/BSMT/boards/34/backlog?epics=visible&atlOrigin=eyJpIjoiN2QyZDg0NjhlMWQyNGJlMjgwZjk4MmY1ZjUwMWEzYjgiLCJwIjoiaiJ9)
