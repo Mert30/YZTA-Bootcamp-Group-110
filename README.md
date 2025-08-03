@@ -169,11 +169,11 @@ __4. Medication History and Reporting (Optional Development)__
 - **Estimated Story Points to Complete:** `85`
 
 - **Estimation Logic:** Tasks were assigned story points based on estimated effort, complexity level, and dependencies. A Fibonacci sequence-based system (1, 2, 3, 5, 8) was used for scoring:
-	- ´1´ Point – Very simple tasks, minimal effort
-	- ´2´ Points – Low-complexity tasks with clear steps
-	- ´3´ Points – Medium tasks involving logic or UI work
-	- ´5´ Points – Complex tasks with integrations or testing
-	- ´8´ Points – High-complexity tasks affecting multiple parts or involving AI/Firebase
+	- `1` Point – Very simple tasks, minimal effort
+	- `2` Points – Low-complexity tasks with clear steps
+	- `3` Points – Medium tasks involving logic or UI work
+	- `5` Points – Complex tasks with integrations or testing
+	- `8` Points – High-complexity tasks affecting multiple parts or involving AI/Firebase
 
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint3-daily-scrum-report.md>)
 
@@ -189,5 +189,18 @@ __4. Medication History and Reporting (Optional Development)__
 
 - **Sprint Review**
 
+	- Sprint 3 marked the final development cycle before project evaluation. Key progress was made to finalize core features and integrate AI capabilities.
+	- A new Firebase project was integrated to ensure stable data flow and resolve quota limitations.
+	- Essential features like password reset, patient listing, and stock tracking were completed.
+	- AI-powered functionalities were added:
+		- A Gemini-integrated chatbot that responds to user questions about medicines.
+		- A drug interaction module that provides safety alerts for combined medications.
+	- A diagnostic module for heart disease and diabetes risk scoring was introduced; while still in early form, it lays the groundwork for future enhancement.
+	- Real-time medication reminders were successfully implemented.	
+	- The project is now ready for evaluation as a smart, AI-assisted healthcare assistant with real-time capabilities.
+
 - **Sprint Retrospective**
 
+	- What Went Well: Sprint goals were successfully achieved, especially with the integration of AI features and scheduled notifications. Task distribution was clear, and team communication improved through regular meetings. Issues that came up were addressed quickly, with a strong focus on collaborative problem-solving.
+
+	- What Could Be Improved: The diagnosis prediction feature still needs further research and model refinement to provide more accurate results. In addition, more extensive user testing could help detect rare or edge-case issues earlier.
