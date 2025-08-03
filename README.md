@@ -122,11 +122,11 @@ __4. Medication History and Reporting (Optional Development)__
 
 - **Estimated Story Points to Complete:** `50`
 
-- **Estimation Logic:** tasks were assigned story points based on estimated effort, complexity level, and dependencies. A Fibonacci sequence-based system (1, 2, 3, 5, 7) was used for scoring:
+- **Estimation Logic:** Tasks were assigned story points based on estimated effort, complexity level, and dependencies. A Fibonacci sequence-based system (1, 2, 3, 5, 8) was used for scoring:
 	- `2` Points – Simple, low-complexity tasks that can be completed quickly  
 	- `3` Points – Moderately complex tasks requiring a few hours of work  
 	- `5` Points – Tasks involving integrations or requiring extra testing effort  
-	- `7` Points – High-complexity tasks that affect multiple components or the overall system  
+	- `8` Points – High-complexity tasks that affect multiple components or the overall system  
 
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint2-daily-scrum-report.md>)
 
@@ -166,13 +166,24 @@ __4. Medication History and Reporting (Optional Development)__
 	- Team members completed their tasks on time and with dedication.
 	- Regular team meetings were held. Internal communication was maintained via `WhatsApp` and `Google Meet`.
 
-- **Estimated Story Points to Complete:**
+- **Estimated Story Points to Complete:** `85`
 
-- **Estimation Logic:**
+- **Estimation Logic:** Tasks were assigned story points based on estimated effort, complexity level, and dependencies. A Fibonacci sequence-based system (1, 2, 3, 5, 8) was used for scoring:
+	- ´1´ Point – Very simple tasks, minimal effort
+	- ´2´ Points – Low-complexity tasks with clear steps
+	- ´3´ Points – Medium tasks involving logic or UI work
+	- ´5´ Points – Complex tasks with integrations or testing
+	- ´8´ Points – High-complexity tasks affecting multiple parts or involving AI/Firebase
 
 - **Daily Scrum:** [Click here to view the Daily Scrum notes](<docs/scrum_reports/sprint3-daily-scrum-report.md>)
 
 - **Sprint Board Updates**
+
+	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board.jpg)
+	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board2.jpg)
+	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board3.jpg)
+	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board4.jpg)
+	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board5.jpg)
 
 - **Product Screenshots**
 
