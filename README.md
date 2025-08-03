@@ -186,7 +186,8 @@ __4. Medication History and Reporting (Optional Development)__
 	![Sprint 3 Board](./docs/sprint_board_updates/sprint3-board/sprint3_board5.jpg)
 
 - **Product Screenshots**
-        [MediMate-Sprint3](https://drive.google.com/file/d/1bDc7vafpRupN9JnY7XUPXLWNJGeuzlCD/view?usp=drive_link)
+
+   [MediMate-Sprint3](https://drive.google.com/file/d/1bDc7vafpRupN9JnY7XUPXLWNJGeuzlCD/view?usp=drive_link)
 
 - **Sprint Review**
 
